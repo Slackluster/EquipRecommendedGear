@@ -3,8 +3,8 @@
 ## Author: Sluimerstand
 ## IconTexture: Interface\AddOns\EquipRecommendedGear\assets\erc_icon.blp
 ## Version: @project-version@
-## X-Curse-Project-ID: 12345
-## X-Wago-ID: 12345
+## X-Curse-Project-ID: 962128
+## X-Wago-ID: bGoMqq60
 
 ## SavedVariables: 
 ## SavedVariablesPerCharacter: 
