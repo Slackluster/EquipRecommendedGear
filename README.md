@@ -3,6 +3,7 @@ Adds a button to your character pane that equips the highest item level gear for
 Inspired by the same feature available in Final Fantasy XIV Online.
 
 **Limitations**
+- It will only consider soulbound items;
 - It will only consider weapons suitable for your specialisation (2-handed weapons for Survival Hunter, daggers for Assassination Rogues, etc.);
 - It will only consider weapons with your primary stat (Agility, Intellect, Strength) on them;
 - It will not check rings or trinkets for your primary stat;
