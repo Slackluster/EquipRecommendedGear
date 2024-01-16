@@ -25,6 +25,7 @@ event:RegisterEvent("ADDON_LOADED")
 event:RegisterEvent("INSPECT_READY")
 event:RegisterEvent("PLAYER_ENTER_COMBAT")
 event:RegisterEvent("PLAYER_LEAVE_COMBAT")
+event:RegisterEvent("PLAYER_LEVEL_UP")
 
 -- Table dump
 function app.Dump(table)
@@ -56,9 +57,19 @@ end
 function app.Initialise()
 	-- Declare session variables
 	app.DoingStuff = false
+
+	-- Get player info
 	_, _, app.ClassID = C_PlayerInfo.GetClass(PlayerLocation:CreateFromUnit("player"))
 	app.Sex = C_PlayerInfo.GetSex(PlayerLocation:CreateFromUnit("player"))
 
+	-- Get player level
+	app.Level = UnitLevel("player")
+	-- And update it on level up
+	function event:PLAYER_LEVEL_UP(level)
+		app.Level = level
+	end
+
+	-- Get player spec
 	NotifyInspect("player")
 	function event:INSPECT_READY()
 		if UnitAffectingCombat("player") == false then
@@ -211,14 +222,14 @@ function api.DoTheThing()
 				-- If the item is equippable
 				if IsEquippableItem(itemLink) then
 					-- Get item info
-					local _, _, _, _, _, _, _, _, itemEquipLoc, _, _, classID, subclassID = GetItemInfo(itemLink)
+					local _, _, _, _, itemMinLevel, _, _, _, itemEquipLoc, _, _, classID, subclassID = GetItemInfo(itemLink)
 					if itemEquipLoc == nil or classID == nil or subclassID == nil then
 						app.Print("Something went wrong. Please try again in a few seconds.")
 						do return end
 					end
 
-					-- If the item is soulbound
-					if C_Item.IsBound(ItemLocation:CreateFromBagAndSlot(k, i)) == true then
+					-- If the item is soulbound and the player's level is high enough to equip it
+					if C_Item.IsBound(ItemLocation:CreateFromBagAndSlot(k, i)) == true and app.Level >= itemMinLevel then
 						local itemlevel = GetDetailedItemLevelInfo(itemLink)
 
 						item[#item+1] = {item = itemLink, slot = itemEquipLoc, type = classID.."."..subclassID, ilv = itemlevel }
