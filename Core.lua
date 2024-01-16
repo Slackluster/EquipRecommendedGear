@@ -61,24 +61,30 @@ function app.Initialise()
 
 	NotifyInspect("player")
 	function event:INSPECT_READY()
-		app.SpecID = GetInspectSpecialization("player")
+		if UnitAffectingCombat("player") == false then
+			app.SpecID = GetInspectSpecialization("player")
 
-		app.CanDualWield = false
-		for k, v in pairs(app.DualWield) do
-			if app.SpecID == v then
-				app.CanDualWield = true
+			app.CanDualWield = false
+			for k, v in pairs(app.DualWield) do
+				if app.SpecID == v then
+					app.CanDualWield = true
+				end
 			end
 		end
 	end
 
 	-- Re-check if talents changed
 	function event:ACTIVE_TALENT_GROUP_CHANGED()
-		NotifyInspect("player")
+		if UnitAffectingCombat("player") == false then
+			NotifyInspect("player")
+		end
 	end
 
 	-- Re-check when opening the character frame BECAUSE IT REFUSES TO LOAD RELIABLY
 	EventRegistry:RegisterCallback("CharacterFrame.Show", function()
-		NotifyInspect("player")
+		if UnitAffectingCombat("player") == false then
+			NotifyInspect("player")
+		end
 	end)
 end
 
@@ -154,6 +160,12 @@ end
 ------------------
 
 function api.DoTheThing()
+	-- Don't do stuff if we're in combat
+	if UnitAffectingCombat("player") == false then
+		app.Print("Cannot recommend gear while in combat.")
+		do return end
+	end
+
 	-- Ask for SpecID again by inspecting the player
 	NotifyInspect("player")
 
