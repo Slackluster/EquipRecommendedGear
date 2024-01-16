@@ -259,7 +259,7 @@ function api.DoTheThing()
 
 		-- Check if the item can and should be equipped (armor -> class)
 		local equippable = false
-		if v.type == app.Type[armorClass] or v.type == app.Type["General"] then
+		if v.type == app.Type[armorClass] or v.type == app.Type["General"] or v.slot == "INVTYPE_CLOAK" then
 			equippable = true
 		end
 
