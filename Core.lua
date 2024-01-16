@@ -161,7 +161,7 @@ end
 
 function api.DoTheThing()
 	-- Don't do stuff if we're in combat
-	if UnitAffectingCombat("player") == false then
+	if UnitAffectingCombat("player") == true then
 		app.Print("Cannot recommend gear while in combat.")
 		do return end
 	end
