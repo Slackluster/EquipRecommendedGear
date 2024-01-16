@@ -61,16 +61,14 @@ function app.Initialise()
 
 	NotifyInspect("player")
 	function event:INSPECT_READY()
-		C_Timer.After(1, function()
-			app.SpecID = GetInspectSpecialization("player")
+		app.SpecID = GetInspectSpecialization("player")
 
-			app.CanDualWield = false
-			for k, v in pairs(app.DualWield) do
-				if app.SpecID == v then
-					app.CanDualWield = true
-				end
+		app.CanDualWield = false
+		for k, v in pairs(app.DualWield) do
+			if app.SpecID == v then
+				app.CanDualWield = true
 			end
-		end)
+		end
 	end
 
 	-- Re-check if talents changed
@@ -156,6 +154,9 @@ end
 ------------------
 
 function api.DoTheThing()
+	-- Ask for SpecID again by inspecting the player
+	NotifyInspect("player")
+
 	-- Get all equipped items
 	local itemLevel = {}
 	itemLevel[1] = GetInventoryItemLink("player", 1) or 0	-- Head
@@ -507,11 +508,6 @@ function api.DoTheThing()
 		end
 	end
 
-	-- Re-check SpecID AGAIN BECAUSE IT REFUSES TO BE GRABBED RELIABLY
-	if app.SpecID == nil then
-		app.SpecID = GetInspectSpecialization("player")
-	end
-
 	-- Print usage
 	local _, specName = GetSpecializationInfoByID(app.SpecID, app.Sex)
 	local className, classFile = GetClassInfo(app.ClassID)
@@ -519,11 +515,13 @@ function api.DoTheThing()
 
 	local next = next
 	-- If there's no upgrades
-	if next(upgrade) == nil then
+	if next(upgrade) == nil and specName ~= nil then
 		app.Print("You are currently equipped with the recommended gear for |c"..classColor..specName.." "..className.."|R.")
 	-- If there are upgrades
-	else
+	elseif specName ~= nil then
 		app.Print("Gear recommended for |c"..classColor..specName.." "..className.."|R equipped.")
+	else
+		app.Print("Something went wrong. Please try again in a few seconds.")
 	end
 
 	-- Equip the upgrades
