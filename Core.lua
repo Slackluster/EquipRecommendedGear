@@ -20,9 +20,7 @@ event:SetScript("OnEvent", function(self, event, ...)
 		self[event](self, ...)
 	end
 end)
-event:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
 event:RegisterEvent("ADDON_LOADED")
-event:RegisterEvent("INSPECT_READY")
 event:RegisterEvent("PLAYER_ENTER_COMBAT")
 event:RegisterEvent("PLAYER_LEAVE_COMBAT")
 event:RegisterEvent("PLAYER_LEVEL_UP")
@@ -59,44 +57,8 @@ function app.Initialise()
 	app.DoingStuff = false
 
 	-- Get player info
-	_, _, app.ClassID = C_PlayerInfo.GetClass(PlayerLocation:CreateFromUnit("player"))
 	app.Sex = C_PlayerInfo.GetSex(PlayerLocation:CreateFromUnit("player"))
-
-	-- Get player level
-	app.Level = UnitLevel("player")
-	-- And update it on level up
-	function event:PLAYER_LEVEL_UP(level)
-		app.Level = level
-	end
-
-	-- Get player spec
-	NotifyInspect("player")
-	function event:INSPECT_READY()
-		if UnitAffectingCombat("player") == false then
-			app.SpecID = GetInspectSpecialization("player")
-
-			app.CanDualWield = false
-			for k, v in pairs(app.DualWield) do
-				if app.SpecID == v then
-					app.CanDualWield = true
-				end
-			end
-		end
-	end
-
-	-- Re-check if talents changed
-	function event:ACTIVE_TALENT_GROUP_CHANGED()
-		if UnitAffectingCombat("player") == false then
-			NotifyInspect("player")
-		end
-	end
-
-	-- Re-check when opening the character frame BECAUSE IT REFUSES TO LOAD RELIABLY
-	EventRegistry:RegisterCallback("CharacterFrame.Show", function()
-		if UnitAffectingCombat("player") == false then
-			NotifyInspect("player")
-		end
-	end)
+	app.ClassID = PlayerUtil.GetClassID()
 end
 
 function app.CreateAssets()
@@ -177,8 +139,17 @@ function api.DoTheThing()
 		do return end
 	end
 
-	-- Ask for SpecID again by inspecting the player
-	NotifyInspect("player")
+	-- Check this stuff now, because this is when it matters and it could've changed
+	app.SpecID = PlayerUtil.GetCurrentSpecID()
+	app.Level = UnitLevel("player")
+
+	-- Can the player dual wield
+	app.CanDualWield = false
+	for k, v in pairs(app.DualWield) do
+		if app.SpecID == v then
+			app.CanDualWield = true
+		end
+	end
 
 	-- Get all equipped items
 	local itemLevel = {}
