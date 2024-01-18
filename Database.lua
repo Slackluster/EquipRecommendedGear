@@ -17,6 +17,7 @@ app.Slot["INVTYPE_NECK"] = 2
 app.Slot["INVTYPE_SHOULDER"] = 3
 app.Slot["INVTYPE_CLOAK"] = 15
 app.Slot["INVTYPE_CHEST"] = 5
+app.Slot["INVTYPE_ROBE"] = 5
 app.Slot["INVTYPE_WRIST"] = 9
 app.Slot["INVTYPE_HAND"] = 10
 app.Slot["INVTYPE_WAIST"] = 6
