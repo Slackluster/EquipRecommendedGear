@@ -21,9 +21,6 @@ event:SetScript("OnEvent", function(self, event, ...)
 	end
 end)
 event:RegisterEvent("ADDON_LOADED")
-event:RegisterEvent("PLAYER_ENTER_COMBAT")
-event:RegisterEvent("PLAYER_LEAVE_COMBAT")
-event:RegisterEvent("PLAYER_LEVEL_UP")
 
 -- Table dump
 function app.Dump(table)
@@ -109,23 +106,6 @@ function app.CreateAssets()
 	app.Button.Tooltip:SetWidth(string:GetStringWidth()*1.1+20)
 	app.Button.Tooltip:Hide()
 	app.Button.Tooltip:SetPoint("BOTTOMLEFT", app.Button, "TOPRIGHT", 0, 4)
-
-	-- When combat starts
-	function event:PLAYER_ENTER_COMBAT()
-		-- Disable and desaturate the button
-		app.Button:Disable()
-		app.Button:GetNormalTexture():SetDesaturated(true)
-	end
-
-	-- When combat ends
-	function event:PLAYER_LEAVE_COMBAT()
-		-- Add a delay because combat does not like protected buttons
-		C_Timer.After(1, function()
-			-- Enable and re-saturate the button
-			app.Button:Enable()
-			app.Button:GetNormalTexture():SetDesaturated(false)
-		end)
-	end
 end
 
 ------------------
