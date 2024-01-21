@@ -38,7 +38,7 @@ app.Slot["INVTYPE_WEAPON"] = 18	-- Can be main hand or off hand, if char can Dua
 
 -- Type.Subtype to item type
 app.Type = {}
-app.Type["General"] = "4.0"	-- Neck, Ring, Trinket, Off-Hand
+app.Type["General"] = "4.0"	-- Neck, Ring, Trinket, Off-Hand (and shirts and tabards, yay)
 app.Type["Cloth"] = "4.1"
 app.Type["Leather"] = "4.2"
 app.Type["Mail"] = "4.3"
