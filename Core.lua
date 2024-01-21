@@ -324,6 +324,29 @@ function api.DoTheThing()
 	changeHighestForSlot(upgrade, 11, 12)
 	changeHighestForSlot(upgrade, 13, 14)
 
+	-- Count rings and trinkets
+	local ringNo = 0
+	local trinketNo = 0
+	local ringKey
+	local trinketKey
+	for k, v in pairs(upgrade) do
+		if v.slot == 11 or v.slot == 12 then
+			ringNo = ringNo + 1
+			ringKey = k
+		elseif v.slot == 13 or v.slot == 14 then
+			trinketNo = trinketNo + 1
+			trinketKey = k
+		end
+	end
+
+	-- Move rings/trinkets to proper slot if there's only one
+	if ringNo == 1 and itemLevel[11] < itemLevel[12] then
+		upgrade[ringKey].slot = 11
+	end
+	if trinketNo == 1 and itemLevel[13] < itemLevel[14] then
+		upgrade[trinketKey].slot = 13
+	end
+
 	-- Move one-handed weapons to main hand, if the character cannot dual wield
 	if app.CanDualWield == false then
 		for k, v in pairs(upgrade) do
