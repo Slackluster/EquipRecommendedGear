@@ -115,7 +115,7 @@ end
 -- DoTheThing(0): send no chat messages even if new gear equipped
 -- DoTheThing(1): only send chat message if new gear equipped
 -- DoTheThing(): send all chat messages
-function api.api.DoTheThing(msg)
+function api.DoTheThing(msg)
 	-- Don't do stuff if we're in combat
 	if UnitAffectingCombat("player") == true then
 		app.Print("Cannot recommend gear while in combat.")
