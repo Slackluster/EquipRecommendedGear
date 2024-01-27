@@ -1,6 +1,9 @@
 # EquipRecommendedGear
-Adds a button to your character pane that equips the highest item level gear for your class & spec.
-Inspired by the same feature available in Final Fantasy XIV Online.
+Adds a button to your character pane that equips the highest item level gear for your class & spec. Inspired by the same feature available in Final Fantasy XIV Online.
+
+**Features**
+- Adds a button. When you click the button, it does the thing;
+- Instead of a button, you can also use: `/run EquipRecommendedGear.DoTheThing()`. Use argument `1` to only send a message if new gear is equipped, argument `0` for no messages, or no argument for all messages.
 
 **Limitations**
 - It will only consider soulbound items;
