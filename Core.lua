@@ -112,7 +112,10 @@ end
 -- DO THE THING --
 ------------------
 
-function api.DoTheThing()
+-- DoTheThing(0): send no chat messages even if new gear equipped
+-- DoTheThing(1): only send chat message if new gear equipped
+-- DoTheThing(): send all chat messages
+function api.api.DoTheThing(msg)
 	-- Don't do stuff if we're in combat
 	if UnitAffectingCombat("player") == true then
 		app.Print("Cannot recommend gear while in combat.")
@@ -510,13 +513,24 @@ function api.DoTheThing()
 	local className, classFile = GetClassInfo(app.ClassID)
 	local _, _, _, classColor = GetClassColor(classFile)
 
+	-- Set the message variable if it's not set
+	if not msg then
+		msg = 2
+	end
+
 	local next = next
 	-- If there's no upgrades
 	if next(upgrade) == nil and specName ~= nil then
-		app.Print("You are currently equipped with the recommended gear for |c"..classColor..specName.." "..className.."|R.")
+		-- And the message should be sent
+		if msg == 2 then
+			app.Print("You are currently equipped with the recommended gear for |c"..classColor..specName.." "..className.."|R.")
+		end
 	-- If there are upgrades
 	elseif specName ~= nil then
-		app.Print("Gear recommended for |c"..classColor..specName.." "..className.."|R equipped.")
+		-- And the message should be sent
+		if msg >= 1 then
+			app.Print("Gear recommended for |c"..classColor..specName.." "..className.."|R equipped.")
+		end
 	else
 		app.Print("Something went wrong. Please try again in a few seconds.")
 	end
