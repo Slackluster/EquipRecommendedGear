@@ -513,8 +513,11 @@ function api.DoTheThing(msg)
 	local className, classFile = GetClassInfo(app.ClassID)
 	local _, _, _, classColor = GetClassColor(classFile)
 
-	-- Set the message variable if it's not set
+	-- Set the message variable if it's not set (properly)
 	if not msg then
+		msg = 2
+	end
+	if type(msg) ~= "number" then
 		msg = 2
 	end
 
