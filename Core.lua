@@ -243,7 +243,7 @@ function api.DoTheThing(msg)
 		-- Get the weapon type
 		local weapon = false
 		for k2, v2 in pairs(app.Type) do
-			if v2 == v.type and not (v.type == "4.1" or v.type == "4.2" or v.type == "4.3" or v.type == "4.4") then
+			if v2 == v.type and not (v.type == "4.1" or v.type == "4.2" or v.type == "4.3" or v.type == "4.4" or (v.type == "4.0" and v.slot ~= "INVTYPE_HOLDABLE" and v.slot ~= "INVTYPE_WEAPONOFFHAND")) then
 				for _, v3 in pairs(app.Weapon[k2]) do
 					-- Check if the item can and should be equipped (weapon -> spec)
 					if v3 == app.SpecID then
@@ -360,35 +360,53 @@ function api.DoTheThing(msg)
 	end
 
 	-- Check upgrades for multiples of the same slot and only keep the best one, or best two for 1-Handers (thanks ChatGPT)
-	local function removeDuplicates(table)
+	local function processGearTable(gearTable)
 		local seenSlots = {}
-		local countSlot18 = 0
 	
-		for i = #table, 1, -1 do
-			local entry = table[i]
+		for i = #gearTable, 1, -1 do
+			local entry = gearTable[i]
 			local slot = entry.slot
 	
 			if slot == 18 then
-				-- Check if we have already seen slot 18
-				if seenSlots[slot] then
-					-- Duplicate found, check if it's the third occurrence
-					if countSlot18 >= 2 then
-						-- Remove the current entry from the table
-						table[i] = nil
-					else
-						countSlot18 = countSlot18 + 1
-					end
+				-- Handle slot 18 (keep the best two)
+				seenSlots[slot] = seenSlots[slot] or {}
+				
+				if #seenSlots[slot] < 2 then
+					-- If fewer than two entries, just add the current entry
+					table.insert(seenSlots[slot], entry)
 				else
-					-- Haven't seen slot 18 yet, mark it as seen
-					seenSlots[slot] = true
+					-- Find the two entries with the highest ilv
+					local minIlvIndex = 1
+					for j = 2, #seenSlots[slot] do
+						if seenSlots[slot][j].ilv < seenSlots[slot][minIlvIndex].ilv then
+							minIlvIndex = j
+						end
+					end
+	
+					-- Replace the entry with the lowest ilv if the current entry has a higher ilv
+					if entry.ilv > seenSlots[slot][minIlvIndex].ilv then
+						seenSlots[slot][minIlvIndex] = entry
+					else
+						-- Remove the current entry if its ilv is not higher
+						table.remove(gearTable, i)
+					end
+				end
+			elseif not seenSlots[slot] or entry.ilv > seenSlots[slot].ilv then
+				-- For other slots, keep only the entry with the highest ilv
+				seenSlots[slot] = entry
+				-- Remove any additional entries for the same slot
+				for j = i + 1, #gearTable do
+					if gearTable[j].slot == slot then
+						table.remove(gearTable, j)
+					end
 				end
 			else
-				-- For slots other than 18, simply mark them as seen
-				seenSlots[slot] = true
+				-- Remove duplicates for the same slot with lower ilv
+				table.remove(gearTable, i)
 			end
 		end
 	end
-	removeDuplicates(upgrade)
+	processGearTable(upgrade)
 
 	-- Remove the lowest ring or trinket entry if neither is an upgrade for the best equipped (we previously only checked if it's an upgrade for the worst equipped)
 	for k, v in pairs(upgrade) do
