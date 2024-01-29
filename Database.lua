@@ -90,7 +90,7 @@ app.Weapon["Wand"] = { 62, 63, 64, 256, 257, 258, 265, 266, 267 }	-- 3x Mage, 3x
 -- Stat -> Spec
 app.Stat = {}
 app.Stat["ITEM_MOD_AGILITY_SHORT"] = { 577, 581, 103, 104, 253, 254, 255, 268, 269, 259, 260, 261, 263 }	-- 2x DH, Feral + Guardian Druid, 3x Hunter, Brew + Wind Monk, 3x Rogue, Enh Shaman
-app.Stat["ITEM_MOD_INTELLECT_SHORT"] = { 102, 105, 1467, 1468, 1473, 62, 62, 64, 270, 65, 256, 257, 258, 262, 264, 265, 266, 267 }	-- Balance + Resto Druid, 3x Evoker, 3x Mage, Mist Monk, Holy Pala, 3x Priest, Ele + Resto Shaman, 3x Lock
+app.Stat["ITEM_MOD_INTELLECT_SHORT"] = { 102, 105, 1467, 1468, 1473, 62, 63, 64, 270, 65, 256, 257, 258, 262, 264, 265, 266, 267 }	-- Balance + Resto Druid, 3x Evoker, 3x Mage, Mist Monk, Holy Pala, 3x Priest, Ele + Resto Shaman, 3x Lock
 app.Stat["ITEM_MOD_STRENGTH_SHORT"] = { 250, 251, 252, 66, 70, 71, 72, 73 }	-- 3x DK, Prot + Ret Pala, 3x Warr
 
 app.DualWield = { 577, 581, 259, 260, 261, 251, 72, 263, 268, 269 }	-- 2x DH, 3x Rogue, Frost DK, Fury Warr, Enh Shaman, Brew + Wind Monk

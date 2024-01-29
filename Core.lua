@@ -209,31 +209,31 @@ function api.DoTheThing(msg)
 		end
 	end
 
+	-- Get the player's armor class
+	local armorClass
+	for k, v in pairs(app.Armor) do
+		for _, v2 in pairs(v) do
+			if v2 == app.ClassID then
+				armorClass = k
+			end
+		end
+	end
+
+	-- Get the player's primary stat
+	local primaryStat
+	for k, v in pairs(app.Stat) do
+		for _, v2 in pairs(v) do
+			if v2 == app.SpecID then
+				primaryStat = k
+			end
+		end
+	end
+
 	-- Check soulbound gear for eligibility
 	local upgrade = {}
 	local weaponUpgrade = {}
 
 	for k, v in pairs(item) do
-		-- Get the player's armor class
-		local armorClass
-		for k2, v2 in pairs(app.Armor) do
-			for _, v3 in pairs(v2) do
-				if v3 == app.ClassID then
-					armorClass = k2
-				end
-			end
-		end
-
-		-- Get the player's primary stat
-		local primaryStat
-		for k2, v2 in pairs(app.Stat) do
-			for _, v3 in pairs(v2) do
-				if v3 == app.SpecID then
-					primaryStat = k2
-				end
-			end
-		end
-
 		-- Check if the item can and should be equipped (armor -> class)
 		local equippable = false
 		if v.type == app.Type[armorClass] or (v.type == app.Type["General"] and v.slot ~= "INVTYPE_TABARD" and v.slot ~= "INVTYPE_BODY") or v.slot == "INVTYPE_CLOAK" then
