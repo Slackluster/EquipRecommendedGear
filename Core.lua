@@ -370,7 +370,7 @@ function api.DoTheThing(msg)
 			if slot == 18 then
 				-- Handle slot 18 (keep the best two)
 				seenSlots[slot] = seenSlots[slot] or {}
-				
+	
 				if #seenSlots[slot] < 2 then
 					-- If fewer than two entries, just add the current entry
 					table.insert(seenSlots[slot], entry)
@@ -395,7 +395,7 @@ function api.DoTheThing(msg)
 				-- For other slots, keep only the entry with the highest ilv
 				seenSlots[slot] = entry
 				-- Remove any additional entries for the same slot
-				for j = i + 1, #gearTable do
+				for j = #gearTable, i + 1, -1 do
 					if gearTable[j].slot == slot then
 						table.remove(gearTable, j)
 					end
