@@ -75,6 +75,7 @@ function app.CreateAssets()
 			
 			-- Run the code
 			api.DoTheThing()
+			api.DoTheThing(0)	-- Run it twice because sometimes weird stuff happens >:
 
 			C_Timer.After(1, function() app.DoingStuff = false end)
 		end
