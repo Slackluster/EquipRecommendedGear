@@ -436,83 +436,50 @@ function api.DoTheThing(msg)
 	end
 
 	-- Get best weapons (thanks ChatGPT)
-	function findBestWeaponCombo(table)
-		if #table == 1 then
-			table[1].slot = 16
-			return table
+	function findBestWeaponCombo(weaponUpgrade)
+		if #weaponUpgrade == 1 then
+			return weaponUpgrade
 		end
 	
 		local maxIlv = 0
 		local bestCombo = {}
 	
-		for i, weapon1 in ipairs(table) do
-			for j, weapon2 in ipairs(table) do
-				-- Shows all pairings twice, which is actually quite handy since that means we don't have to double our checks
-				if i ~= j then
-					-- If 2H weapon
-					if weapon1.slot == 1617 or weapon2.slot == 1617 then
-						-- 2H vs non-2H
-						if weapon1.slot == 1617 and weapon2.slot ~= 1617 then
-							-- If 2H is an improvement
-							if maxIlv < weapon1.ilv then
-								maxIlv = weapon1.ilv * 2	-- x2 because 2H "occupies" 2 slots
-								bestCombo = {}
-								bestCombo[1] = { item = weapon1.item, ilv = weapon1.ilv, slot = 16 }
-							end
-						-- 2H vs 2H
-						elseif weapon1.slot == 1617 and weapon2.slot == 1617 then
-							-- If 2H one has higher iLv than 2H two
-							if weapon1.ilv > weapon2.ilv then
-								-- If 2H is an improvement
-								if maxIlv < weapon1.ilv then
-									maxIlv = weapon1.ilv * 2	-- x2 because 2H "occupies" 2 slots
-									bestCombo = {}
-									bestCombo[1] = { item = weapon1.item, ilv = weapon1.ilv, slot = 16 }
-								end
-							else
-								-- If 2H is an improvement
-								if maxIlv < weapon2.ilv then
-									maxIlv = weapon2.ilv * 2	-- x2 because 2H "occupies" 2 slots
-									bestCombo = {}
-									bestCombo[1] = { item = weapon2.item, ilv = weapon2.ilv, slot = 16 }
-								end
-							end
-						end
-					-- MH + OH or MH + 1H or 1H + OH
-					elseif (weapon1.slot == 16 and weapon2.slot == 17) or (weapon1.slot == 16 and weapon2.slot == 18) or (weapon1.slot == 18 and weapon2.slot == 17) then
-						local comboIlv = weapon1.ilv + weapon2.ilv
-						if maxIlv < comboIlv then
-							maxIlv = comboIlv
-							bestCombo = {}
-							bestCombo[1] = { item = weapon1.item, ilv = weapon1.ilv, slot = 16 }
-							bestCombo[2] = { item = weapon2.item, ilv = weapon2.ilv, slot = 17 }
-						end
-					-- 1H + 1H
-					elseif weapon1.slot == 18 and weapon2.slot == 18 then
-						local comboIlv = weapon1.ilv + weapon2.ilv
-						if maxIlv < comboIlv then
-							maxIlv = comboIlv
-							bestCombo = {}
-							bestCombo[1] = { item = weapon1.item, ilv = weapon1.ilv, slot = 16 }
-							bestCombo[2] = { item = weapon2.item, ilv = weapon2.ilv, slot = 17 }
-
-							if weapon2.ilv >= weapon1.ilv then
-								bestCombo[1].slot = 17
-								bestCombo[2].slot = 16
-							end
+		for i, weapon1 in ipairs(weaponUpgrade) do
+			local comboIlv = weapon1["ilv"]
+	
+			if weapon1["slot"] ~= 1617 then
+				for j, weapon2 in ipairs(weaponUpgrade) do
+					if i ~= j then
+						if weapon1["slot"] == 16 and weapon2["slot"] == 17 or
+						   weapon1["slot"] == 17 and weapon2["slot"] == 16 or
+						   weapon1["slot"] == 16 and weapon2["slot"] == 18 or
+						   weapon1["slot"] == 18 and weapon2["slot"] == 16 or
+						   weapon1["slot"] == 18 and weapon2["slot"] == 17 or
+						   weapon1["slot"] == 17 and weapon2["slot"] == 18 or
+						   weapon1["slot"] == 18 and weapon2["slot"] == 18 then
+							comboIlv = comboIlv + weapon2["ilv"]
 						end
 					end
 				end
+			else
+				-- Two-handed weapons are worth twice as much in terms of comparisons
+				comboIlv = comboIlv * 2
+			end
+	
+			if comboIlv > maxIlv then
+				maxIlv = comboIlv
+				bestCombo = { weapon1 }
 			end
 		end
 	
 		return bestCombo
 	end
-		
+
 	local bestWeapons = findBestWeaponCombo(weaponUpgrade)
 
 	-- Put these back in the upgrade table, if they're not equipped
 	for k, v in pairs(bestWeapons) do
+		if v.slot == 1617 then v.slot = 16 end
 		local item16 = "None"
 		local item17 = "None"
 		if GetInventoryItemLink("player", 16) ~= nil then
