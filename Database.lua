@@ -28,6 +28,7 @@ app.Slot["INVTYPE_FINGER"] = 11	-- Also 12
 app.Slot["INVTYPE_TRINKET"] = 13	-- Also 14
 --- Custom code for weapons
 app.Slot["INVTYPE_RANGED"] = 1617	-- Main hand, no off hand
+app.Slot["INVTYPE_RANGEDRIGHT"] = 1617	-- Main hand, no off hand
 app.Slot["INVTYPE_2HWEAPON"] = 1617	-- Main hand, no off hand
 app.Slot["INVTYPE_WEAPONMAINHAND"] = 16	-- Main hand
 app.Slot["INVTYPE_WEAPONOFFHAND"] = 17	-- Off hand
