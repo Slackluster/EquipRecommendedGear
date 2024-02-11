@@ -157,7 +157,21 @@ function api.DoTheThing(msg)
 	-- Turn all equipped items into their iLv values
 	for k, v in pairs(itemLevel) do
 		if v ~= 0 then
+			local itemID = GetItemInfoInstant(v)
+			local _, _, _, _, _, _, _, _, _, maxLevel = C_Heirloom.GetHeirloomInfo(itemID)
 			local ilv = GetDetailedItemLevelInfo(v) or 0
+			if C_Heirloom.IsItemHeirloom(itemID) == true then
+				-- Check if we're not too quick
+				if maxLevel ~= nil then
+					-- If heirloom isn't maxed, assume player wants to keep it equipped
+					if maxLevel >= app.Level then
+						ilv = 9999
+					end
+				else
+					app.Print("Something went wrong. Please try again in a few seconds.")
+					do return end
+				end	
+			end
 			itemLevel[k] = ilv
 		end
 	end
