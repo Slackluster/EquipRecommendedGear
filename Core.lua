@@ -135,7 +135,7 @@ function api.DoTheThing(msg)
 		end
 	end
 
-	-- Get all equipped items
+	-- Get all equipped items (except weapons, we check those later)
 	local itemLevel = {}
 	itemLevel[1] = GetInventoryItemLink("player", 1) or 0	-- Head
 	itemLevel[2] = GetInventoryItemLink("player", 2) or 0	-- Neck
@@ -151,8 +151,6 @@ function api.DoTheThing(msg)
 	itemLevel[12] = GetInventoryItemLink("player", 12) or 0	-- Finger2
 	itemLevel[13] = GetInventoryItemLink("player", 13) or 0	-- Trinket1
 	itemLevel[14] = GetInventoryItemLink("player", 14) or 0	-- Trinket2
-	itemLevel[16] = GetInventoryItemLink("player", 16) or 0	-- MainHand
-	itemLevel[17] = GetInventoryItemLink("player", 17) or 0	-- OffHand
 
 	-- Turn all equipped items into their iLv values
 	for k, v in pairs(itemLevel) do
@@ -215,11 +213,30 @@ function api.DoTheThing(msg)
 			local _, _, _, _, _, _, _, _, itemEquipLoc, _, _, classID, subclassID = GetItemInfo(itemLink)
 			local itemlevel = GetDetailedItemLevelInfo(itemLink)
 
+			-- Check for heirlooms
+			local itemID = GetItemInfoInstant(itemLink)
+			local _, _, _, _, _, _, _, _, _, maxLevel = C_Heirloom.GetHeirloomInfo(itemID)
+
+			if C_Heirloom.IsItemHeirloom(itemID) == true then
+				-- Check if we're not too quick
+				if maxLevel ~= nil then
+					-- If heirloom isn't maxed, assume player wants to keep it equipped
+					if maxLevel >= app.Level then
+						itemlevel = 9999
+					end
+				else
+					app.Print("Something went wrong. Please try again in a few seconds.")
+					do return end
+				end	
+			end
+
+			-- Check if we're not too quick
 			if itemEquipLoc == nil or classID == nil or subclassID == nil then
 				app.Print("Something went wrong. Please try again in a few seconds.")
 				do return end
 			end
 
+			-- Process the weapons
 			item[#item+1] = {item = itemLink, slot = itemEquipLoc, type = classID.."."..subclassID, ilv = itemlevel }
 		end
 	end
