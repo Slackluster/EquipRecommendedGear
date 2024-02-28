@@ -75,8 +75,8 @@ function app.CreateAssets()
 			
 			-- Run the code
 			api.DoTheThing()
-			api.DoTheThing(0)	-- Run it twice because sometimes weird stuff happens >:
-
+			C_Timer.After(.5, function() api.DoTheThing(0) end)	-- Run it twice because sometimes weird stuff happens >:
+			
 			C_Timer.After(1, function() app.DoingStuff = false end)
 		end
 	end)
@@ -557,7 +557,11 @@ function api.DoTheThing(msg)
 
 	-- Equip the upgrades
 	for k, v in pairs(upgrade) do
-		EquipItemByName(v.item, v.slot)
+		if v.slot == 18 then
+			EquipItemByName(v.item)
+		else
+			EquipItemByName(v.item, v.slot)
+		end
 	end
 end
 
