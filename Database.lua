@@ -36,7 +36,6 @@ app.Slot["INVTYPE_HOLDABLE"] = 17	-- Off hand
 app.Slot["INVTYPE_SHIELD"] = 17	-- Off hand
 app.Slot["INVTYPE_WEAPON"] = 18	-- Can be main hand or off hand, if char can Dual Wield
 
-
 -- Type.Subtype to item type
 app.Type = {}
 app.Type["General"] = "4.0"	-- Neck, Ring, Trinket, Off-Hand (and shirts and tabards, yay)
