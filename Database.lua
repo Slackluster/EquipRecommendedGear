@@ -69,7 +69,7 @@ app.Armor["Plate"] = { 1, 2, 6}	-- Warrior, Paladin, Death Knight
 
 -- Weapon -> Spec
 app.Weapon = {}
-app.Weapon["General"] = { 62, 63, 64, 65, 102, 105, 265, 257, 258, 262, 264, 265, 266, 267, 270, 1467, 1468, 1473 }	-- 3x Mage, Holy Pala, Bal + Resto Druid, 3x Priest, Ele + Resto Shaman, 3x Lock, Mist Monk, 3x Evoker
+app.Weapon["General"] = { 250, 251, 252, 577, 581, 102, 103, 104, 1467, 1468, 1473, 253, 254, 255, 62, 63, 64, 268, 270, 269, 65, 66, 70, 256, 257, 258, 259, 260, 261, 262, 263, 264, 265, 266, 267, 71, 72, 73 }	-- Everyone
 app.Weapon["Shield"] = { 65, 66, 73, 262, 264 }	-- Holy + Prot Pala, Prot Warr, Ele + Resto Shaman
 app.Weapon["Axe1H"] = { 251, 577, 581, 1467, 1468, 1473, 268, 269, 270, 65, 66, 260, 262, 263, 264, 72, 73 }	-- Frost DK, 2x DH, 3x Evoker, 3x Monk, Holy + Prot Pala, Outlaw Rogue, 3x Shaman, Fury + Prot Warr
 app.Weapon["Axe2H"] = { 65, 70, 71, 72, 250, 251, 252, 1467, 1468, 1473, 255, 262, 264 }	-- Holy + Ret Pala, Arms + Fury Warr, 3x DK, 3x Evoker, Surv Hunter, Ele + Resto Shaman
