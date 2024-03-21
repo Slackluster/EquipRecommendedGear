@@ -186,20 +186,23 @@ function api.DoTheThing(msg)
 		if v > 0 then
 			for i=1, v, 1 do
 				local itemLink = C_Container.GetContainerItemLink(k, i)
-				-- If the item is equippable
-				if IsEquippableItem(itemLink) then
-					-- Get item info
-					local _, _, _, _, itemMinLevel, _, _, _, itemEquipLoc, _, _, classID, subclassID = GetItemInfo(itemLink)
-					if itemEquipLoc == nil or classID == nil or subclassID == nil then
-						app.Print("Something went wrong. Please try again in a few seconds.")
-						do return end
-					end
 
-					-- If the item is soulbound and the player's level is high enough to equip it
-					if C_Item.IsBound(ItemLocation:CreateFromBagAndSlot(k, i)) == true and app.Level >= itemMinLevel then
-						local itemlevel = GetDetailedItemLevelInfo(itemLink)
+				if itemLink ~= nil then
+					-- If the item is equippable
+					if C_Item.IsEquippableItem(itemLink) then
+						-- Get item info
+						local _, _, _, _, itemMinLevel, _, _, _, itemEquipLoc, _, _, classID, subclassID = GetItemInfo(itemLink)
+						if itemEquipLoc == nil or classID == nil or subclassID == nil then
+							app.Print("Something went wrong. Please try again in a few seconds.")
+							do return end
+						end
 
-						item[#item+1] = {item = itemLink, slot = itemEquipLoc, type = classID.."."..subclassID, ilv = itemlevel }
+						-- If the item is soulbound and the player's level is high enough to equip it
+						if C_Item.IsBound(ItemLocation:CreateFromBagAndSlot(k, i)) == true and app.Level >= itemMinLevel then
+							local itemlevel = GetDetailedItemLevelInfo(itemLink)
+
+							item[#item+1] = {item = itemLink, slot = itemEquipLoc, type = classID.."."..subclassID, ilv = itemlevel }
+						end
 					end
 				end
 			end
@@ -558,9 +561,10 @@ function api.DoTheThing(msg)
 	-- Equip the upgrades
 	for k, v in pairs(upgrade) do
 		if v.slot == 18 then
-			EquipItemByName(v.item)
+			C_Item.EquipItemByName(v.item)
 		else
-			EquipItemByName(v.item, v.slot)
+			-- C_Item.EquipItemByName(v.item, v.slot)	Temp disabled, because API wack?
+			C_Item.EquipItemByName(v.item)
 		end
 	end
 end
