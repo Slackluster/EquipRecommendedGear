@@ -322,7 +322,7 @@ function api.DoTheThing(msg)
 			end
 
 			-- Set the iLv to compare to
-			local compareItemLevel
+			local compareItemLevel = 0
 			if weapon == true then
 				compareItemLevel = 0
 			elseif v.slot == "INVTYPE_FINGER" then
