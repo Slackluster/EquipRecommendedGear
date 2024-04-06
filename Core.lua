@@ -479,30 +479,31 @@ function api.DoTheThing(msg)
 		local bestCombo = {}
 	
 		for i, weapon1 in ipairs(weaponUpgrade) do
-			local comboIlv = weapon1["ilv"]
+			for j, weapon2 in ipairs(weaponUpgrade) do
+				if i ~= j then
+					local comboIlv = weapon1["ilv"]
 	
-			if weapon1["slot"] ~= 1617 then
-				for j, weapon2 in ipairs(weaponUpgrade) do
-					if i ~= j then
-						if weapon1["slot"] == 16 and weapon2["slot"] == 17 or
-						   weapon1["slot"] == 17 and weapon2["slot"] == 16 or
-						   weapon1["slot"] == 16 and weapon2["slot"] == 18 or
-						   weapon1["slot"] == 18 and weapon2["slot"] == 16 or
-						   weapon1["slot"] == 18 and weapon2["slot"] == 17 or
-						   weapon1["slot"] == 17 and weapon2["slot"] == 18 or
-						   weapon1["slot"] == 18 and weapon2["slot"] == 18 then
+					if weapon1["slot"] == 1617 then
+						-- If it's a two-handed weapon, count its ilv twice
+						comboIlv = comboIlv * 2
+					else
+						-- Check valid combinations for one-handed, main-hand, and off-hand weapons
+						if (weapon1["slot"] == 16 and weapon2["slot"] == 17) or
+						   (weapon1["slot"] == 17 and weapon2["slot"] == 16) or
+						   (weapon1["slot"] == 16 and weapon2["slot"] == 18) or
+						   (weapon1["slot"] == 18 and weapon2["slot"] == 16) or
+						   (weapon1["slot"] == 18 and weapon2["slot"] == 17) or
+						   (weapon1["slot"] == 17 and weapon2["slot"] == 18) or
+						   (weapon1["slot"] == 18 and weapon2["slot"] == 18) then
 							comboIlv = comboIlv + weapon2["ilv"]
 						end
 					end
-				end
-			else
-				-- Two-handed weapons are worth twice as much in terms of comparisons
-				comboIlv = comboIlv * 2
-			end
 	
-			if comboIlv > maxIlv then
-				maxIlv = comboIlv
-				bestCombo = { weapon1 }
+					if comboIlv > maxIlv then
+						maxIlv = comboIlv
+						bestCombo = { weapon1, weapon2 }
+					end
+				end
 			end
 		end
 	
@@ -560,12 +561,13 @@ function api.DoTheThing(msg)
 
 	-- Equip the upgrades
 	for k, v in pairs(upgrade) do
-		if v.slot == 18 then
-			C_Item.EquipItemByName(v.item)
-		else
-			-- C_Item.EquipItemByName(v.item, v.slot)	Temp disabled, because API wack?
-			C_Item.EquipItemByName(v.item)
-		end
+		C_Timer.After(0.5, function()
+			if v.slot == 18 then
+				C_Item.EquipItemByName(v.item)
+			else
+				C_Item.EquipItemByName(v.item, v.slot-1)	-- Temp -1 because API wack
+			end
+		end)
 	end
 end
 
