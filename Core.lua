@@ -271,10 +271,9 @@ function api.DoTheThing(msg)
 	for k, v in pairs(item) do
 		-- Check if the item can and should be equipped (armor -> class)
 		local equippable = false
-		if v.type == app.Type[armorClass] or (v.type == app.Type["General"] and v.slot ~= "INVTYPE_TABARD" and v.slot ~= "INVTYPE_BODY") or v.slot == "INVTYPE_CLOAK" then
+		if v.type == app.Type[armorClass] or (v.type == app.Type["General"] and v.slot ~= "INVTYPE_TABARD" and v.slot ~= "INVTYPE_BODY" and v.slot ~= "INVTYPE_WEAPONOFFHAND" and v.slot ~= "INVTYPE_HOLDABLE" and v.slot ~= "INVTYPE_SHIELD") or v.slot == "INVTYPE_CLOAK" then
 			equippable = true
 		end
-
 		-- Get the weapon type
 		local weapon = false
 		for k2, v2 in pairs(app.Type) do
@@ -282,11 +281,11 @@ function api.DoTheThing(msg)
 				for _, v3 in pairs(app.Weapon[k2]) do
 					-- Check if the item can and should be equipped (weapon -> spec)
 					if v3 == app.SpecID then
+						weapon = true
 						for k, v in pairs(GetItemStats(v.item)) do
 							-- Check if the item has the spec's primary stat
 							if primaryStat == k then
 								equippable = true
-								weapon = true
 							end
 						end
 					end
@@ -322,9 +321,10 @@ function api.DoTheThing(msg)
 			end
 
 			-- Set the iLv to compare to
-			local compareItemLevel = 0
-			if weapon == true then
+			local compareItemLevel = 9999	-- Default should be not applicable
+			if weapon == true and equippable == true then
 				compareItemLevel = 0
+				--app.Dump(v)
 			elseif v.slot == "INVTYPE_FINGER" then
 				compareItemLevel = math.min(itemLevel[11], itemLevel[12])
 			elseif v.slot == "INVTYPE_TRINKET" then
