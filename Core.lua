@@ -501,7 +501,11 @@ function api.DoTheThing(msg)
 	
 					if comboIlv > maxIlv then
 						maxIlv = comboIlv
-						bestCombo = { weapon1, weapon2 }
+						if weapon1["slot"] == 1617 then
+							bestCombo = { weapon1 }
+						else
+							bestCombo = { weapon1, weapon2 }
+						end
 					end
 				end
 			end
