@@ -569,7 +569,7 @@ function api.DoTheThing(msg)
 			if v.slot == 18 then
 				C_Item.EquipItemByName(v.item)
 			else
-				C_Item.EquipItemByName(v.item, v.slot-1)	-- Temp -1 because API wack
+				C_Item.EquipItemByName(v.item, v.slot)
 			end
 		end)
 	end
