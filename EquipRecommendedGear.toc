@@ -1,4 +1,4 @@
-## Interface: 100205
+## Interface: 100207
 ## Title: Equip Recommended Gear
 ## Author: Sluimerstand
 ## IconTexture: Interface\AddOns\EquipRecommendedGear\assets\erc_icon.blp
