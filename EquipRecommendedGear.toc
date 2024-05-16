@@ -1,7 +1,7 @@
 ## Interface: 100207
 ## Title: Equip Recommended Gear
 ## Author: Sluimerstand
-## IconTexture: Interface\AddOns\EquipRecommendedGear\assets\erc_icon.blp
+## IconTexture: Interface\AddOns\EquipRecommendedGear\assets\erg_icon.blp
 ## Version: @project-version@
 ## X-Curse-Project-ID: 962128
 ## X-Wago-ID: bGoMqq60
