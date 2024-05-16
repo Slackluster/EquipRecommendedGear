@@ -7,8 +7,8 @@
 local appName, app = ...	-- Returns the addon name and a unique table
 
 -- Used strings
-app.NameLong = "|R|cffC69B6DEquip Recommended Gear|R"
-app.NameShort = "|R|cffC69B6DERG|R"
+app.NameLong = app.Colour("Equip Recommended Gear")
+app.NameShort = app.Colour("ERG")
 
 -- ItemEquipLoc to key
 app.Slot = {}

@@ -21,6 +21,7 @@ event:SetScript("OnEvent", function(self, event, ...)
 	end
 end)
 event:RegisterEvent("ADDON_LOADED")
+event:RegisterEvent("QUEST_TURNED_IN")
 
 -- Table dump
 function app.Dump(table)
@@ -39,6 +40,11 @@ function app.Dump(table)
 	print(dumpTable(table))
 end
 
+-- App colour
+function app.Colour(string)
+	return "|cffC69B6D"..string.."|R"
+end
+
 -- Print with AddOn prefix
 function app.Print(...)
 	print(app.NameShort..":", ...)
@@ -50,6 +56,13 @@ end
 
 -- Create SavedVariables, default user settings, and session variables
 function app.Initialise()
+	-- Declare SavedVariables
+	if not EquipRecommendedGear_Settings then EquipRecommendedGear_Settings = {} end
+
+	-- Enable default user settings
+	if EquipRecommendedGear_Settings["runAfterQuest"] == nil then EquipRecommendedGear_Settings["runAfterQuest"] = true end
+	if EquipRecommendedGear_Settings["chatMessage"] == nil then EquipRecommendedGear_Settings["chatMessage"] = 1 end
+
 	-- Declare session variables
 	app.DoingStuff = false
 
@@ -107,6 +120,17 @@ function app.CreateAssets()
 	app.Button.Tooltip:SetWidth(string:GetStringWidth()*1.1+20)
 	app.Button.Tooltip:Hide()
 	app.Button.Tooltip:SetPoint("BOTTOMLEFT", app.Button, "TOPRIGHT", 0, 4)
+end
+
+-- When an AddOn is fully loaded
+function event:ADDON_LOADED(addOnName, containsBindings)
+	-- When it's our AddOn
+	if addOnName == appName then
+		-- Run the components
+		app.Initialise()
+		app.CreateAssets()
+		app.Settings()
+	end
 end
 
 ------------------
@@ -581,16 +605,54 @@ function api.DoTheThing(msg)
 	end
 end
 
-------------------
--- LOAD TRIGGER --
-------------------
-
--- When an AddOn is fully loaded
-function event:ADDON_LOADED(addOnName, containsBindings)
-	-- When it's our AddOn
-	if addOnName == appName then
-		-- Run the components
-		app.Initialise()
-		app.CreateAssets()
+-- Do the thing on quest completion
+function event:QUEST_TURNED_IN(questID, xpReward, moneyReward)
+	-- Run if the setting is enabled
+	if EquipRecommendedGear_Settings["runAfterQuest"] == true then
+		C_Timer.After(1, function()
+			-- And respect the chat message setting
+			api.DoTheThing(EquipRecommendedGear_Settings["chatMessage"])
+		end)
 	end
+end
+
+--------------
+-- SETTINGS --
+--------------
+
+-- Settings
+function app.Settings()
+	-- Settings page
+	function app.SettingChanged(_, setting, value)
+		local variable = setting:GetVariable()
+		EquipRecommendedGear_Settings[variable] = value
+	end
+
+	local category, layout = Settings.RegisterVerticalLayoutCategory(app.NameLong)
+	Settings.RegisterAddOnCategory(category)
+	app.Category = category
+
+	layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(GetAddOnMetadata("EquipRecommendedGear", "Version")))
+
+	local cbVariable, cbName, cbTooltip = "runAfterQuest", "Run on quest completion", "Run "..app.NameShort.." when completing a quest, thus equipping any new quest rewards that are an item level upgrade."
+	local cbSetting = Settings.RegisterAddOnSetting(category, cbName, cbVariable, Settings.VarType.Boolean, EquipRecommendedGear_Settings[cbVariable])
+	Settings.SetOnValueChangedCallback(cbVariable, app.SettingChanged)
+
+	local ddVariable, ddName, ddTooltip = "chatMessage", "Send chat message", "These settings only affect the chat message sent after quest completion."
+	local function GetOptions()
+		local container = Settings.CreateControlTextContainer()
+		container:Add(0, "Never send message", "Don't send a message in chat, even if "..app.NameShort.." has equipped an item level upgrade.")
+		container:Add(1, "Only with upgrade", "Only send a message in chat if "..app.NameShort.." has equipped an item level upgrade.")
+		container:Add(2, "Always send message", "Always send a chat message, even if "..app.NameShort.." hasn't equipped an item level upgrade.")
+		return container:GetData()
+	end
+	local ddSetting = Settings.RegisterAddOnSetting(category, ddName, ddVariable, Settings.VarType.Number, EquipRecommendedGear_Settings[ddVariable])
+	Settings.SetOnValueChangedCallback(ddVariable, app.SettingChanged)
+
+	local initializer = CreateSettingsCheckBoxDropDownInitializer(
+		cbSetting, cbName, cbTooltip,
+		ddSetting, GetOptions, ddName, ddTooltip)
+	layout:AddInitializer(initializer)
+	
+	--initializer:AddSearchTags
 end

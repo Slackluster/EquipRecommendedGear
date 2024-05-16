@@ -6,7 +6,7 @@
 ## X-Curse-Project-ID: 962128
 ## X-Wago-ID: bGoMqq60
 
-## SavedVariables: 
+## SavedVariables: EquipRecommendedGear_Settings
 ## SavedVariablesPerCharacter: 
 
 Core.lua
