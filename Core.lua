@@ -191,7 +191,7 @@ function api.DoTheThing(msg)
 					-- If the item is equippable
 					if C_Item.IsEquippableItem(itemLink) then
 						-- Get item info
-						local _, _, _, _, itemMinLevel, _, _, _, itemEquipLoc, _, _, classID, subclassID = GetItemInfo(itemLink)
+						local _, _, _, _, itemMinLevel, _, _, _, itemEquipLoc, _, _, classID, subclassID = C_Item.GetItemInfo(itemLink)
 						if itemEquipLoc == nil or classID == nil or subclassID == nil then
 							app.Print("Something went wrong. Please try again in a few seconds.")
 							do return end
@@ -213,7 +213,7 @@ function api.DoTheThing(msg)
 		if GetInventoryItemLink("player", slot) ~= nil then
 			-- Get item info
 			local itemLink = GetInventoryItemLink("player", slot)
-			local _, _, _, _, _, _, _, _, itemEquipLoc, _, _, classID, subclassID = GetItemInfo(itemLink)
+			local _, _, _, _, _, _, _, _, itemEquipLoc, _, _, classID, subclassID = C_Item.GetItemInfo(itemLink)
 			local itemlevel = GetDetailedItemLevelInfo(itemLink)
 
 			-- Check for heirlooms
