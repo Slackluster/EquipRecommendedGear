@@ -201,6 +201,12 @@ function api.DoTheThing(msg)
 						if C_Item.IsBound(ItemLocation:CreateFromBagAndSlot(k, i)) == true and app.Level >= itemMinLevel then
 							local itemlevel = GetDetailedItemLevelInfo(itemLink)
 
+							-- Add 1 item level to heirlooms, so when it's a tie it is preferred over the alternative
+							local itemID = C_Item.GetItemInfoInstant(itemLink)
+							if C_Heirloom.IsItemHeirloom(itemID) == true then
+								itemlevel = itemlevel + 1
+							end
+
 							item[#item+1] = {item = itemLink, slot = itemEquipLoc, type = classID.."."..subclassID, ilv = itemlevel }
 						end
 					end
