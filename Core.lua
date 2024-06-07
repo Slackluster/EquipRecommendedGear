@@ -632,7 +632,7 @@ function app.Settings()
 	Settings.RegisterAddOnCategory(category)
 	app.Category = category
 
-	layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(GetAddOnMetadata("EquipRecommendedGear", "Version")))
+	layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(C_AddOns.GetAddOnMetadata("EquipRecommendedGear", "Version")))
 
 	local cbVariable, cbName, cbTooltip = "runAfterQuest", "Run on quest completion", "Run "..app.NameShort.." when completing a quest, thus equipping any new quest rewards that are an item level upgrade."
 	local cbSetting = Settings.RegisterAddOnSetting(category, cbName, cbVariable, Settings.VarType.Boolean, EquipRecommendedGear_Settings[cbVariable])
