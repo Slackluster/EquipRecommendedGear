@@ -65,7 +65,7 @@ app.Armor = {}
 app.Armor["Cloth"] = { 5, 8, 9 }	-- Priest, Mage, Warlock
 app.Armor["Leather"] = { 4, 10, 11, 12 }	-- Rogue, Monk, Druid, Demon Hunter
 app.Armor["Mail"] = { 3, 7, 13 }	-- Hunter, Shaman, Evoker
-app.Armor["Plate"] = { 1, 2, 6}	-- Warrior, Paladin, Death Knight
+app.Armor["Plate"] = { 1, 2, 6 }	-- Warrior, Paladin, Death Knight
 
 -- Weapon -> Spec
 app.Weapon = {}

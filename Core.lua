@@ -655,4 +655,5 @@ function app.Settings()
 	layout:AddInitializer(initializer)
 	
 	--initializer:AddSearchTags
+	--defaults?
 end
