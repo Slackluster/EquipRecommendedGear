@@ -9,5 +9,6 @@
 ## SavedVariables: EquipRecommendedGear_Settings
 ## SavedVariablesPerCharacter: 
 
+libs\ChatThrottleLib\ChatThrottleLib.xml
 Core.lua
 Database.lua
