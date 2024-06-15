@@ -21,6 +21,7 @@ event:SetScript("OnEvent", function(self, event, ...)
 	end
 end)
 event:RegisterEvent("ADDON_LOADED")
+event:RegisterEvent("CHAT_MSG_ADDON")
 event:RegisterEvent("QUEST_TURNED_IN")
 
 -- Table dump
@@ -69,6 +70,9 @@ function app.Initialise()
 	-- Get player info
 	app.Sex = C_PlayerInfo.GetSex(PlayerLocation:CreateFromUnit("player"))
 	app.ClassID = PlayerUtil.GetClassID()
+
+	-- Register our AddOn communications channel
+	C_ChatInfo.RegisterAddonMessagePrefix("EquipRecGear")
 end
 
 function app.CreateAssets()
@@ -656,4 +660,66 @@ function app.Settings()
 	
 	--initializer:AddSearchTags
 	--defaults?
+end
+
+-----------------
+-- ADDON COMMS --
+-----------------
+
+-- Send information to other PSL users
+function app.SendAddonMessage(message)
+	-- Check which channel to use
+	if IsInRaid(2) or IsInGroup(2) then
+		-- Share with instance group first
+		ChatThrottleLib:SendAddonMessage("NORMAL", "EquipRecGear", message, "INSTANCE_CHAT")
+	elseif IsInRaid() then
+		-- If not in an instance group, share it with the raid
+		ChatThrottleLib:SendAddonMessage("NORMAL", "EquipRecGear", message, "RAID")
+	elseif IsInGroup() then
+		-- If not in a raid group, share it with the party
+		ChatThrottleLib:SendAddonMessage("NORMAL", "EquipRecGear", message, "PARTY")
+	end
+end
+
+-- When joining a group
+function event:GROUP_JOINED(category, partyGUID)
+	-- Share our AddOn version with other users
+	local message = "version:"..C_AddOns.GetAddOnMetadata("EquipRecommendedGear", "Version")
+	app.SendAddonMessage(message)
+end
+
+-- When we receive information over the addon comms
+function event:CHAT_MSG_ADDON(prefix, text, channel, sender, target, zoneChannelID, localID, name, instanceID)
+	-- If it's our message
+	if prefix == "EquipRecGear" then
+		-- Version
+		local version = text:match("version:(.+)")
+		if version then
+			if version ~= "@project-version@" then
+				-- Extract the interface and version from this
+				local expansion, major, minor, iteration = version:match("v(%d+)%.(%d+)%.(%d+)%-(%d%d%d)")
+				expansion = string.format("%02d", expansion)
+				major = string.format("%02d", major)
+				minor = string.format("%02d", minor)
+				local otherGameVersion = tonumber(expansion..major..minor)
+				local otherAddonVersion = tonumber(iteration)
+
+				-- Do the same for our local version
+				local localVersion = C_AddOns.GetAddOnMetadata("EquipRecommendedGear", "Version")
+				if localVersion ~= "@project-version@" then
+					expansion, major, minor, iteration = localVersion:match("v(%d+)%.(%d+)%.(%d+)%-(%d%d%d)")
+					expansion = string.format("%02d", expansion)
+					major = string.format("%02d", major)
+					minor = string.format("%02d", minor)
+					local localGameVersion = tonumber(expansion..major..minor)
+					local localAddonVersion = tonumber(iteration)
+
+					-- Now compare our versions
+					if otherGameVersion > localGameVersion or (otherGameVersion == localGameVersion and otherAddonVersion > localAddonVersion) then
+						app.Print("There is a newer version of "..app.NameLong.." available: "..version)
+					end
+				end
+			end
+		end
+	end
 end
