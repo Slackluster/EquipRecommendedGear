@@ -77,7 +77,7 @@ end
 
 function app.CreateAssets()
 	-- The button
-	app.Button = CreateFrame("Button", "rcButton", PaperDollSidebarTabs, "SecureActionButtonTemplate")
+	app.Button = CreateFrame("Button", "rcButton", PaperDollSidebarTabs)
 	app.Button:SetWidth(30)
 	app.Button:SetHeight(30)
 	app.Button:SetNormalTexture("Interface\\AddOns\\EquipRecommendedGear\\assets\\erg_icon.blp")
