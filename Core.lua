@@ -103,7 +103,6 @@ function app.CreateAssets()
 	-- Tooltip
 	app.Button.Tooltip = CreateFrame("Frame", nil, UIParent, "BackdropTemplate")
 	app.Button.Tooltip:SetFrameStrata("TOOLTIP")
-	app.Button.Tooltip:SetPoint("CENTER")
 	app.Button.Tooltip:SetBackdrop({
 		bgFile = "Interface/Tooltips/UI-Tooltip-Background",
 		edgeFile = "Interface/Tooltips/UI-Tooltip-Border",
