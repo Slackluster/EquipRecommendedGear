@@ -1,5 +1,5 @@
 ## Interface: 100207
-## Title: Equip Recommended Gear
+## Title: |cffC69B6DEquip Recommended Gear|r
 ## Author: Sluimerstand
 ## IconTexture: Interface\AddOns\EquipRecommendedGear\assets\erg_icon.blp
 ## Version: @project-version@
@@ -9,5 +9,6 @@
 ## SavedVariables: EquipRecommendedGear_Settings
 ## SavedVariablesPerCharacter: 
 
+libs\ChatThrottleLib\ChatThrottleLib.xml
 Core.lua
 Database.lua
