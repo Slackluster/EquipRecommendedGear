@@ -652,7 +652,7 @@ function app.Settings()
 	local ddSetting = Settings.RegisterAddOnSetting(category, ddName, ddVariable, Settings.VarType.Number, EquipRecommendedGear_Settings[ddVariable])
 	Settings.SetOnValueChangedCallback(ddVariable, app.SettingChanged)
 
-	local initializer = CreateSettingsCheckBoxDropDownInitializer(
+	local initializer = CreateSettingsCheckboxDropdownInitializer(
 		cbSetting, cbName, cbTooltip,
 		ddSetting, GetOptions, ddName, ddTooltip)
 	layout:AddInitializer(initializer)
