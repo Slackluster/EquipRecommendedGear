@@ -67,6 +67,8 @@ function app.Initialise()
 
 	-- Declare session variables
 	app.DoingStuff = false
+	app.Flag = {}
+	app.Flag["versionCheck"] = 0
 
 	-- Get player info
 	app.Sex = C_PlayerInfo.GetSex(PlayerLocation:CreateFromUnit("player"))
@@ -716,7 +718,11 @@ function event:CHAT_MSG_ADDON(prefix, text, channel, sender, target, zoneChannel
 
 					-- Now compare our versions
 					if otherGameVersion > localGameVersion or (otherGameVersion == localGameVersion and otherAddonVersion > localAddonVersion) then
-						app.Print("There is a newer version of "..app.NameLong.." available: "..version)
+						-- But only send the message once every 10 minutes
+						if GetServerTime() - app.Flag["versionCheck"] > 600 then
+							app.Print("There is a newer version of "..app.NameLong.." available: "..version)
+							app.Flag["versionCheck"] = GetServerTime()
+						end
 					end
 				end
 			end
