@@ -22,6 +22,7 @@ event:SetScript("OnEvent", function(self, event, ...)
 end)
 event:RegisterEvent("ADDON_LOADED")
 event:RegisterEvent("CHAT_MSG_ADDON")
+event:RegisterEvent("GROUP_ROSTER_UPDATE")
 event:RegisterEvent("QUEST_TURNED_IN")
 
 -- Table dump
@@ -681,7 +682,7 @@ function app.SendAddonMessage(message)
 end
 
 -- When joining a group
-function event:GROUP_JOINED(category, partyGUID)
+function event:GROUP_ROSTER_UPDATE(category, partyGUID)
 	-- Share our AddOn version with other users
 	local message = "version:"..C_AddOns.GetAddOnMetadata("EquipRecommendedGear", "Version")
 	app.SendAddonMessage(message)
