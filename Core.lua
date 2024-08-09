@@ -196,7 +196,7 @@ function api.DoTheThing(msg)
 						ilv = 9999
 					end
 				else
-					app.Print("Something went wrong. Please try again in a few seconds.")
+					app.Print("Could not read equipped heirloom gear. Please try again in a few seconds.")
 					do return end
 				end	
 			end
@@ -223,7 +223,7 @@ function api.DoTheThing(msg)
 						-- Get item info
 						local _, _, _, _, itemMinLevel, _, _, _, itemEquipLoc, _, _, classID, subclassID = C_Item.GetItemInfo(itemLink)
 						if itemEquipLoc == nil or classID == nil or subclassID == nil then
-							app.Print("Something went wrong. Please try again in a few seconds.")
+							app.Print("Could not read gear in inventory. Please try again in a few seconds.")
 							do return end
 						end
 
@@ -264,14 +264,14 @@ function api.DoTheThing(msg)
 						itemlevel = 9999
 					end
 				else
-					app.Print("Something went wrong. Please try again in a few seconds.")
+					app.Print("Could not read equipped heirloom weapon(s). Please try again in a few seconds.")
 					do return end
 				end	
 			end
 
 			-- Check if we're not too quick
 			if itemEquipLoc == nil or classID == nil or subclassID == nil then
-				app.Print("Something went wrong. Please try again in a few seconds.")
+				app.Print("Could not read equipped weapon(s). Please try again in a few seconds.")
 				do return end
 			end
 
@@ -596,7 +596,7 @@ function api.DoTheThing(msg)
 			app.Print("Gear recommended for |c"..classColor..specName.." "..className.."|R equipped.")
 		end
 	else
-		app.Print("Something went wrong. Please try again in a few seconds.")
+		app.Print("Could not equip recommended gear. Please try again in a few seconds.")
 	end
 
 	-- Equip the upgrades
