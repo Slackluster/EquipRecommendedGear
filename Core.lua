@@ -674,23 +674,6 @@ function api.DoTheThing(msg)
 		msg = 2
 	end
 
-	local next = next
-	-- If there's no upgrades
-	if next(upgrade) == nil and specName ~= nil then
-		-- And the message should be sent
-		if msg == 2 then
-			app.Print("You are currently equipped with the recommended gear for |c"..classColor..specName.." "..className.."|R.")
-		end
-	-- If there are upgrades
-	elseif specName ~= nil then
-		-- And the message should be sent
-		if msg >= 1 then
-			app.Print("Gear recommended for |c"..classColor..specName.." "..className.."|R equipped.")
-		end
-	else
-		app.Print("Could not equip recommended gear. Please try again in a few seconds.")
-	end
-
 	-- Equip the upgrades
 	for k, v in pairs(upgrade) do
 		-- Delay off-hand equipping
@@ -705,6 +688,23 @@ function api.DoTheThing(msg)
 
 	-- We're now done doing stuff
 	C_Timer.After(2, function()
+		local next = next
+		-- If there's no upgrades
+		if next(upgrade) == nil and specName ~= nil then
+			-- And the message should be sent
+			if msg == 2 then
+				app.Print("You are currently equipped with the recommended gear for |c"..classColor..specName.." "..className.."|R.")
+			end
+		-- If there are upgrades
+		elseif specName ~= nil then
+			-- And the message should be sent
+			if msg >= 1 then
+				app.Print("Gear recommended for |c"..classColor..specName.." "..className.."|R equipped.")
+			end
+		else
+			app.Print("Could not equip recommended gear. Please try again in a few seconds.")
+		end
+
 		app.DoingStuff = false
 	end)
 end
