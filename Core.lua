@@ -652,13 +652,26 @@ function api.DoTheThing(msg)
 			end
 		-- If dual wielding with 1 upgrade
 		elseif dualCount == 1 then
-			-- Equip to main hand if not already equipped there
-			if v.item ~= item16 then
+			if #bestWeapons == 2 then
+				if bestWeapons[1].slot == 16 or bestWeapons[2].slot == 17 then
+					if k == 1 and v.item ~= item16 then
+						v.slot = 16
+						upgrade[#upgrade+1] = v
+					elseif k == 2 and v.item ~= item17 then
+						v.slot = 17
+						upgrade[#upgrade+1] = v
+					end
+				elseif bestWeapons[1].slot == 17 or bestWeapons[2].slot == 16 then
+					if k == 2 and v.item ~= item16 then
+						v.slot = 16
+						upgrade[#upgrade+1] = v
+					elseif k == 1 and v.item ~= item17 then
+						v.slot = 17
+						upgrade[#upgrade+1] = v
+					end
+				end
+			elseif v.item ~= item16 then
 				v.slot = 16
-				upgrade[#upgrade+1] = v
-			-- Equip to off hand if not already equipped there
-			elseif v.item ~= item17 then
-				v.slot = 17
 				upgrade[#upgrade+1] = v
 			end
 		-- If dual wielding with 2 upgrades
