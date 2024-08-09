@@ -632,8 +632,8 @@ function api.DoTheThing(msg)
 	for k, v in pairs(bestWeapons) do
 		-- If dual wielding is not applicable
 		if dualCount == 0 then
-			-- If the item is not equipped and character cannot be dual wield
-			if not (v.item == item16 and v.item == item17) then
+			-- If the item is not equipped
+			if (v.slot == 16 and v.item ~= item16) or (v.slot == 17 and v.item ~= item17) then
 				upgrade[#upgrade+1] = v
 			end
 		-- If dual wielding with 1 upgrade
