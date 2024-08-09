@@ -89,16 +89,7 @@ function app.CreateAssets()
 	app.Button:SetFrameStrata("HIGH")
 	app.Button:RegisterForClicks("AnyDown", "AnyUp")
 	app.Button:SetScript("OnClick", function()
-		-- Make sure it doesn't run twice because it checks for both down and up
-		if app.DoingStuff == false then
-			app.DoingStuff = true
-			
-			-- Run the code
-			api.DoTheThing()
-			C_Timer.After(.5, function() api.DoTheThing(0) end)	-- Run it twice because sometimes weird stuff happens >:
-			
-			C_Timer.After(1, function() app.DoingStuff = false end)
-		end
+		api.DoTheThing()
 	end)
 	app.Button:SetScript("OnEnter", function() app.Button.Tooltip:Show() end)
 	app.Button:SetScript("OnLeave", function() app.Button.Tooltip:Hide() end)
@@ -150,8 +141,17 @@ function api.DoTheThing(msg)
 	-- Don't do stuff if we're in combat
 	if UnitAffectingCombat("player") == true then
 		app.Print("Cannot recommend gear while in combat.")
+		app.DoingStuff = false
 		do return end
 	end
+	
+	-- Don't do stuff if we're still running this function
+	if app.DoingStuff == true then
+		do return end
+	end
+
+	-- We are now doing stuff
+	app.DoingStuff = true
 
 	-- Check this stuff now, because this is when it matters and it could've changed
 	app.SpecID = PlayerUtil.GetCurrentSpecID()
@@ -197,6 +197,7 @@ function api.DoTheThing(msg)
 					end
 				else
 					app.Print("Could not read equipped heirloom gear. Please try again in a few seconds.")
+					app.DoingStuff = false
 					do return end
 				end	
 			end
@@ -224,6 +225,7 @@ function api.DoTheThing(msg)
 						local _, _, _, _, itemMinLevel, _, _, _, itemEquipLoc, _, _, classID, subclassID = C_Item.GetItemInfo(itemLink)
 						if itemEquipLoc == nil or classID == nil or subclassID == nil then
 							app.Print("Could not read gear in inventory. Please try again in a few seconds.")
+							app.DoingStuff = false
 							do return end
 						end
 
@@ -265,6 +267,7 @@ function api.DoTheThing(msg)
 					end
 				else
 					app.Print("Could not read equipped heirloom weapon(s). Please try again in a few seconds.")
+					app.DoingStuff = false
 					do return end
 				end	
 			end
@@ -272,6 +275,7 @@ function api.DoTheThing(msg)
 			-- Check if we're not too quick
 			if itemEquipLoc == nil or classID == nil or subclassID == nil then
 				app.Print("Could not read equipped weapon(s). Please try again in a few seconds.")
+				app.DoingStuff = false
 				do return end
 			end
 
@@ -360,7 +364,6 @@ function api.DoTheThing(msg)
 			local compareItemLevel = 9999	-- Default should be not applicable
 			if weapon == true and equippable == true then
 				compareItemLevel = 0
-				--app.Dump(v)
 			elseif v.slot == "INVTYPE_FINGER" then
 				compareItemLevel = math.min(itemLevel[11], itemLevel[12])
 			elseif v.slot == "INVTYPE_TRINKET" then
@@ -601,14 +604,17 @@ function api.DoTheThing(msg)
 
 	-- Equip the upgrades
 	for k, v in pairs(upgrade) do
-		C_Timer.After(0.5, function()
-			if v.slot == 18 then
-				C_Item.EquipItemByName(v.item)
-			else
-				C_Item.EquipItemByName(v.item, v.slot)
-			end
-		end)
+		if v.slot == 18 then
+			C_Item.EquipItemByName(v.item)
+		else
+			C_Item.EquipItemByName(v.item, v.slot)
+		end
 	end
+
+	-- We're now done doing stuff
+	C_Timer.After(2, function()
+		app.DoingStuff = false
+	end)
 end
 
 -- Do the thing on quest completion
