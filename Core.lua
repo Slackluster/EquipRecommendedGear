@@ -279,7 +279,7 @@ function api.DoTheThing(msg)
 					end
 				else
 					C_Timer.After(2, function()
-						app.Print("Could not read equipped heirloom weapon(s). Please try again in a few seconds.")
+						app.Print("Could not read equipped heirloom weapon(s). Please try again in a few seconds. If this error keeps occurring, please ensure you do not have an outdated Hellscream weapon.")
 						app.DoingStuff = false
 					end)
 					do return end
