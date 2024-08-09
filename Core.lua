@@ -233,10 +233,16 @@ function api.DoTheThing(msg)
 						if C_Item.IsBound(ItemLocation:CreateFromBagAndSlot(k, i)) == true and app.Level >= itemMinLevel then
 							local itemlevel = GetDetailedItemLevelInfo(itemLink)
 
-							-- Add 1 item level to heirlooms, so when it's a tie it is preferred over the alternative
+							-- Check for heirlooms
 							local itemID = C_Item.GetItemInfoInstant(itemLink)
 							if C_Heirloom.IsItemHeirloom(itemID) == true then
-								itemlevel = itemlevel + 1
+								local _, _, _, _, _, _, _, _, _, maxLevel = C_Heirloom.GetHeirloomInfo(itemID)
+								if maxLevel ~= nil then
+									-- If heirloom isn't maxed, assume player wants to use it
+									if maxLevel >= app.Level then
+										itemlevel = 9999
+									end
+								end
 							end
 
 							item[#item+1] = {item = itemLink, slot = itemEquipLoc, type = classID.."."..subclassID, ilv = itemlevel }
@@ -441,8 +447,8 @@ function api.DoTheThing(msg)
 			local entry = gearTable[i]
 			local slot = entry.slot
 	
+			-- Handle slot 18 (keep the best two)
 			if slot == 18 then
-				-- Handle slot 18 (keep the best two)
 				seenSlots[slot] = seenSlots[slot] or {}
 	
 				if #seenSlots[slot] < 2 then
@@ -465,6 +471,32 @@ function api.DoTheThing(msg)
 						table.remove(gearTable, i)
 					end
 				end
+			
+			-- Handle slot 1617 for Fury Warriors (keep the best two 2H weapons)
+			elseif app.SpecID == 72 and slot == 1617 then
+				seenSlots[slot] = seenSlots[slot] or {}
+	
+				if #seenSlots[slot] < 2 then
+					-- If fewer than two entries, just add the current entry
+					table.insert(seenSlots[slot], entry)
+				else
+					-- Find the two entries with the highest ilv
+					local minIlvIndex = 1
+					for j = 2, #seenSlots[slot] do
+						if seenSlots[slot][j].ilv < seenSlots[slot][minIlvIndex].ilv then
+							minIlvIndex = j
+						end
+					end
+	
+					-- Replace the entry with the lowest ilv if the current entry has a higher ilv
+					if entry.ilv > seenSlots[slot][minIlvIndex].ilv then
+						seenSlots[slot][minIlvIndex] = entry
+					else
+						-- Remove the current entry if its ilv is not higher
+						table.remove(gearTable, i)
+					end
+				end
+	
 			elseif not seenSlots[slot] or entry.ilv > seenSlots[slot].ilv then
 				-- For other slots, keep only the entry with the highest ilv
 				seenSlots[slot] = entry
@@ -516,34 +548,50 @@ function api.DoTheThing(msg)
 	
 		local maxIlv = 0
 		local bestCombo = {}
-	
-		for i, weapon1 in ipairs(weaponUpgrade) do
-			for j, weapon2 in ipairs(weaponUpgrade) do
-				if i ~= j then
-					local comboIlv = weapon1["ilv"]
-	
-					if weapon1["slot"] == 1617 then
-						-- If it's a two-handed weapon, count its ilv twice
-						comboIlv = comboIlv * 2
-					else
-						-- Check valid combinations for one-handed, main-hand, and off-hand weapons
-						if (weapon1["slot"] == 16 and weapon2["slot"] == 17) or
-						   (weapon1["slot"] == 17 and weapon2["slot"] == 16) or
-						   (weapon1["slot"] == 16 and weapon2["slot"] == 18) or
-						   (weapon1["slot"] == 18 and weapon2["slot"] == 16) or
-						   (weapon1["slot"] == 18 and weapon2["slot"] == 17) or
-						   (weapon1["slot"] == 17 and weapon2["slot"] == 18) or
-						   (weapon1["slot"] == 18 and weapon2["slot"] == 18) then
-							comboIlv = comboIlv + weapon2["ilv"]
+
+		-- Fury Warriors use two 2Handers
+		if app.SpecID == 72 then
+			for i, weapon1 in ipairs(weaponUpgrade) do
+				for j, weapon2 in ipairs(weaponUpgrade) do
+					if i ~= j and weapon1["slot"] == 1617 and weapon2["slot"] == 1617 then
+						local comboIlv = weapon1["ilv"] + weapon2["ilv"]
+
+						if comboIlv > maxIlv then
+							maxIlv = comboIlv
+							bestCombo = { weapon1, weapon2 }
 						end
 					end
-	
-					if comboIlv > maxIlv then
-						maxIlv = comboIlv
+				end
+			end
+		else
+			for i, weapon1 in ipairs(weaponUpgrade) do
+				for j, weapon2 in ipairs(weaponUpgrade) do
+					if i ~= j then
+						local comboIlv = weapon1["ilv"]
+		
 						if weapon1["slot"] == 1617 then
-							bestCombo = { weapon1 }
+							-- If it's a two-handed weapon, count its ilv twice
+							comboIlv = comboIlv * 2
 						else
-							bestCombo = { weapon1, weapon2 }
+							-- Check valid combinations for one-handed, main-hand, and off-hand weapons
+							if (weapon1["slot"] == 16 and weapon2["slot"] == 17) or
+							(weapon1["slot"] == 17 and weapon2["slot"] == 16) or
+							(weapon1["slot"] == 16 and weapon2["slot"] == 18) or
+							(weapon1["slot"] == 18 and weapon2["slot"] == 16) or
+							(weapon1["slot"] == 18 and weapon2["slot"] == 17) or
+							(weapon1["slot"] == 17 and weapon2["slot"] == 18) or
+							(weapon1["slot"] == 18 and weapon2["slot"] == 18) then
+								comboIlv = comboIlv + weapon2["ilv"]
+							end
+						end
+		
+						if comboIlv > maxIlv then
+							maxIlv = comboIlv
+							if weapon1["slot"] == 1617 then
+								bestCombo = { weapon1 }
+							else
+								bestCombo = { weapon1, weapon2 }
+							end
 						end
 					end
 				end
@@ -555,20 +603,61 @@ function api.DoTheThing(msg)
 
 	local bestWeapons = findBestWeaponCombo(weaponUpgrade)
 
-	-- Put these back in the upgrade table, if they're not equipped
+	-- Sort the best weapons by item level, which matters for dual wielding
+	table.sort(bestWeapons, function(a, b)
+		return a.ilv > b.ilv
+	end)
+
+	-- Check the currently equipped weapons
+	local item16 = GetInventoryItemLink("player", 16) or "None"
+	local item17 = GetInventoryItemLink("player", 17) or "None"
+	local dualCount = 0
+
 	for k, v in pairs(bestWeapons) do
-		if v.slot == 1617 then v.slot = 16 end
-		local item16 = "None"
-		local item17 = "None"
-		if GetInventoryItemLink("player", 16) ~= nil then
-			item16 = GetInventoryItemLink("player", 16)
-		end
-		if GetInventoryItemLink("player", 17) ~= nil then
-			item17 = GetInventoryItemLink("player", 17)
+		-- Set 2H weapons to equip in the main hand slot (except for Fury Warriors)
+		if v.slot == 1617 and app.SpecID ~= 72 then
+			v.slot = 16
+		-- Treat 2H weapons for Fury Warriors as though they are One-Handed weapons which can be equipped in any slot
+		elseif v.slot == 1617 and app.SpecID == 72 then
+			v.slot = 18
 		end
 
-		if not (v.item == item16 or v.item == item17) then
-			upgrade[#upgrade+1] = v
+		-- If we're dealing with weapons that can be equipped in either slot
+		if v.slot == 18 then
+			dualCount = dualCount + 1
+		end
+	end
+
+	-- Put the weapons back in the upgrade table if not equipped (in the right slot)
+	for k, v in pairs(bestWeapons) do
+		-- If dual wielding is not applicable
+		if dualCount == 0 then
+			-- If the item is not equipped and character cannot be dual wield
+			if not (v.item == item16 and v.item == item17) then
+				upgrade[#upgrade+1] = v
+			end
+		-- If dual wielding with 1 upgrade
+		elseif dualCount == 1 then
+			-- Equip to main hand if not already equipped there
+			if v.item ~= item16 then
+				v.slot = 16
+				upgrade[#upgrade+1] = v
+			-- Equip to off hand if not already equipped there
+			elseif v.item ~= item17 then
+				v.slot = 17
+				upgrade[#upgrade+1] = v
+			end
+		-- If dual wielding with 2 upgrades
+		elseif dualCount == 2 then
+			-- First item, highest iLv, to main hand
+			if k == 1 and v.item ~= item16 then
+				v.slot = 16
+				upgrade[#upgrade+1] = v
+			-- Second item, second-highest iLv, to off hand
+			elseif k == 2 and v.item ~= item17 then
+				v.slot = 17
+				upgrade[#upgrade+1] = v
+			end
 		end
 	end
 
@@ -604,7 +693,10 @@ function api.DoTheThing(msg)
 
 	-- Equip the upgrades
 	for k, v in pairs(upgrade) do
-		if v.slot == 18 then
+		-- Delay off-hand equipping
+		if v.slot == 17 then
+			C_Timer.After(1, function() C_Item.EquipItemByName(v.item, v.slot) end)
+		elseif v.slot == 18 then
 			C_Item.EquipItemByName(v.item)
 		else
 			C_Item.EquipItemByName(v.item, v.slot)
