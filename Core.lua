@@ -615,7 +615,11 @@ function api.DoTheThing(msg)
 
 	-- Sort the best weapons by item level, which matters for dual wielding
 	table.sort(bestWeapons, function(a, b)
-		return a.ilv > b.ilv
+		if a.ilv == b.ilv then
+			return a.item > b.item  -- Sort by item if ilv is the same
+		else
+			return a.ilv > b.ilv    -- Sort by ilv first
+		end
 	end)
 
 	-- Check the currently equipped weapons
