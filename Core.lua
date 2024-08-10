@@ -145,7 +145,7 @@ function api.DoTheThing(msg)
 
 	-- Don't do stuff if we're in combat
 	if UnitAffectingCombat("player") == true then
-		C_Timer.After(2, function()
+		C_Timer.After(1, function()
 			app.Print("Cannot recommend gear while in combat.")
 			app.DoingStuff = false
 		end)
@@ -213,7 +213,7 @@ function api.DoTheThing(msg)
 						ilv = 9999
 					end
 				else
-					C_Timer.After(2, function()
+					C_Timer.After(1, function()
 						app.Print("Could not read equipped heirloom gear. Please try again in a few seconds.")
 						app.DoingStuff = false
 					end)
@@ -243,7 +243,7 @@ function api.DoTheThing(msg)
 						-- Get item info
 						local _, _, _, _, itemMinLevel, _, _, _, itemEquipLoc, _, _, classID, subclassID = C_Item.GetItemInfo(itemLink)
 						if itemEquipLoc == nil or classID == nil or subclassID == nil then
-							C_Timer.After(2, function()
+							C_Timer.After(1, function()
 								app.Print("Could not read gear in inventory. Please try again in a few seconds.")
 								app.DoingStuff = false
 							end)
@@ -293,7 +293,7 @@ function api.DoTheThing(msg)
 						itemlevel = 9999
 					end
 				else
-					C_Timer.After(2, function()
+					C_Timer.After(1, function()
 						app.Print("Could not read equipped heirloom weapon(s). Please try again in a few seconds. If this error keeps occurring, please ensure you do not have an outdated Hellscream weapon.")
 						app.DoingStuff = false
 					end)
@@ -303,7 +303,7 @@ function api.DoTheThing(msg)
 
 			-- Check if we're not too quick
 			if itemEquipLoc == nil or classID == nil or subclassID == nil then
-				C_Timer.After(2, function()
+				C_Timer.After(1, function()
 					app.Print("Could not read equipped weapon(s). Please try again in a few seconds.")
 					app.DoingStuff = false
 				end)
