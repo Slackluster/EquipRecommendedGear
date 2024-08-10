@@ -266,7 +266,7 @@ function api.DoTheThing(msg)
 								end
 							end
 
-							item[#item+1] = {item = itemLink, slot = itemEquipLoc, type = classID.."."..subclassID, ilv = itemlevel }
+							item[#item+1] = {item = itemLink, slot = itemEquipLoc, type = classID.."."..subclassID, ilv = itemlevel, bag = k, bagslot = i }
 						end
 					end
 				end
@@ -405,7 +405,7 @@ function api.DoTheThing(msg)
 
 			-- Check if the item level is higher
 			if v.ilv > compareItemLevel then
-				upgrade[#upgrade+1] = { item = v.item, slot = app.Slot[v.slot], ilv = v.ilv }
+				upgrade[#upgrade+1] = { item = v.item, slot = app.Slot[v.slot], ilv = v.ilv, bag = v.bag, bagslot = v.bagslot }
 			end
 		end
 	end
@@ -713,18 +713,13 @@ function api.DoTheThing(msg)
 
 	-- Equip the upgrades
 	for k, v in pairs(upgrade) do
-		-- Delay off-hand equipping
-		if v.slot == 17 then
-			C_Timer.After(1, function() C_Item.EquipItemByName(v.item, v.slot) end)
-		elseif v.slot == 18 then
-			C_Item.EquipItemByName(v.item)
-		else
-			C_Item.EquipItemByName(v.item, v.slot)
-		end
+		ClearCursor()
+		C_Container.PickupContainerItem(v.bag, v.bagslot)
+		EquipCursorItem(v.slot)
 	end
 
-	-- We're now done doing stuff
-	C_Timer.After(2, function()
+	-- We're now done doing stuff, delayed so it doesn't run twice while still busy
+	C_Timer.After(1, function()
 		local next = next
 		-- If there's no upgrades
 		if next(upgrade) == nil and specName ~= nil then
