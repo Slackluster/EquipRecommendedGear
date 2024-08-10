@@ -204,7 +204,7 @@ function api.DoTheThing(msg)
 		if v ~= 0 then
 			local itemID = GetItemInfoInstant(v)
 			local _, _, _, _, _, _, _, _, _, maxLevel = C_Heirloom.GetHeirloomInfo(itemID)
-			local ilv = C_Item.GetDetailedItemLevelInfo(v) or 0
+			local ilv = C_Item.GetCurrentItemLevel(ItemLocation:CreateFromEquipmentSlot(k)) or 0
 			if C_Heirloom.IsItemHeirloom(itemID) == true then
 				-- Check if we're not too quick
 				if maxLevel ~= nil then
@@ -252,7 +252,7 @@ function api.DoTheThing(msg)
 
 						-- If the item is soulbound and the player's level is high enough to equip it
 						if C_Item.IsBound(ItemLocation:CreateFromBagAndSlot(k, i)) == true and app.Level >= itemMinLevel then
-							local itemlevel = C_Item.GetDetailedItemLevelInfo(itemLink)
+							local itemlevel = C_Item.GetCurrentItemLevel(ItemLocation:CreateFromBagAndSlot(k, i))
 
 							-- Check for heirlooms
 							local itemID = C_Item.GetItemInfoInstant(itemLink)
@@ -279,7 +279,7 @@ function api.DoTheThing(msg)
 			-- Get item info
 			local itemLink = GetInventoryItemLink("player", slot)
 			local _, _, _, _, _, _, _, _, itemEquipLoc, _, _, classID, subclassID = C_Item.GetItemInfo(itemLink)
-			local itemlevel = C_Item.GetDetailedItemLevelInfo(itemLink)
+			local itemlevel = C_Item.GetCurrentItemLevel(ItemLocation:CreateFromEquipmentSlot(slot))
 
 			-- Check for heirlooms
 			local itemID = GetItemInfoInstant(itemLink)
@@ -373,7 +373,7 @@ function api.DoTheThing(msg)
 					local equippedItemID = GetInventoryItemID("player", slot)
 					-- If the same one is also equipped
 					if equippedItemID and equippedItemID == itemID then
-						if v.ilv <= C_Item.GetDetailedItemLevelInfo(v.item) then
+						if v.ilv <= C_Item.GetCurrentItemLevel(ItemLocation:CreateFromEquipmentSlot(slot)) then
 							v.ilv = -1	-- Dirty way to make sure the item isn't marked as an upgrade
 						end
 					end
