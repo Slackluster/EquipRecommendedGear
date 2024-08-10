@@ -159,6 +159,21 @@ function api.DoTheThing(msg)
 	app.SpecID = PlayerUtil.GetCurrentSpecID()
 	app.Level = UnitLevel("player")
 
+	-- Names for print usage
+	local _, specName = GetSpecializationInfoByID(app.SpecID, app.Sex)
+	local className, classFile = GetClassInfo(app.ClassID)
+	local _, _, _, classColor = GetClassColor(classFile)
+
+	-- Manual override for Fury Warriors, since they can use 2x1H or 2x2H
+	if app.SpecID == 72 then
+		-- If Single-Minded Fury is learned
+		if IsPlayerSpell(81099) then
+			app.SpecID = 721
+		else
+			app.SpecID = 722
+		end
+	end
+
 	-- Can the player dual wield
 	app.CanDualWield = false
 	for k, v in pairs(app.DualWield) do
@@ -482,8 +497,8 @@ function api.DoTheThing(msg)
 					end
 				end
 			
-			-- Handle slot 1617 for Fury Warriors (keep the best two 2H weapons)
-			elseif app.SpecID == 72 and slot == 1617 then
+			-- Handle slot 1617 for Fury Warriors without Single-Minded Fury (keep the best two 2H weapons)
+			elseif app.SpecID == 722 and slot == 1617 then
 				seenSlots[slot] = seenSlots[slot] or {}
 	
 				if #seenSlots[slot] < 2 then
@@ -559,8 +574,8 @@ function api.DoTheThing(msg)
 		local maxIlv = 0
 		local bestCombo = {}
 
-		-- Fury Warriors use two 2Handers
-		if app.SpecID == 72 then
+		-- Fury Warriors without Single-Minded Fury use two 2Handers
+		if app.SpecID == 722 then
 			for i, weapon1 in ipairs(weaponUpgrade) do
 				for j, weapon2 in ipairs(weaponUpgrade) do
 					if i ~= j and weapon1["slot"] == 1617 and weapon2["slot"] == 1617 then
@@ -628,12 +643,12 @@ function api.DoTheThing(msg)
 	local dualCount = 0
 
 	for k, v in pairs(bestWeapons) do
-		-- Set 2H weapons to equip in the main hand slot (except for Fury Warriors)
-		if v.slot == 1617 and app.SpecID ~= 72 then
-			v.slot = 16
 		-- Treat 2H weapons for Fury Warriors as though they are One-Handed weapons which can be equipped in any slot
-		elseif v.slot == 1617 and app.SpecID == 72 then
+		if v.slot == 1617 and app.SpecID == 722 then
 			v.slot = 18
+		-- Set other 2H weapons to equip in the main hand slot
+		elseif v.slot == 1617 then
+			v.slot = 16
 		end
 
 		-- If we're dealing with weapons that can be equipped in either slot
@@ -687,11 +702,6 @@ function api.DoTheThing(msg)
 			end
 		end
 	end
-
-	-- Print usage
-	local _, specName = GetSpecializationInfoByID(app.SpecID, app.Sex)
-	local className, classFile = GetClassInfo(app.ClassID)
-	local _, _, _, classColor = GetClassColor(classFile)
 
 	-- Set the message variable if it's not set (properly)
 	if not msg then
