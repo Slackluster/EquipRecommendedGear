@@ -871,7 +871,6 @@ function event:ADDON_LOADED(addOnName, containsBindings)
 	if addOnName == appName and EquipRecommendedGear_Settings["Tag"] then
 		C_Timer.After(5, function()
 			EditMacro(1, " ", C_Spell.GetSpellInfo(436854).iconID)
-			print("thing done")
 		end)
 	end
 end
