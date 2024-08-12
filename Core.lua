@@ -866,21 +866,22 @@ end
 --------------------------
 -- These are just for me to use, since I always have this particular AddOn enabled
 
--- When a spell is succesfully cast by the player
+-- Mount macro: With this I can see what my current flight style is, while also using #showtooltip Invincible to have my mount macro darken to show me when I can't mount
+function event:ADDON_LOADED(addOnName, containsBindings)
+	if addOnName == appName and EquipRecommendedGear_Settings["Tag"] then
+		C_Timer.After(5, function()
+			EditMacro(1, " ", C_Spell.GetSpellInfo(436854).iconID)
+			print("thing done")
+		end)
+	end
+end
+
 function event:UNIT_SPELLCAST_SUCCEEDED(unitTarget, castGUID, spellID)
-	-- If it's me!
-	if EquipRecommendedGear_Settings["Tag"] then
-		-- If we're out of combat and we were the ones to cast the spell
-		if UnitAffectingCombat("player") == false and unitTarget == "player" then
-			-- If we just switched to Steady Flight
-			if spellID == 460002 then
-				-- Change my mount macro to show the current flight style
-				EditMacro(1, " ", 5142726)
-			elseif spellID == 460003 then
-				-- Change my mount macro to show the current flight style
-				EditMacro(1, " ", 5142725)
-			end
-			-- This way I can see what my current flight style is while also using #showtooltip Invincible to have my mount macro darken to show me when I can't mount
+	if EquipRecommendedGear_Settings["Tag"] and UnitAffectingCombat("player") == false and unitTarget == "player" then
+		if spellID == 460002 then
+			EditMacro(1, " ", 5142726)
+		elseif spellID == 460003 then
+			EditMacro(1, " ", 5142725)
 		end
 	end
 end
