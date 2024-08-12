@@ -23,6 +23,7 @@ end)
 event:RegisterEvent("ADDON_LOADED")
 event:RegisterEvent("CHAT_MSG_ADDON")
 event:RegisterEvent("GROUP_ROSTER_UPDATE")
+event:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED")
 event:RegisterEvent("QUEST_TURNED_IN")
 
 -- Table dump
@@ -856,6 +857,30 @@ function event:CHAT_MSG_ADDON(prefix, text, channel, sender, target, zoneChannel
 					end
 				end
 			end
+		end
+	end
+end
+
+--------------------------
+-- SECRET TAG FUNCTIONS --
+--------------------------
+-- These are just for me to use, since I always have this particular AddOn enabled
+
+-- When a spell is succesfully cast by the player
+function event:UNIT_SPELLCAST_SUCCEEDED(unitTarget, castGUID, spellID)
+	-- If it's me!
+	if EquipRecommendedGear_Settings["Tag"] then
+		-- If we're out of combat and we were the ones to cast the spell
+		if UnitAffectingCombat("player") == false and unitTarget == "player" then
+			-- If we just switched to Steady Flight
+			if spellID == 460002 then
+				-- Change my mount macro to show the current flight style
+				EditMacro(1, " ", 5142726)
+			elseif spellID == 460003 then
+				-- Change my mount macro to show the current flight style
+				EditMacro(1, " ", 5142725)
+			end
+			-- This way I can see what my current flight style is while also using #showtooltip Invincible to have my mount macro darken to show me when I can't mount
 		end
 	end
 end
