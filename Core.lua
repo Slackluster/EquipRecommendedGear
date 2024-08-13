@@ -772,7 +772,7 @@ function app.Settings()
 	layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(C_AddOns.GetAddOnMetadata("EquipRecommendedGear", "Version")))
 
 	local cbVariable, cbName, cbTooltip = "runAfterQuest", "Run on quest completion", "Run "..app.NameShort.." when completing a quest, thus equipping any new quest rewards that are an item level upgrade."
-	local cbSetting = Settings.RegisterAddOnSetting(category, cbName, cbVariable, Settings.VarType.Boolean, EquipRecommendedGear_Settings[cbVariable])
+	local cbSetting = Settings.RegisterAddOnSetting(category, appName.."_"..cbVariable, cbVariable, EquipRecommendedGear_Settings, Settings.VarType.Boolean, cbName)
 	Settings.SetOnValueChangedCallback(cbVariable, app.SettingChanged)
 
 	local ddVariable, ddName, ddTooltip = "chatMessage", "Send chat message", "These settings only affect the chat message sent after quest completion."
@@ -783,7 +783,7 @@ function app.Settings()
 		container:Add(2, "Always send message", "Always send a chat message, even if "..app.NameShort.." hasn't equipped an item level upgrade.")
 		return container:GetData()
 	end
-	local ddSetting = Settings.RegisterAddOnSetting(category, ddName, ddVariable, Settings.VarType.Number, EquipRecommendedGear_Settings[ddVariable])
+	local ddSetting = Settings.RegisterAddOnSetting(category, appName.."_"..ddVariable, ddVariable, EquipRecommendedGear_Settings, Settings.VarType.Number, ddName)
 	Settings.SetOnValueChangedCallback(ddVariable, app.SettingChanged)
 
 	local initializer = CreateSettingsCheckboxDropdownInitializer(
