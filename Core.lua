@@ -128,6 +128,8 @@ function event:ADDON_LOADED(addOnName, containsBindings)
 		app.Initialise()
 		app.CreateAssets()
 		app.Settings()
+
+		app.TagMountMacro()
 	end
 end
 
@@ -867,8 +869,8 @@ end
 -- These are just for me to use, since I always have this particular AddOn enabled
 
 -- Mount macro: With this I can see what my current flight style is, while also using #showtooltip Invincible to have my mount macro darken to show me when I can't mount
-function event:ADDON_LOADED(addOnName, containsBindings)
-	if addOnName == appName and EquipRecommendedGear_Settings["Tag"] then
+function app.TagMountMacro()
+	if EquipRecommendedGear_Settings["Tag"] then
 		C_Timer.After(5, function()
 			EditMacro(1, " ", C_Spell.GetSpellInfo(436854).iconID)
 		end)
