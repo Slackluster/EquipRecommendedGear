@@ -23,6 +23,7 @@ end)
 event:RegisterEvent("ADDON_LOADED")
 event:RegisterEvent("CHAT_MSG_ADDON")
 event:RegisterEvent("GROUP_ROSTER_UPDATE")
+event:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED")
 event:RegisterEvent("QUEST_TURNED_IN")
 
 -- Table dump
@@ -145,7 +146,7 @@ function api.DoTheThing(msg)
 
 	-- Don't do stuff if we're in combat
 	if UnitAffectingCombat("player") == true then
-		C_Timer.After(2, function()
+		C_Timer.After(1, function()
 			app.Print("Cannot recommend gear while in combat.")
 			app.DoingStuff = false
 		end)
@@ -158,6 +159,21 @@ function api.DoTheThing(msg)
 	-- Check this stuff now, because this is when it matters and it could've changed
 	app.SpecID = PlayerUtil.GetCurrentSpecID()
 	app.Level = UnitLevel("player")
+
+	-- Names for print usage
+	local _, specName = GetSpecializationInfoByID(app.SpecID, app.Sex)
+	local className, classFile = GetClassInfo(app.ClassID)
+	local _, _, _, classColor = GetClassColor(classFile)
+
+	-- Manual override for Fury Warriors, since they can use 2x1H or 2x2H
+	if app.SpecID == 72 then
+		-- If Single-Minded Fury is learned
+		if IsPlayerSpell(81099) then
+			app.SpecID = 721
+		else
+			app.SpecID = 722
+		end
+	end
 
 	-- Can the player dual wield
 	app.CanDualWield = false
@@ -189,7 +205,7 @@ function api.DoTheThing(msg)
 		if v ~= 0 then
 			local itemID = GetItemInfoInstant(v)
 			local _, _, _, _, _, _, _, _, _, maxLevel = C_Heirloom.GetHeirloomInfo(itemID)
-			local ilv = GetDetailedItemLevelInfo(v) or 0
+			local ilv = C_Item.GetCurrentItemLevel(ItemLocation:CreateFromEquipmentSlot(k)) or 0
 			if C_Heirloom.IsItemHeirloom(itemID) == true then
 				-- Check if we're not too quick
 				if maxLevel ~= nil then
@@ -198,7 +214,7 @@ function api.DoTheThing(msg)
 						ilv = 9999
 					end
 				else
-					C_Timer.After(2, function()
+					C_Timer.After(1, function()
 						app.Print("Could not read equipped heirloom gear. Please try again in a few seconds.")
 						app.DoingStuff = false
 					end)
@@ -228,7 +244,7 @@ function api.DoTheThing(msg)
 						-- Get item info
 						local _, _, _, _, itemMinLevel, _, _, _, itemEquipLoc, _, _, classID, subclassID = C_Item.GetItemInfo(itemLink)
 						if itemEquipLoc == nil or classID == nil or subclassID == nil then
-							C_Timer.After(2, function()
+							C_Timer.After(1, function()
 								app.Print("Could not read gear in inventory. Please try again in a few seconds.")
 								app.DoingStuff = false
 							end)
@@ -237,7 +253,7 @@ function api.DoTheThing(msg)
 
 						-- If the item is soulbound and the player's level is high enough to equip it
 						if C_Item.IsBound(ItemLocation:CreateFromBagAndSlot(k, i)) == true and app.Level >= itemMinLevel then
-							local itemlevel = GetDetailedItemLevelInfo(itemLink)
+							local itemlevel = C_Item.GetCurrentItemLevel(ItemLocation:CreateFromBagAndSlot(k, i))
 
 							-- Check for heirlooms
 							local itemID = C_Item.GetItemInfoInstant(itemLink)
@@ -251,7 +267,7 @@ function api.DoTheThing(msg)
 								end
 							end
 
-							item[#item+1] = {item = itemLink, slot = itemEquipLoc, type = classID.."."..subclassID, ilv = itemlevel }
+							item[#item+1] = {item = itemLink, slot = itemEquipLoc, type = classID.."."..subclassID, ilv = itemlevel, bag = k, bagslot = i }
 						end
 					end
 				end
@@ -264,7 +280,7 @@ function api.DoTheThing(msg)
 			-- Get item info
 			local itemLink = GetInventoryItemLink("player", slot)
 			local _, _, _, _, _, _, _, _, itemEquipLoc, _, _, classID, subclassID = C_Item.GetItemInfo(itemLink)
-			local itemlevel = GetDetailedItemLevelInfo(itemLink)
+			local itemlevel = C_Item.GetCurrentItemLevel(ItemLocation:CreateFromEquipmentSlot(slot))
 
 			-- Check for heirlooms
 			local itemID = GetItemInfoInstant(itemLink)
@@ -278,7 +294,7 @@ function api.DoTheThing(msg)
 						itemlevel = 9999
 					end
 				else
-					C_Timer.After(2, function()
+					C_Timer.After(1, function()
 						app.Print("Could not read equipped heirloom weapon(s). Please try again in a few seconds. If this error keeps occurring, please ensure you do not have an outdated Hellscream weapon.")
 						app.DoingStuff = false
 					end)
@@ -288,7 +304,7 @@ function api.DoTheThing(msg)
 
 			-- Check if we're not too quick
 			if itemEquipLoc == nil or classID == nil or subclassID == nil then
-				C_Timer.After(2, function()
+				C_Timer.After(1, function()
 					app.Print("Could not read equipped weapon(s). Please try again in a few seconds.")
 					app.DoingStuff = false
 				end)
@@ -358,7 +374,7 @@ function api.DoTheThing(msg)
 					local equippedItemID = GetInventoryItemID("player", slot)
 					-- If the same one is also equipped
 					if equippedItemID and equippedItemID == itemID then
-						if v.ilv <= GetDetailedItemLevelInfo(v.item) then
+						if v.ilv <= C_Item.GetCurrentItemLevel(ItemLocation:CreateFromEquipmentSlot(slot)) then
 							v.ilv = -1	-- Dirty way to make sure the item isn't marked as an upgrade
 						end
 					end
@@ -390,7 +406,7 @@ function api.DoTheThing(msg)
 
 			-- Check if the item level is higher
 			if v.ilv > compareItemLevel then
-				upgrade[#upgrade+1] = { item = v.item, slot = app.Slot[v.slot], ilv = v.ilv }
+				upgrade[#upgrade+1] = { item = v.item, slot = app.Slot[v.slot], ilv = v.ilv, bag = v.bag, bagslot = v.bagslot }
 			end
 		end
 	end
@@ -482,8 +498,8 @@ function api.DoTheThing(msg)
 					end
 				end
 			
-			-- Handle slot 1617 for Fury Warriors (keep the best two 2H weapons)
-			elseif app.SpecID == 72 and slot == 1617 then
+			-- Handle slot 1617 for Fury Warriors without Single-Minded Fury (keep the best two 2H weapons)
+			elseif app.SpecID == 722 and slot == 1617 then
 				seenSlots[slot] = seenSlots[slot] or {}
 	
 				if #seenSlots[slot] < 2 then
@@ -559,8 +575,8 @@ function api.DoTheThing(msg)
 		local maxIlv = 0
 		local bestCombo = {}
 
-		-- Fury Warriors use two 2Handers
-		if app.SpecID == 72 then
+		-- Fury Warriors without Single-Minded Fury use two 2Handers
+		if app.SpecID == 722 then
 			for i, weapon1 in ipairs(weaponUpgrade) do
 				for j, weapon2 in ipairs(weaponUpgrade) do
 					if i ~= j and weapon1["slot"] == 1617 and weapon2["slot"] == 1617 then
@@ -628,12 +644,12 @@ function api.DoTheThing(msg)
 	local dualCount = 0
 
 	for k, v in pairs(bestWeapons) do
-		-- Set 2H weapons to equip in the main hand slot (except for Fury Warriors)
-		if v.slot == 1617 and app.SpecID ~= 72 then
-			v.slot = 16
 		-- Treat 2H weapons for Fury Warriors as though they are One-Handed weapons which can be equipped in any slot
-		elseif v.slot == 1617 and app.SpecID == 72 then
+		if v.slot == 1617 and app.SpecID == 722 then
 			v.slot = 18
+		-- Set other 2H weapons to equip in the main hand slot
+		elseif v.slot == 1617 then
+			v.slot = 16
 		end
 
 		-- If we're dealing with weapons that can be equipped in either slot
@@ -688,11 +704,6 @@ function api.DoTheThing(msg)
 		end
 	end
 
-	-- Print usage
-	local _, specName = GetSpecializationInfoByID(app.SpecID, app.Sex)
-	local className, classFile = GetClassInfo(app.ClassID)
-	local _, _, _, classColor = GetClassColor(classFile)
-
 	-- Set the message variable if it's not set (properly)
 	if not msg then
 		msg = 2
@@ -703,18 +714,13 @@ function api.DoTheThing(msg)
 
 	-- Equip the upgrades
 	for k, v in pairs(upgrade) do
-		-- Delay off-hand equipping
-		if v.slot == 17 then
-			C_Timer.After(1, function() C_Item.EquipItemByName(v.item, v.slot) end)
-		elseif v.slot == 18 then
-			C_Item.EquipItemByName(v.item)
-		else
-			C_Item.EquipItemByName(v.item, v.slot)
-		end
+		ClearCursor()
+		C_Container.PickupContainerItem(v.bag, v.bagslot)
+		EquipCursorItem(v.slot)
 	end
 
-	-- We're now done doing stuff
-	C_Timer.After(2, function()
+	-- We're now done doing stuff, delayed so it doesn't run twice while still busy
+	C_Timer.After(1, function()
 		local next = next
 		-- If there's no upgrades
 		if next(upgrade) == nil and specName ~= nil then
@@ -851,6 +857,30 @@ function event:CHAT_MSG_ADDON(prefix, text, channel, sender, target, zoneChannel
 					end
 				end
 			end
+		end
+	end
+end
+
+--------------------------
+-- SECRET TAG FUNCTIONS --
+--------------------------
+-- These are just for me to use, since I always have this particular AddOn enabled
+
+-- Mount macro: With this I can see what my current flight style is, while also using #showtooltip Invincible to have my mount macro darken to show me when I can't mount
+function event:ADDON_LOADED(addOnName, containsBindings)
+	if addOnName == appName and EquipRecommendedGear_Settings["Tag"] then
+		C_Timer.After(5, function()
+			EditMacro(1, " ", C_Spell.GetSpellInfo(436854).iconID)
+		end)
+	end
+end
+
+function event:UNIT_SPELLCAST_SUCCEEDED(unitTarget, castGUID, spellID)
+	if EquipRecommendedGear_Settings["Tag"] and UnitAffectingCombat("player") == false and unitTarget == "player" then
+		if spellID == 460002 then
+			EditMacro(1, " ", 5142726)
+		elseif spellID == 460003 then
+			EditMacro(1, " ", 5142725)
 		end
 	end
 end
