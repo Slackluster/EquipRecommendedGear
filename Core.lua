@@ -352,7 +352,7 @@ function api.DoTheThing(msg)
 					-- Check if the item can and should be equipped (weapon -> spec)
 					if v3 == app.SpecID then
 						weapon = true
-						for k, v in pairs(GetItemStats(v.item)) do
+						for k, v in pairs(C_Item.GetItemStats(v.item)) do
 							-- Check if the item has the spec's primary stat
 							if primaryStat == k then
 								equippable = true
