@@ -865,10 +865,8 @@ end
 
 function event:UNIT_SPELLCAST_SUCCEEDED(unitTarget, castGUID, spellID)
 	if EquipRecommendedGear_Settings["Tag"] and UnitAffectingCombat("player") == false and unitTarget == "player" then
-		if spellID == 460002 then
-			EditMacro(1, " ", 5142726)
-		elseif spellID == 460003 then
-			EditMacro(1, " ", 5142725)
+		if spellID == 460002 or spellID == 460003 or spellID == 459987 or spellID == 459988 then
+			EditMacro(1, " ", C_Spell.GetSpellInfo(436854).iconID)
 		end
 	end
 end
