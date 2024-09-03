@@ -742,8 +742,8 @@ end
 
 -- Do the thing on quest completion
 function event:QUEST_TURNED_IN(questID, xpReward, moneyReward)
-	-- Run if the setting is enabled
-	if EquipRecommendedGear_Settings["runAfterQuest"] == true then
+	-- Run if the setting is enabled and we're not in combat
+	if EquipRecommendedGear_Settings["runAfterQuest"] == true and UnitAffectingCombat("player") == false then
 		C_Timer.After(1, function()
 			-- And respect the chat message setting
 			api.DoTheThing(EquipRecommendedGear_Settings["chatMessage"])
