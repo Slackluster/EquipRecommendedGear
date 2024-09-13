@@ -409,51 +409,6 @@ function api.DoTheThing(msg)
 		end
 	end
 
-	-- Place the highest ring or trinket into its own slot (thanks ChatGPT)
-	local function changeHighestForSlot(table, fromSlot, toSlot)
-		local highestEntry = nil
-	
-		for i = #table, 1, -1 do
-			local entry = table[i]
-			local slot = entry.slot
-	
-			if slot == fromSlot then
-				if not highestEntry or entry.ilv > highestEntry.ilv then
-					highestEntry = entry
-				end
-			end
-		end
-	
-		if highestEntry then
-			highestEntry.slot = toSlot
-		end
-	end
-	changeHighestForSlot(upgrade, 11, 12)
-	changeHighestForSlot(upgrade, 13, 14)
-
-	-- Count rings and trinkets
-	local ringNo = 0
-	local trinketNo = 0
-	local ringKey
-	local trinketKey
-	for k, v in pairs(upgrade) do
-		if v.slot == 11 or v.slot == 12 then
-			ringNo = ringNo + 1
-			ringKey = k
-		elseif v.slot == 13 or v.slot == 14 then
-			trinketNo = trinketNo + 1
-			trinketKey = k
-		end
-	end
-
-	-- Move rings/trinkets to proper slot if there's only one
-	if ringNo == 1 and itemLevel[11] < itemLevel[12] then
-		upgrade[ringKey].slot = 11
-	end
-	if trinketNo == 1 and itemLevel[13] < itemLevel[14] then
-		upgrade[trinketKey].slot = 13
-	end
-
 	-- Move one-handed weapons to main hand, if the character cannot dual wield
 	if app.CanDualWield == false then
 		for k, v in pairs(upgrade) do
@@ -463,7 +418,7 @@ function api.DoTheThing(msg)
 		end
 	end
 
-	-- Check upgrades for multiples of the same slot and only keep the best one, or best two for 1-Handers (thanks ChatGPT)
+	-- Check upgrades for multiples of the same slot and only keep the best one, or best two for rings, trinkets, and 1-Handers (thanks ChatGPT)
 	local function processGearTable(gearTable)
 		local seenSlots = {}
 	
@@ -471,15 +426,15 @@ function api.DoTheThing(msg)
 			local entry = gearTable[i]
 			local slot = entry.slot
 	
-			-- Handle slot 18 (keep the best two)
-			if slot == 18 then
+			-- Handle slots 18, 11, and 13 (keep the best two)
+			if slot == 18 or slot == 11 or slot == 13 then
 				seenSlots[slot] = seenSlots[slot] or {}
 	
 				if #seenSlots[slot] < 2 then
 					-- If fewer than two entries, just add the current entry
 					table.insert(seenSlots[slot], entry)
 				else
-					-- Find the two entries with the highest ilv
+					-- Find the entry with the lowest ilv
 					local minIlvIndex = 1
 					for j = 2, #seenSlots[slot] do
 						if seenSlots[slot][j].ilv < seenSlots[slot][minIlvIndex].ilv then
@@ -489,13 +444,21 @@ function api.DoTheThing(msg)
 	
 					-- Replace the entry with the lowest ilv if the current entry has a higher ilv
 					if entry.ilv > seenSlots[slot][minIlvIndex].ilv then
+						-- Remove the lowest ilv entry from gearTable
+						for k = #gearTable, 1, -1 do
+							if gearTable[k] == seenSlots[slot][minIlvIndex] then
+								table.remove(gearTable, k)
+								break
+							end
+						end
+						-- Replace the lowest ilv entry in seenSlots
 						seenSlots[slot][minIlvIndex] = entry
 					else
-						-- Remove the current entry if its ilv is not higher
+						-- Remove the current entry from gearTable if it is not better
 						table.remove(gearTable, i)
 					end
 				end
-			
+	
 			-- Handle slot 1617 for Fury Warriors without Single-Minded Fury (keep the best two 2H weapons)
 			elseif app.SpecID == 722 and slot == 1617 then
 				seenSlots[slot] = seenSlots[slot] or {}
@@ -504,7 +467,7 @@ function api.DoTheThing(msg)
 					-- If fewer than two entries, just add the current entry
 					table.insert(seenSlots[slot], entry)
 				else
-					-- Find the two entries with the highest ilv
+					-- Find the entry with the lowest ilv
 					local minIlvIndex = 1
 					for j = 2, #seenSlots[slot] do
 						if seenSlots[slot][j].ilv < seenSlots[slot][minIlvIndex].ilv then
@@ -514,9 +477,17 @@ function api.DoTheThing(msg)
 	
 					-- Replace the entry with the lowest ilv if the current entry has a higher ilv
 					if entry.ilv > seenSlots[slot][minIlvIndex].ilv then
+						-- Remove the lowest ilv entry from gearTable
+						for k = #gearTable, 1, -1 do
+							if gearTable[k] == seenSlots[slot][minIlvIndex] then
+								table.remove(gearTable, k)
+								break
+							end
+						end
+						-- Replace the lowest ilv entry in seenSlots
 						seenSlots[slot][minIlvIndex] = entry
 					else
-						-- Remove the current entry if its ilv is not higher
+						-- Remove the current entry from gearTable if it is not better
 						table.remove(gearTable, i)
 					end
 				end
@@ -538,19 +509,100 @@ function api.DoTheThing(msg)
 	end
 	processGearTable(upgrade)
 
-	-- Remove the lowest ring or trinket entry if neither is an upgrade for the best equipped (we previously only checked if it's an upgrade for the worst equipped)
+	-- Check if one or both of our rings/trinkets are upgrades
+	local ringMax = math.max(itemLevel[11], itemLevel[12])
+	local trinketMax = math.max(itemLevel[13], itemLevel[14])
+	local ringUpgrades = 0
+	local trinketUpgrades = 0
+
 	for k, v in pairs(upgrade) do
-		if v.slot == 12 and v.ilv <= itemLevel[12] then
-			for k, v in pairs(upgrade) do
-				if v.slot == 11 then
-					upgrade[k] = nil
+		if v.slot == 11 and v.ilv > ringMax then
+			ringUpgrades = ringUpgrades + 1
+		elseif v.slot == 13 and v.ilv > trinketMax then
+			trinketUpgrades = trinketUpgrades + 1
+		end
+	end
+
+	-- If both, move the first we find to another slot
+	if ringUpgrades == 2 then
+		for k, v in pairs(upgrade) do
+			if v.slot == 11 then
+				upgrade[k].slot = 12
+				break
+			end
+		end
+	end
+
+	if trinketUpgrades == 2 then
+		for k, v in pairs(upgrade) do
+			if v.slot == 13 then
+				upgrade[k].slot = 14
+				break
+			end
+		end
+	end
+
+	-- Keep the highest ilv ring if there's only 1 upgrade (thanks ChatGPT)
+	if ringUpgrades < 2 then
+		local highestIlvIndex = nil
+		local found = false
+		
+		for i = #upgrade, 1, -1 do
+			if upgrade[i].slot == 11 then
+				if not highestIlvIndex or upgrade[i].ilv > upgrade[highestIlvIndex].ilv then
+					highestIlvIndex = i
+					found = true
 				end
 			end
-		elseif v.slot == 14 and v.ilv <= itemLevel[14] then
-			for k, v in pairs(upgrade) do
-				if v.slot == 13 then
-					upgrade[k] = nil
+		end
+		
+		if found then
+			-- Remove all rings except the one with the highest ilv
+			for i = #upgrade, 1, -1 do
+				if upgrade[i].slot == 11 and i ~= highestIlvIndex then
+					table.remove(upgrade, i)
 				end
+			end
+		end
+	end
+
+	-- Keep the highest ilv trinket if there's only 1 upgrade (thanks ChatGPT)
+	if trinketUpgrades < 2 then
+		local highestIlvIndex = nil
+		local found = false
+		
+		for i = #upgrade, 1, -1 do
+			if upgrade[i].slot == 13 then
+				if not highestIlvIndex or upgrade[i].ilv > upgrade[highestIlvIndex].ilv then
+					highestIlvIndex = i
+					found = true
+				end
+			end
+		end
+		
+		if found then
+			-- Remove all trinkets except the one with the highest ilv
+			for i = #upgrade, 1, -1 do
+				if upgrade[i].slot == 13 and i ~= highestIlvIndex then
+					table.remove(upgrade, i)
+				end
+			end
+		end
+	end
+
+	-- If only one left, set it to the proper slot
+	if ringUpgrades == 1 and itemLevel[11] > itemLevel[12] then
+		for k, v in pairs(upgrade) do
+			if v.slot == 11 then
+				upgrade[k].slot = 12
+			end
+		end
+	end
+
+	if trinketUpgrades == 1 and itemLevel[13] > itemLevel[14] then
+		for k, v in pairs(upgrade) do
+			if v.slot == 13 then
+				upgrade[k].slot = 14
 			end
 		end
 	end
