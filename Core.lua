@@ -344,6 +344,10 @@ function api.DoTheThing(msg)
 		if v.type == app.Type[armorClass] or (v.type == app.Type["General"] and v.slot ~= "INVTYPE_TABARD" and v.slot ~= "INVTYPE_BODY" and v.slot ~= "INVTYPE_WEAPONOFFHAND" and v.slot ~= "INVTYPE_HOLDABLE" and v.slot ~= "INVTYPE_SHIELD") or v.slot == "INVTYPE_CLOAK" then
 			equippable = true
 		end
+		-- Adjust Wands because goddammit Blizzard
+		if v.type == "2.19" then
+			v.slot = "INVTYPE_WEAPONMAINHAND"
+		end
 		-- Get the weapon type
 		local weapon = false
 		for k2, v2 in pairs(app.Type) do
