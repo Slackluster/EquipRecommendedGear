@@ -125,7 +125,9 @@ function event:ADDON_LOADED(addOnName, containsBindings)
 		app.CreateAssets()
 		app.Settings()
 
-		app.TagMountMacro()
+		C_Timer.After(5, function()
+			app.TagMountMacro()
+		end)
 	end
 end
 
@@ -913,16 +915,12 @@ end
 -- Mount macro: With this I can see what my current flight style is, while also using #showtooltip Invincible to have my mount macro darken to show me when I can't mount
 function app.TagMountMacro()
 	if EquipRecommendedGear_Settings["Tag"] then
-		C_Timer.After(5, function()
-			EditMacro(1, " ", C_Spell.GetSpellInfo(436854).iconID)
-		end)
+		EditMacro(1, " ", C_Spell.GetSpellInfo(436854).iconID)
 	end
 end
 
 function event:UNIT_SPELLCAST_SUCCEEDED(unitTarget, castGUID, spellID)
-	if EquipRecommendedGear_Settings["Tag"] and UnitAffectingCombat("player") == false and unitTarget == "player" then
-		if spellID == 460002 or spellID == 460003 or spellID == 459987 or spellID == 459988 then
-			EditMacro(1, " ", C_Spell.GetSpellInfo(436854).iconID)
-		end
+	if UnitAffectingCombat("player") == false and unitTarget == "player" then
+		app.TagMountMacro()
 	end
 end
