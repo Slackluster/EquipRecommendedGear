@@ -770,9 +770,12 @@ function api.DoTheThing(msg)
 
 	-- Equip the upgrades
 	for k, v in pairs(upgrade) do
-		ClearCursor()
-		C_Container.PickupContainerItem(v.bag, v.bagslot)
-		EquipCursorItem(v.slot)
+		-- This gets weird in super niche situations, so let's just check if the data exists
+		if v.bag and v.bagslot then
+			ClearCursor()
+			C_Container.PickupContainerItem(v.bag, v.bagslot)
+			EquipCursorItem(v.slot)
+		end
 	end
 
 	-- We're now done doing stuff, delayed so it doesn't run twice while still busy
