@@ -44,6 +44,7 @@ end
 function app.InitialiseCore()
 	-- Declare SavedVariables
 	if not EquipRecommendedGear_Settings then EquipRecommendedGear_Settings = {} end
+	if not EquipRecommendedGear_Settings["debug"] then EquipRecommendedGear_Settings["debug"] = false end
 
 	-- Declare session variables
 	app.DoingStuff = false
@@ -111,6 +112,27 @@ function event:ADDON_LOADED(addOnName, containsBindings)
 		C_Timer.After(5, function()
 			app.TagMountMacro()
 		end)
+
+		-- Slash commands
+		SLASH_EquipRecommendedGear1 = "/erg";
+		function SlashCmdList.EquipRecommendedGear(msg, editBox)
+			-- Split message into command and rest
+			local command, rest = msg:match("^(%S*)%s*(.-)$")
+
+			-- Toggle debug
+			if command == "debug" then
+				if EquipRecommendedGear_Settings["debug"] == false then
+					EquipRecommendedGear_Settings["debug"] = true
+					app.Print("Debug mode enabled.")
+				else
+					EquipRecommendedGear_Settings["debug"] = false
+					app.Print("Debug mode disabled.")
+				end
+			-- Unlisted command
+			else
+				app.Print("Invalid command.")
+			end
+		end
 	end
 end
 
@@ -407,6 +429,11 @@ function api.DoTheThing(msg)
 		end
 	end
 
+	if EquipRecommendedGear_Settings["debug"] then
+		app.Print("DEBUG: ELIGIBLE ITEMS")
+		DevTools_Dump(upgrade)
+	end
+
 	-- Check upgrades for multiples of the same slot and only keep the best one, or best two for rings, trinkets, and 1-Handers (thanks ChatGPT)
 	local function processGearTable(gearTable)
 		local seenSlots = {}
@@ -605,6 +632,11 @@ function api.DoTheThing(msg)
 		end
 	end
 
+	if EquipRecommendedGear_Settings["debug"] then
+		app.Print("DEBUG: ELIGIBLE WEAPONS")
+		DevTools_Dump(weaponUpgrade)
+	end
+
 	-- Get best weapons (thanks ChatGPT)
 	function findBestWeaponCombo(weaponUpgrade)
 		if #weaponUpgrade == 1 then
@@ -668,6 +700,11 @@ function api.DoTheThing(msg)
 
 	local bestWeapons = findBestWeaponCombo(weaponUpgrade)
 
+	if EquipRecommendedGear_Settings["debug"] then
+		app.Print("DEBUG: BEST WEAPONS")
+		DevTools_Dump(bestWeapons)
+	end
+
 	-- Sort the best weapons by item level, which matters for dual wielding
 	table.sort(bestWeapons, function(a, b)
 		if a.ilv == b.ilv then
@@ -676,6 +713,11 @@ function api.DoTheThing(msg)
 			return a.ilv > b.ilv    -- Sort by ilv first
 		end
 	end)
+
+	if EquipRecommendedGear_Settings["debug"] then
+		app.Print("DEBUG: BEST WEAPONS SORTED")
+		DevTools_Dump(bestWeapons)
+	end
 
 	-- Check the currently equipped weapons
 	local item16 = GetInventoryItemLink("player", 16) or "None"
@@ -741,6 +783,11 @@ function api.DoTheThing(msg)
 				upgrade[#upgrade+1] = v
 			end
 		end
+	end
+
+	if EquipRecommendedGear_Settings["debug"] then
+		app.Print("DEBUG: BEST WEAPONS SORTED 2")
+		DevTools_Dump(bestWeapons)
 	end
 
 	-- Set the message variable if it's not set (properly)
