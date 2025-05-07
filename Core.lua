@@ -150,7 +150,7 @@ function api.DoTheThing(msg)
 	end
 
 	-- Don't do stuff if we're in combat
-	if not InCombatLockdown() then
+	if InCombatLockdown() then
 		C_Timer.After(1, function()
 			app.Print("Cannot recommend gear while in combat.")
 			app.DoingStuff = false
