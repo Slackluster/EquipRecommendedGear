@@ -150,7 +150,7 @@ function api.DoTheThing(msg)
 	end
 
 	-- Don't do stuff if we're in combat
-	if UnitAffectingCombat("player") == true then
+	if not InCombatLockdown() then
 		C_Timer.After(1, function()
 			app.Print("Cannot recommend gear while in combat.")
 			app.DoingStuff = false
@@ -834,7 +834,7 @@ end
 -- Do the thing on quest completion
 function event:QUEST_TURNED_IN(questID, xpReward, moneyReward)
 	-- Run if the setting is enabled and we're not in combat
-	if EquipRecommendedGear_Settings["runAfterQuest"] == true and UnitAffectingCombat("player") == false then
+	if EquipRecommendedGear_Settings["runAfterQuest"] == true and not InCombatLockdown() then
 		C_Timer.After(1, function()
 			-- And respect the chat message setting
 			api.DoTheThing(EquipRecommendedGear_Settings["chatMessage"])
@@ -953,7 +953,7 @@ function app.TagMountMacro()
 end
 
 function event:UNIT_SPELLCAST_SUCCEEDED(unitTarget, castGUID, spellID)
-	if UnitAffectingCombat("player") == false and unitTarget == "player" then
+	if not InCombatLockdown() and unitTarget == "player" then
 		app.TagMountMacro()
 	end
 end
