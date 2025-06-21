@@ -1,4 +1,4 @@
-## Interface: 110105
+## Interface: 110107
 ## Title: |cffC69B6DEquip Recommended Gear|r
 ## Author: Sluimerstand
 ## IconTexture: Interface\AddOns\EquipRecommendedGear\assets\erg_icon.blp
