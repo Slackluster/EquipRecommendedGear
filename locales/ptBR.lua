@@ -2,7 +2,7 @@
 -- Equip Recommended Gear: ptBR.lua --
 --------------------------------------
 -- Portuguese (Brazil) localisation
--- Translator(s): 
+-- Translator(s):
 
 -- Initialisation
 local appName, app =  ...

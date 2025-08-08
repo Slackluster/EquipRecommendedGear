@@ -2,7 +2,7 @@
 -- Equip Recommended Gear: esMX.lua --
 --------------------------------------
 -- Spanish (Mexico) localisation
--- Translator(s): 
+-- Translator(s):
 
 -- Initialisation
 local appName, app =  ...

@@ -2,7 +2,7 @@
 -- Equip Recommended Gear: ruRU.lua --
 --------------------------------------
 -- Russian (Russia) localisation
--- Translator(s): 
+-- Translator(s):
 
 -- Initialisation
 local appName, app =  ...

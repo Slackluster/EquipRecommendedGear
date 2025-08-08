@@ -2,7 +2,7 @@
 -- Equip Recommended Gear: zhCN.lua --
 --------------------------------------
 -- Chinese (Simplified, PRC) localisation
--- Translator(s): 
+-- Translator(s):
 
 -- Initialisation
 local appName, app =  ...

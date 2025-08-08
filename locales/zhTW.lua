@@ -2,7 +2,7 @@
 -- Equip Recommended Gear: zhTW.lua --
 --------------------------------------
 -- Chinese (Traditional, Taiwan) localisation
--- Translator(s): 
+-- Translator(s):
 
 -- Initialisation
 local appName, app =  ...

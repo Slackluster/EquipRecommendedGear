@@ -149,7 +149,7 @@ function api.DoTheThing(msg)
 						app.Flag["Busy"] = false
 					end)
 					do return end
-				end	
+				end
 			end
 			itemLevel[k] = ilv
 		end
@@ -229,7 +229,7 @@ function api.DoTheThing(msg)
 						app.Flag["Busy"] = false
 					end)
 					do return end
-				end	
+				end
 			end
 
 			-- Check if we're not too quick
@@ -362,15 +362,15 @@ function api.DoTheThing(msg)
 	-- Check upgrades for multiples of the same slot and only keep the best one, or best two for rings, trinkets, and 1-Handers (thanks ChatGPT)
 	local function processGearTable(gearTable)
 		local seenSlots = {}
-	
+
 		for i = #gearTable, 1, -1 do
 			local entry = gearTable[i]
 			local slot = entry.slot
-	
+
 			-- Handle slots 18, 11, and 13 (keep the best two)
 			if slot == 18 or slot == 11 or slot == 13 then
 				seenSlots[slot] = seenSlots[slot] or {}
-	
+
 				if #seenSlots[slot] < 2 then
 					-- If fewer than two entries, just add the current entry
 					table.insert(seenSlots[slot], entry)
@@ -382,7 +382,7 @@ function api.DoTheThing(msg)
 							minIlvIndex = j
 						end
 					end
-	
+
 					-- Replace the entry with the lowest ilv if the current entry has a higher ilv
 					if entry.ilv > seenSlots[slot][minIlvIndex].ilv then
 						-- Remove the lowest ilv entry from gearTable
@@ -399,11 +399,11 @@ function api.DoTheThing(msg)
 						table.remove(gearTable, i)
 					end
 				end
-	
+
 			-- Handle slot 1617 for Fury Warriors without Single-Minded Fury (keep the best two 2H weapons)
 			elseif app.SpecID == 722 and slot == 1617 then
 				seenSlots[slot] = seenSlots[slot] or {}
-	
+
 				if #seenSlots[slot] < 2 then
 					-- If fewer than two entries, just add the current entry
 					table.insert(seenSlots[slot], entry)
@@ -415,7 +415,7 @@ function api.DoTheThing(msg)
 							minIlvIndex = j
 						end
 					end
-	
+
 					-- Replace the entry with the lowest ilv if the current entry has a higher ilv
 					if entry.ilv > seenSlots[slot][minIlvIndex].ilv then
 						-- Remove the lowest ilv entry from gearTable
@@ -432,7 +432,7 @@ function api.DoTheThing(msg)
 						table.remove(gearTable, i)
 					end
 				end
-	
+
 			elseif not seenSlots[slot] or entry.ilv > seenSlots[slot].ilv then
 				-- For other slots, keep only the entry with the highest ilv
 				seenSlots[slot] = entry
@@ -487,7 +487,7 @@ function api.DoTheThing(msg)
 	if ringUpgrades < 2 then
 		local highestIlvIndex = nil
 		local found = false
-		
+
 		for i = #upgrade, 1, -1 do
 			if upgrade[i].slot == 11 then
 				if not highestIlvIndex or upgrade[i].ilv > upgrade[highestIlvIndex].ilv then
@@ -496,7 +496,7 @@ function api.DoTheThing(msg)
 				end
 			end
 		end
-		
+
 		if found then
 			-- Remove all rings except the one with the highest ilv
 			for i = #upgrade, 1, -1 do
@@ -511,7 +511,7 @@ function api.DoTheThing(msg)
 	if trinketUpgrades < 2 then
 		local highestIlvIndex = nil
 		local found = false
-		
+
 		for i = #upgrade, 1, -1 do
 			if upgrade[i].slot == 13 then
 				if not highestIlvIndex or upgrade[i].ilv > upgrade[highestIlvIndex].ilv then
@@ -520,7 +520,7 @@ function api.DoTheThing(msg)
 				end
 			end
 		end
-		
+
 		if found then
 			-- Remove all trinkets except the one with the highest ilv
 			for i = #upgrade, 1, -1 do
@@ -567,7 +567,7 @@ function api.DoTheThing(msg)
 		if #weaponUpgrade == 1 then
 			return weaponUpgrade
 		end
-	
+
 		local maxIlv = 0
 		local bestCombo = {}
 
@@ -590,7 +590,7 @@ function api.DoTheThing(msg)
 				for j, weapon2 in ipairs(weaponUpgrade) do
 					if i ~= j then
 						local comboIlv = weapon1["ilv"]
-		
+
 						if weapon1["slot"] == 1617 then
 							-- If it's a two-handed weapon, count its ilv twice
 							comboIlv = comboIlv * 2
@@ -606,7 +606,7 @@ function api.DoTheThing(msg)
 								comboIlv = comboIlv + weapon2["ilv"]
 							end
 						end
-		
+
 						if comboIlv > maxIlv then
 							maxIlv = comboIlv
 							if weapon1["slot"] == 1617 then
@@ -619,7 +619,7 @@ function api.DoTheThing(msg)
 				end
 			end
 		end
-	
+
 		return bestCombo
 	end
 

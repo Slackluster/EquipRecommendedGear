@@ -2,7 +2,7 @@
 -- Equip Recommended Gear: deDE.lua --
 --------------------------------------
 -- German (Germany) localisation
--- Translator(s): 
+-- Translator(s):
 
 -- Initialisation
 local appName, app =  ...

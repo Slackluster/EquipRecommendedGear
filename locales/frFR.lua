@@ -2,7 +2,7 @@
 -- Equip Recommended Gear: frFR.lua --
 --------------------------------------
 -- French (France) localisation
--- Translator(s): 
+-- Translator(s):
 
 -- Initialisation
 local appName, app =  ...

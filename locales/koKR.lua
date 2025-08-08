@@ -2,7 +2,7 @@
 -- Equip Recommended Gear: koKR.lua --
 --------------------------------------
 -- Korean (Korea) localisation
--- Translator(s): 
+-- Translator(s):
 
 -- Initialisation
 local appName, app =  ...

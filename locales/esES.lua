@@ -2,7 +2,7 @@
 -- Equip Recommended Gear: esES.lua --
 --------------------------------------
 -- Spanish (Spain) localisation
--- Translator(s): 
+-- Translator(s):
 
 -- Initialisation
 local appName, app =  ...

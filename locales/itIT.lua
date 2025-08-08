@@ -2,7 +2,7 @@
 -- Equip Recommended Gear: itIT.lua --
 --------------------------------------
 -- 	Italian (Italy) localisation
--- Translator(s): 
+-- Translator(s):
 
 -- Initialisation
 local appName, app =  ...
