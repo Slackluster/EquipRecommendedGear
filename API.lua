@@ -1,3 +1,7 @@
+-------------------------------------
+-- Equip Recommended Gear: API.lua --
+-------------------------------------
+
 -- Equip recommended gear, and send a chat message regardless of if any new gear was equipped
 EquipRecommendedGear.DoTheThing()
 
