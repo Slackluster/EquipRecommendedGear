@@ -68,13 +68,11 @@ end
 
 -- Do the thing
 function api.DoTheThing(msg)
-	-- Don't do stuff if we're still running this function
 	if not app.Flag["Busy"] then app.Flag["Busy"] = false end
 	if app.Flag["Busy"] == true then
 		do return end
 	end
 
-	-- Don't do stuff if we're in combat
 	if InCombatLockdown() then
 		C_Timer.After(1, function()
 			app.Print(L.ERROR_COMBAT)
@@ -83,14 +81,10 @@ function api.DoTheThing(msg)
 		do return end
 	end
 
-	-- We are now doing stuff
 	app.Flag["Busy"] = true
-
-	-- Check this stuff now, because this is when it matters and it could've changed
 	app.SpecID = PlayerUtil.GetCurrentSpecID()
 	app.Level = UnitLevel("player")
 
-	-- Names for print usage
 	local _, specName = GetSpecializationInfoByID(app.SpecID, app.Sex)
 	local className, classFile = GetClassInfo(app.ClassID)
 	local _, _, _, classColor = GetClassColor(classFile)
@@ -105,7 +99,6 @@ function api.DoTheThing(msg)
 		end
 	end
 
-	-- Can the player dual wield
 	app.CanDualWield = false
 	for k, v in pairs(app.DualWield) do
 		if app.SpecID == v then
@@ -733,15 +726,11 @@ function api.DoTheThing(msg)
 	-- We're now done doing stuff, delayed so it doesn't run twice while still busy
 	C_Timer.After(1, function()
 		local next = next
-		-- If there's no upgrades
 		if next(upgrade) == nil and specName ~= nil then
-			-- And the message should be sent
 			if msg == 2 then
 				app.Print(L.EQUIP_NO_UPDGRADE, "|c" .. classColor .. specName .. " " .. className .. "|R.")
 			end
-		-- If there are upgrades
 		elseif specName ~= nil then
-			-- And the message should be sent
 			if msg >= 1 then
 				app.Print(L.EQUIP_UPDGRADE, "|c" .. classColor .. specName .. " " .. className .. "|R.")
 			end
@@ -755,10 +744,8 @@ end
 
 -- Do the thing on quest completion
 app.Event:Register("QUEST_TURNED_IN", function(questID, xpReward, moneyReward)
-	-- Run if the setting is enabled and we're not in combat
 	if EquipRecommendedGear_Settings["runAfterQuest"] == true and not InCombatLockdown() then
 		C_Timer.After(1, function()
-			-- And respect the chat message setting
 			api.DoTheThing(EquipRecommendedGear_Settings["chatMessage"])
 		end)
 	end
