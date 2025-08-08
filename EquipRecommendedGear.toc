@@ -7,7 +7,7 @@
 ## X-Wago-ID: bGoMqq60
 
 ## SavedVariables: EquipRecommendedGear_Settings
-## SavedVariablesPerCharacter: 
+## SavedVariablesPerCharacter:
 
 ## Category-enUS: Equipment
 ## Category-deDE: Ausrüstung
@@ -24,6 +24,7 @@
 libs\ChatThrottleLib\ChatThrottleLib.xml
 Core.lua
 Database.lua
+Settings.lua
 modules\EquipRecommendedGear.lua
 locales\enUS.lua
 locales\deDE.lua
