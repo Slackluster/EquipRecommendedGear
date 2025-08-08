@@ -939,21 +939,3 @@ function event:CHAT_MSG_ADDON(prefix, text, channel, sender, target, zoneChannel
 		end
 	end
 end
-
---------------------------
--- SECRET TAG FUNCTIONS --
---------------------------
--- These are just for me to use, since I always have this particular AddOn enabled
-
--- Mount macro: With this I can see what my current flight style is, while also using #showtooltip Invincible to have my mount macro darken to show me when I can't mount
-function app.TagMountMacro()
-	if EquipRecommendedGear_Settings["Tag"] then
-		EditMacro(1, " ", C_Spell.GetSpellInfo(436854).iconID)
-	end
-end
-
-function event:UNIT_SPELLCAST_SUCCEEDED(unitTarget, castGUID, spellID)
-	if not InCombatLockdown() and unitTarget == "player" then
-		app.TagMountMacro()
-	end
-end
