@@ -4,9 +4,10 @@
 
 -- Initialisation
 local appName, app = ...	-- Returns the AddOn name and a unique table
-app.api = {}	-- Create a table to use for our "API"
+app.locales = {}	-- Localisation table
+app.api = {}	-- Our "API" prefix
 EquipRecommendedGear = app.api	-- Create a namespace for our "API"
-local api = app.api	-- Our "API" prefix
+local L = app.locales
 
 ---------------------------
 -- WOW API EVENT HANDLER --
@@ -54,7 +55,7 @@ end
 app.Event:Register("ADDON_LOADED", function(addOnName, containsBindings)
 	if addOnName == appName then
 		app.Flag = {}
-		
+
 		C_ChatInfo.RegisterAddonMessagePrefix("EquipRecGear")
 
 		SLASH_EquipRecommendedGear1 = "/erg";
@@ -66,14 +67,14 @@ app.Event:Register("ADDON_LOADED", function(addOnName, containsBindings)
 			if command == "debug" then
 				if EquipRecommendedGear_Settings["debug"] == false then
 					EquipRecommendedGear_Settings["debug"] = true
-					app.Print("Debug mode enabled.")
+					app.Print(L.DEBUG_ENABLED)
 				else
 					EquipRecommendedGear_Settings["debug"] = false
-					app.Print("Debug mode disabled.")
+					app.Print(L.DEBUG_DISABLED)
 				end
 			-- Unlisted command
 			else
-				app.Print("Invalid command.")
+				app.Print(L.INVALID_COMMAND)
 			end
 		end
 	end
@@ -138,7 +139,7 @@ app.Event:Register("CHAT_MSG_ADDON", function(prefix, text, channel, sender, tar
 							app.Flag["versionCheck"] = 0
 						end
 						if GetServerTime() - app.Flag["versionCheck"] > 600 then
-							app.Print("There is a newer version of "..app.NameLong.." available: "..version)
+							app.Print(L.NEW_VERSION_AVAILABLE, version)
 							app.Flag["versionCheck"] = GetServerTime()
 						end
 					end

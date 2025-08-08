@@ -3,8 +3,9 @@
 ------------------------------------------------------
 
 -- Initialisation
-local appName, app = ...	-- Returns the AddOn name and a unique table
-local api = app.api	-- Our "API" prefix
+local appName, app = ...
+local L = app.locales
+local api = app.api
 
 -------------
 -- ON LOAD --
@@ -57,7 +58,7 @@ function app.CreateAssets()
 	string:SetPoint("CENTER", app.Button.Tooltip, "CENTER", 0, 0)
 	string:SetPoint("TOP", app.Button.Tooltip, "TOP", 0, -10)
 	string:SetJustifyH("CENTER")
-	string:SetText("|cffFFFFFFEquip Recommended Gear")
+	string:SetText(app.NameLong)
 	string:SetScale(1.1)
 	app.Button.Tooltip:SetHeight(string:GetStringHeight()*1.1+20)
 	app.Button.Tooltip:SetWidth(string:GetStringWidth()*1.1+20)
@@ -76,7 +77,7 @@ function api.DoTheThing(msg)
 	-- Don't do stuff if we're in combat
 	if InCombatLockdown() then
 		C_Timer.After(1, function()
-			app.Print("Cannot recommend gear while in combat.")
+			app.Print(L.ERROR_COMBAT)
 			app.Flag["Busy"] = false
 		end)
 		do return end
@@ -144,7 +145,7 @@ function api.DoTheThing(msg)
 					end
 				else
 					C_Timer.After(1, function()
-						app.Print("Could not read equipped heirloom gear. Please try again in a few seconds.")
+						app.Print(L.ERROR_HEIRLOOM)
 						app.Flag["Busy"] = false
 					end)
 					do return end
@@ -174,7 +175,7 @@ function api.DoTheThing(msg)
 						local _, _, _, _, itemMinLevel, _, _, _, itemEquipLoc, _, _, classID, subclassID = C_Item.GetItemInfo(itemLink)
 						if itemEquipLoc == nil or classID == nil or subclassID == nil then
 							C_Timer.After(1, function()
-								app.Print("Could not read gear in inventory. Please try again in a few seconds.")
+								app.Print(L.ERROR_INVENTORY)
 								app.Flag["Busy"] = false
 							end)
 							do return end
@@ -224,7 +225,7 @@ function api.DoTheThing(msg)
 					end
 				else
 					C_Timer.After(1, function()
-						app.Print("Could not read equipped heirloom weapon(s). Please try again in a few seconds. If this error keeps occurring, please ensure you do not have an outdated Hellscream weapon.")
+						app.Print(L.ERROR_HEIRLOOM_WEAPON)
 						app.Flag["Busy"] = false
 					end)
 					do return end
@@ -234,7 +235,7 @@ function api.DoTheThing(msg)
 			-- Check if we're not too quick
 			if itemEquipLoc == nil or classID == nil or subclassID == nil then
 				C_Timer.After(1, function()
-					app.Print("Could not read equipped weapon(s). Please try again in a few seconds.")
+					app.Print(L.ERROR_WEAPON)
 					app.Flag["Busy"] = false
 				end)
 				do return end
@@ -736,16 +737,16 @@ function api.DoTheThing(msg)
 		if next(upgrade) == nil and specName ~= nil then
 			-- And the message should be sent
 			if msg == 2 then
-				app.Print("You are currently equipped with the recommended gear for |c"..classColor..specName.." "..className.."|R.")
+				app.Print(L.EQUIP_NO_UPDGRADE, "|c" .. classColor .. specName .. " " .. className .. "|R.")
 			end
 		-- If there are upgrades
 		elseif specName ~= nil then
 			-- And the message should be sent
 			if msg >= 1 then
-				app.Print("Gear recommended for |c"..classColor..specName.." "..className.."|R equipped.")
+				app.Print(L.EQUIP_UPDGRADE, "|c" .. classColor .. specName .. " " .. className .. "|R.")
 			end
 		else
-			app.Print("Could not equip recommended gear. Please try again in a few seconds.")
+			app.Print(L.ERROR_EQUIP)
 		end
 
 		app.Flag["Busy"] = false
