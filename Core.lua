@@ -55,6 +55,7 @@ end
 app.Event:Register("ADDON_LOADED", function(addOnName, containsBindings)
 	if addOnName == appName then
 		app.Flag = {}
+		app.Flag["versionCheck"] = 0
 
 		C_ChatInfo.RegisterAddonMessagePrefix("EquipRecGear")
 
@@ -135,9 +136,6 @@ app.Event:Register("CHAT_MSG_ADDON", function(prefix, text, channel, sender, tar
 					-- Now compare our versions
 					if otherGameVersion > localGameVersion or (otherGameVersion == localGameVersion and otherAddonVersion > localAddonVersion) then
 						-- But only send the message once every 10 minutes
-						if not app.Flag["versionCheck"] then
-							app.Flag["versionCheck"] = 0
-						end
 						if GetServerTime() - app.Flag["versionCheck"] > 600 then
 							app.Print(L.NEW_VERSION_AVAILABLE, version)
 							app.Flag["versionCheck"] = GetServerTime()
