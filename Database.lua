@@ -1,7 +1,6 @@
 ------------------------------------------
 -- Equip Recommended Gear: Database.lua --
 ------------------------------------------
--- Raw information to refer to
 
 -- Initialisation
 local appName, app = ...	-- Returns the addon name and a unique table

@@ -24,3 +24,4 @@
 libs\ChatThrottleLib\ChatThrottleLib.xml
 Core.lua
 Database.lua
+modules\EquipRecommendedGear.lua
