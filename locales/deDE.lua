@@ -5,11 +5,9 @@
 -- Translator(s):
 
 -- Initialisation
-local appName, app =  ...
-local L = app.locales
-
--- Only load this file when the appropriate locale is found
 if GetLocale() ~= "deDE" then return end
+local appName, app = ...
+local L = app.locales
 
 -- Slash commands
 -- L.DEBUG_ENABLED =			"Debug mode enabled."
