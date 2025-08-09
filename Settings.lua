@@ -14,7 +14,6 @@ app.Event:Register("ADDON_LOADED", function(addOnName, containsBindings)
 	if addOnName == appName then
 		if not EquipRecommendedGear_Settings then EquipRecommendedGear_Settings = {} end
 		if not EquipRecommendedGear_Settings["debug"] then EquipRecommendedGear_Settings["debug"] = false end
-
 		app.Settings()
 	end
 end)
