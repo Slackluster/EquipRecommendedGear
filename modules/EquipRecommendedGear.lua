@@ -555,157 +555,159 @@ function api.DoTheThing(msg)
 		DevTools_Dump(weaponUpgrade)
 	end
 
-	-- Get best weapons (thanks ChatGPT)
-	function findBestWeaponCombo(weaponUpgrade)
-		if #weaponUpgrade == 1 then
-			return weaponUpgrade
-		end
-
-		local maxIlv = 0
-		local bestCombo = {}
-
-		-- Fury Warriors without Single-Minded Fury use two 2Handers
-		if app.SpecID == 722 then
-			for i, weapon1 in ipairs(weaponUpgrade) do
-				for j, weapon2 in ipairs(weaponUpgrade) do
-					if i ~= j and weapon1["slot"] == 1617 and weapon2["slot"] == 1617 then
-						local comboIlv = weapon1["ilv"] + weapon2["ilv"]
-
-						if comboIlv > maxIlv then
-							maxIlv = comboIlv
-							bestCombo = { weapon1, weapon2 }
-						end
-					end
-				end
+	if EquipRecommendedGear_CharSettings["includeWeapons"] then
+		-- Get best weapons (thanks ChatGPT)
+		function findBestWeaponCombo(weaponUpgrade)
+			if #weaponUpgrade == 1 then
+				return weaponUpgrade
 			end
-		else
-			for i, weapon1 in ipairs(weaponUpgrade) do
-				for j, weapon2 in ipairs(weaponUpgrade) do
-					if i ~= j then
-						local comboIlv = weapon1["ilv"]
 
-						if weapon1["slot"] == 1617 then
-							-- If it's a two-handed weapon, count its ilv twice
-							comboIlv = comboIlv * 2
-						else
-							-- Check valid combinations for one-handed, main-hand, and off-hand weapons
-							if (weapon1["slot"] == 16 and weapon2["slot"] == 17) or
-							(weapon1["slot"] == 17 and weapon2["slot"] == 16) or
-							(weapon1["slot"] == 16 and weapon2["slot"] == 18) or
-							(weapon1["slot"] == 18 and weapon2["slot"] == 16) or
-							(weapon1["slot"] == 18 and weapon2["slot"] == 17) or
-							(weapon1["slot"] == 17 and weapon2["slot"] == 18) or
-							(weapon1["slot"] == 18 and weapon2["slot"] == 18) then
-								comboIlv = comboIlv + weapon2["ilv"]
-							end
-						end
+			local maxIlv = 0
+			local bestCombo = {}
 
-						if comboIlv > maxIlv then
-							maxIlv = comboIlv
-							if weapon1["slot"] == 1617 then
-								bestCombo = { weapon1 }
-							else
+			-- Fury Warriors without Single-Minded Fury use two 2Handers
+			if app.SpecID == 722 then
+				for i, weapon1 in ipairs(weaponUpgrade) do
+					for j, weapon2 in ipairs(weaponUpgrade) do
+						if i ~= j and weapon1["slot"] == 1617 and weapon2["slot"] == 1617 then
+							local comboIlv = weapon1["ilv"] + weapon2["ilv"]
+
+							if comboIlv > maxIlv then
+								maxIlv = comboIlv
 								bestCombo = { weapon1, weapon2 }
 							end
 						end
 					end
 				end
-			end
-		end
+			else
+				for i, weapon1 in ipairs(weaponUpgrade) do
+					for j, weapon2 in ipairs(weaponUpgrade) do
+						if i ~= j then
+							local comboIlv = weapon1["ilv"]
 
-		return bestCombo
-	end
+							if weapon1["slot"] == 1617 then
+								-- If it's a two-handed weapon, count its ilv twice
+								comboIlv = comboIlv * 2
+							else
+								-- Check valid combinations for one-handed, main-hand, and off-hand weapons
+								if (weapon1["slot"] == 16 and weapon2["slot"] == 17) or
+								(weapon1["slot"] == 17 and weapon2["slot"] == 16) or
+								(weapon1["slot"] == 16 and weapon2["slot"] == 18) or
+								(weapon1["slot"] == 18 and weapon2["slot"] == 16) or
+								(weapon1["slot"] == 18 and weapon2["slot"] == 17) or
+								(weapon1["slot"] == 17 and weapon2["slot"] == 18) or
+								(weapon1["slot"] == 18 and weapon2["slot"] == 18) then
+									comboIlv = comboIlv + weapon2["ilv"]
+								end
+							end
 
-	local bestWeapons = findBestWeaponCombo(weaponUpgrade)
-
-	if EquipRecommendedGear_Settings["debug"] then
-		app.Print("DEBUG: BEST WEAPONS")
-		DevTools_Dump(bestWeapons)
-	end
-
-	-- Sort the best weapons by item level, which matters for dual wielding
-	table.sort(bestWeapons, function(a, b)
-		if a.ilv == b.ilv then
-			return a.item > b.item	-- Sort by item if ilv is the same
-		else
-			return a.ilv > b.ilv	-- Sort by ilv first
-		end
-	end)
-
-	if EquipRecommendedGear_Settings["debug"] then
-		app.Print("DEBUG: BEST WEAPONS SORTED")
-		DevTools_Dump(bestWeapons)
-	end
-
-	-- Check the currently equipped weapons
-	local item16 = GetInventoryItemLink("player", 16) or "None"
-	local item17 = GetInventoryItemLink("player", 17) or "None"
-	local dualCount = 0
-
-	for k, v in pairs(bestWeapons) do
-		-- Treat 2H weapons for Fury Warriors as though they are One-Handed weapons which can be equipped in any slot
-		if v.slot == 1617 and app.SpecID == 722 then
-			v.slot = 18
-		-- Set other 2H weapons to equip in the main hand slot
-		elseif v.slot == 1617 then
-			v.slot = 16
-		end
-
-		-- If we're dealing with weapons that can be equipped in either slot
-		if v.slot == 18 then
-			dualCount = dualCount + 1
-		end
-	end
-
-	-- Put the weapons back in the upgrade table if not equipped (in the right slot)
-	for k, v in pairs(bestWeapons) do
-		-- If dual wielding is not applicable
-		if dualCount == 0 then
-			-- If the item is not equipped
-			if (v.slot == 16 and v.item ~= item16) or (v.slot == 17 and v.item ~= item17) then
-				upgrade[#upgrade+1] = v
-			end
-		-- If dual wielding with 1 upgrade
-		elseif dualCount == 1 then
-			if #bestWeapons == 2 then
-				if bestWeapons[1].slot == 16 or bestWeapons[2].slot == 17 then
-					if k == 1 and v.item ~= item16 then
-						v.slot = 16
-						upgrade[#upgrade+1] = v
-					elseif k == 2 and v.item ~= item17 then
-						v.slot = 17
-						upgrade[#upgrade+1] = v
-					end
-				elseif bestWeapons[1].slot == 17 or bestWeapons[2].slot == 16 then
-					if k == 2 and v.item ~= item16 then
-						v.slot = 16
-						upgrade[#upgrade+1] = v
-					elseif k == 1 and v.item ~= item17 then
-						v.slot = 17
-						upgrade[#upgrade+1] = v
+							if comboIlv > maxIlv then
+								maxIlv = comboIlv
+								if weapon1["slot"] == 1617 then
+									bestCombo = { weapon1 }
+								else
+									bestCombo = { weapon1, weapon2 }
+								end
+							end
+						end
 					end
 				end
-			elseif v.item ~= item16 then
-				v.slot = 16
-				upgrade[#upgrade+1] = v
 			end
-		-- If dual wielding with 2 upgrades
-		elseif dualCount == 2 then
-			-- First item, highest iLv, to main hand
-			if k == 1 and v.item ~= item16 then
+
+			return bestCombo
+		end
+
+		local bestWeapons = findBestWeaponCombo(weaponUpgrade)
+
+		if EquipRecommendedGear_Settings["debug"] then
+			app.Print("DEBUG: BEST WEAPONS")
+			DevTools_Dump(bestWeapons)
+		end
+
+		-- Sort the best weapons by item level, which matters for dual wielding
+		table.sort(bestWeapons, function(a, b)
+			if a.ilv == b.ilv then
+				return a.item > b.item	-- Sort by item if ilv is the same
+			else
+				return a.ilv > b.ilv	-- Sort by ilv first
+			end
+		end)
+
+		if EquipRecommendedGear_Settings["debug"] then
+			app.Print("DEBUG: BEST WEAPONS SORTED")
+			DevTools_Dump(bestWeapons)
+		end
+
+		-- Check the currently equipped weapons
+		local item16 = GetInventoryItemLink("player", 16) or "None"
+		local item17 = GetInventoryItemLink("player", 17) or "None"
+		local dualCount = 0
+
+		for k, v in pairs(bestWeapons) do
+			-- Treat 2H weapons for Fury Warriors as though they are One-Handed weapons which can be equipped in any slot
+			if v.slot == 1617 and app.SpecID == 722 then
+				v.slot = 18
+			-- Set other 2H weapons to equip in the main hand slot
+			elseif v.slot == 1617 then
 				v.slot = 16
-				upgrade[#upgrade+1] = v
-			-- Second item, second-highest iLv, to off hand
-			elseif k == 2 and v.item ~= item17 then
-				v.slot = 17
-				upgrade[#upgrade+1] = v
+			end
+
+			-- If we're dealing with weapons that can be equipped in either slot
+			if v.slot == 18 then
+				dualCount = dualCount + 1
 			end
 		end
-	end
 
-	if EquipRecommendedGear_Settings["debug"] then
-		app.Print("DEBUG: BEST WEAPONS SORTED 2")
-		DevTools_Dump(bestWeapons)
+		-- Put the weapons back in the upgrade table if not equipped (in the right slot)
+		for k, v in pairs(bestWeapons) do
+			-- If dual wielding is not applicable
+			if dualCount == 0 then
+				-- If the item is not equipped
+				if (v.slot == 16 and v.item ~= item16) or (v.slot == 17 and v.item ~= item17) then
+					upgrade[#upgrade+1] = v
+				end
+			-- If dual wielding with 1 upgrade
+			elseif dualCount == 1 then
+				if #bestWeapons == 2 then
+					if bestWeapons[1].slot == 16 or bestWeapons[2].slot == 17 then
+						if k == 1 and v.item ~= item16 then
+							v.slot = 16
+							upgrade[#upgrade+1] = v
+						elseif k == 2 and v.item ~= item17 then
+							v.slot = 17
+							upgrade[#upgrade+1] = v
+						end
+					elseif bestWeapons[1].slot == 17 or bestWeapons[2].slot == 16 then
+						if k == 2 and v.item ~= item16 then
+							v.slot = 16
+							upgrade[#upgrade+1] = v
+						elseif k == 1 and v.item ~= item17 then
+							v.slot = 17
+							upgrade[#upgrade+1] = v
+						end
+					end
+				elseif v.item ~= item16 then
+					v.slot = 16
+					upgrade[#upgrade+1] = v
+				end
+			-- If dual wielding with 2 upgrades
+			elseif dualCount == 2 then
+				-- First item, highest iLv, to main hand
+				if k == 1 and v.item ~= item16 then
+					v.slot = 16
+					upgrade[#upgrade+1] = v
+				-- Second item, second-highest iLv, to off hand
+				elseif k == 2 and v.item ~= item17 then
+					v.slot = 17
+					upgrade[#upgrade+1] = v
+				end
+			end
+		end
+
+		if EquipRecommendedGear_Settings["debug"] then
+			app.Print("DEBUG: BEST WEAPONS SORTED 2")
+			DevTools_Dump(bestWeapons)
+		end
 	end
 
 	-- Set the message variable if it's not set (properly)

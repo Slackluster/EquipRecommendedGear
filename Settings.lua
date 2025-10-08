@@ -14,6 +14,7 @@ app.Event:Register("ADDON_LOADED", function(addOnName, containsBindings)
 	if addOnName == appName then
 		if not EquipRecommendedGear_Settings then EquipRecommendedGear_Settings = {} end
 		if not EquipRecommendedGear_Settings["debug"] then EquipRecommendedGear_Settings["debug"] = false end
+		if not EquipRecommendedGear_CharSettings then EquipRecommendedGear_CharSettings = {} end
 		app.Settings()
 	end
 end)
@@ -47,4 +48,12 @@ function app.Settings()
 		cbSetting, cbName, cbTooltip,
 		ddSetting, GetOptions, ddName, ddTooltip)
 	layout:AddInitializer(initializer)
+
+	local variable, name, tooltip = "includeWeapons", L.SETTINGS_INCLUDEWEAPONS_TITLE, L.SETTINGS_INCLUDEWEAPONS_TOOLTIP
+	local setting = Settings.RegisterAddOnSetting(category, appName .. "_" .. variable, variable, EquipRecommendedGear_CharSettings, Settings.VarType.Boolean, name, true)
+	checkbox = Settings.CreateCheckbox(category, setting, tooltip)
+
+	if PlayerGetTimerunningSeasonID() ~= nil then
+		EquipRecommendedGear_CharSettings["includeWeapons"] = false
+	end
 end

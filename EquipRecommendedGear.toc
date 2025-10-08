@@ -7,7 +7,7 @@
 ## X-Wago-ID: bGoMqq60
 
 ## SavedVariables: EquipRecommendedGear_Settings
-## SavedVariablesPerCharacter:
+## SavedVariablesPerCharacter: EquipRecommendedGear_CharSettings
 
 ## Category-enUS: Equipment
 ## Category-deDE: Ausrüstung
