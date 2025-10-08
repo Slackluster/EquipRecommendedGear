@@ -1,4 +1,4 @@
-## Interface: 110200
+## Interface: 110205
 ## Title: |cffC69B6DEquip Recommended Gear|r
 ## Author: Slackluster
 ## IconTexture: Interface\AddOns\EquipRecommendedGear\assets\erg_icon.blp
