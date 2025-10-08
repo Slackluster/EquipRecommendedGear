@@ -40,3 +40,6 @@ local L = app.locales
 -- L.MESSAGE_ALWAYS_DESC =				"Always send a chat message, even if " .. app.NameShort .. " hasn't equipped an item level upgrade."
 -- L.SETTINGS_INCLUDEWEAPONS_TITLE	=	"Include Weapons"
 -- L.SETTINGS_INCLUDEWEAPONS_TOOLTIP =	"Include weapons when doing the thing.\nThis is a character-specific setting."
+
+-- Keybinds
+-- _G["BINDING_NAME_ERG_DOTHETHING"] =	"Equip Recommended Gear"	-- This time it's not the addon name, but the keybind action, so may be translated
