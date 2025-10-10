@@ -1,5 +1,5 @@
 # Equip Recommended Gear
-A World of Warcraft addon. Download locations: [CurseForge](https://www.curseforge.com/wow/addons/equip-recommended-gear) | [Wago.io](https://addons.wago.io/addons/erg)
+A World of Warcraft addon. Download locations: [CurseForge](https://www.curseforge.com/wow/addons/equip-recommended-gear) | [Wago](https://addons.wago.io/addons/erg)
 
 # Description
 **Equip Recommended Gear** adds a button to your character pane that equips the highest item level gear for your class & spec. Inspired by the same feature available in **Final Fantasy XIV Online**.
