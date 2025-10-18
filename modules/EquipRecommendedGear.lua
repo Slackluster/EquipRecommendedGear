@@ -82,9 +82,8 @@ function api.DoTheThing(msg)
 	local className, classFile = GetClassInfo(app.ClassID)
 	local _, _, _, classColor = GetClassColor(classFile)
 
-	-- Fury Warrior talent choice
+	-- Use custom specIDs for Fury Warr to handle 2x2H vs 2x1H
 	if app.SpecID == 72 then
-		-- Single-Minded Fury
 		if IsPlayerSpell(81099) then
 			app.SpecID = 721
 		else
@@ -93,10 +92,10 @@ function api.DoTheThing(msg)
 	end
 
 	local armorClass
-	for k, v in pairs(app.Armor) do
-		for _, v2 in pairs(v) do
-			if v2 == app.ClassID then
-				armorClass = k
+	for armor, classes in pairs(app.Armor) do
+		for _, class in pairs(classes) do
+			if class == app.ClassID then
+				armorClass = armor
 				break
 			end
 		end
@@ -225,19 +224,14 @@ function api.DoTheThing(msg)
 		end
 	end
 
-	app.CanDualWield = false
-	for k, v in pairs(app.DualWield) do
-		if app.SpecID == v then
-			app.CanDualWield = true
-		end
-	end
-
-	-- Move one-handed weapons to main hand, if the character cannot dual wield
-	if not app.CanDualWield then
-		for k, v in pairs(eligibleItems) do
-			if app.Slot[v.itemEquipLoc] == 18 then
-				upgrades[k].itemEquipLoc = "INVTYPE_WEAPONMAINHAND"
+	for _, spec in pairs(app.DualWield) do
+		if app.SpecID == spec then
+			for i, item in pairs(eligibleItems) do
+				if app.Slot[item.itemEquipLoc] == 18 then
+					upgrades[i].itemEquipLoc = "INVTYPE_WEAPONMAINHAND"
+				end
 			end
+			break
 		end
 	end
 
