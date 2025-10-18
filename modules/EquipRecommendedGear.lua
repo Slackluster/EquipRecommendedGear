@@ -227,7 +227,7 @@ function api.DoTheThing(msg)
 		if app.SpecID == spec then
 			for i, item in pairs(eligibleItems) do
 				if app.Slot[item.itemEquipLoc] == 18 then
-					upgrades[i].itemEquipLoc = "INVTYPE_WEAPONMAINHAND"
+					eligibleItems[i].itemEquipLoc = "INVTYPE_WEAPONMAINHAND"
 				end
 			end
 			break
