@@ -18,12 +18,11 @@ local L = app.locales
 -- L.NEW_VERSION_AVAILABLE =			"There is a newer version of " .. app.NameLong .. " available:"
 
 -- Equip Recommended Gear
+-- L.TRY_AGAIN =						"Please try again in a few seconds."
 -- L.ERROR_COMBAT =					"Cannot recommend gear while in combat."
--- L.ERROR_HEIRLOOM =					"Could not read equipped heirloom gear. Please try again in a few seconds."
--- L.ERROR_HEIRLOOM_WEAPON =			"Could not read equipped heirloom weapon(s). Please try again in a few seconds. If this error keeps occurring, please ensure you do not have an outdated Hellscream weapon."
--- L.ERROR_INVENTORY =					"Could not read gear in inventory. Please try again in a few seconds."
--- L.ERROR_WEAPON =					"Could not read equipped weapon(s). Please try again in a few seconds."
--- L.ERROR_EQUIP =						"Could not equip recommended gear. Please try again in a few seconds."
+-- L.ERROR_INVENTORY =					"Could not read items in inventory." .. " " .. L.TRY_AGAIN
+-- L.ERROR_EQUIPPED =					"Could not read equipped items." .. " " .. L.TRY_AGAIN
+-- L.ERROR_EQUIP =						"Could not equip recommended gear." .. " " .. L.TRY_AGAIN
 -- L.EQUIP_NO_UPDGRADE =				"You are currently equipped with the recommended gear for"	-- Followed by " Spec Class."
 -- L.EQUIP_UPDGRADE =					"Equipped gear recommended for"	-- Followed by " Spec Class."
 
