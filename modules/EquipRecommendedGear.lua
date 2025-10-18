@@ -82,6 +82,16 @@ function api.DoTheThing(msg)
 	local className, classFile = GetClassInfo(app.ClassID)
 	local _, _, _, classColor = GetClassColor(classFile)
 
+	-- Fury Warrior talent choice
+	if app.SpecID == 72 then
+		-- Single-Minded Fury
+		if IsPlayerSpell(81099) then
+			app.SpecID = 721
+		else
+			app.SpecID = 722
+		end
+	end
+
 	local armorClass
 	for k, v in pairs(app.Armor) do
 		for _, v2 in pairs(v) do
@@ -93,37 +103,11 @@ function api.DoTheThing(msg)
 	end
 
 	local primaryStat
-	for k, v in pairs(app.Stat) do
-		for _, v2 in pairs(v) do
-			if v2 == app.SpecID then
-				primaryStat = k
+	for stat, specs in pairs(app.Stat) do
+		for _, spec in pairs(specs) do
+			if spec == app.SpecID then
+				primaryStat = stat
 				break
-			end
-		end
-	end
-
-	-- Fury Warrior talent choice
-	if app.SpecID == 72 then
-		-- Single-Minded Fury
-		if IsPlayerSpell(81099) then
-			app.SpecID = 721
-		else
-			app.SpecID = 722
-		end
-	end
-
-	app.CanDualWield = false
-	for k, v in pairs(app.DualWield) do
-		if app.SpecID == v then
-			app.CanDualWield = true
-		end
-	end
-
-	-- Move one-handed weapons to main hand, if the character cannot dual wield
-	if not app.CanDualWield then
-		for k, v in pairs(eligibleItems) do
-			if app.Slot[v.itemEquipLoc] == 18 then
-				upgrades[k].itemEquipLoc = "INVTYPE_WEAPONMAINHAND"
 			end
 		end
 	end
@@ -216,10 +200,12 @@ function api.DoTheThing(msg)
 
 						-- Filter by spec-appropriate weapons
 						if itemType == "2.19" then itemEquipLoc = "INVTYPE_WEAPONMAINHAND" end	-- Adjust Wands because goddammit Blizzard
-						for kType, vType in pairs(app.Type) do
-							if vType == itemEquipLoc and not (itemType == "4.1" or itemType == "4.2" or itemType == "4.3" or itemType == "4.4" or (itemType == "4.0" and itemEquipLoc ~= "INVTYPE_HOLDABLE" and itemEquipLoc ~= "INVTYPE_WEAPONOFFHAND")) then
-								for _, weapon in pairs(app.Weapon[kType]) do
-									if weapon == app.SpecID then
+							--722
+						for typeText, typeNumber in pairs(app.Type) do
+							if typeNumber == itemType and not (itemType == "4.1" or itemType == "4.2" or itemType == "4.3" or itemType == "4.4" or (itemType == "4.0" and itemEquipLoc ~= "INVTYPE_HOLDABLE" and itemEquipLoc ~= "INVTYPE_WEAPONOFFHAND")) then
+								for _, spec in pairs(app.Weapon[typeText]) do
+									if spec == app.SpecID then
+										print(itemLink)
 										for stat, _ in pairs(C_Item.GetItemStats(itemLink)) do
 											if primaryStat == stat then
 												equippable = true
@@ -235,6 +221,22 @@ function api.DoTheThing(msg)
 						end
 					end
 				end
+			end
+		end
+	end
+
+	app.CanDualWield = false
+	for k, v in pairs(app.DualWield) do
+		if app.SpecID == v then
+			app.CanDualWield = true
+		end
+	end
+
+	-- Move one-handed weapons to main hand, if the character cannot dual wield
+	if not app.CanDualWield then
+		for k, v in pairs(eligibleItems) do
+			if app.Slot[v.itemEquipLoc] == 18 then
+				upgrades[k].itemEquipLoc = "INVTYPE_WEAPONMAINHAND"
 			end
 		end
 	end
@@ -311,8 +313,8 @@ function api.DoTheThing(msg)
 			end
 		end)
 
-		-- Keep two of rings, trinkets, and one-handed weapons that can go in either slot
-		local keepCount = (slot == 11 or slot == 13 or slot == 18) and 2 or 1
+		-- Keep two of rings, trinkets, two-handed weapons (fury warr) and one-handed weapons that can go in either slot
+		local keepCount = (slot == 11 or slot == 13 or slot == 1617 or slot == 18) and 2 or 1
 
 		for i = 1, math.min(#items, keepCount) do
 			tinsert(filtered, items[i])
@@ -485,7 +487,7 @@ function api.DoTheThing(msg)
 
 			-- ADJUST EQUIPSLOT
 			if #bestCombo == 1 and bestCombo[1].equipSlot == 1617 then
-				-- 2H → main hand (16)
+				-- Single 2H → main hand (16)
 				bestCombo[1].equipSlot = 16
 			elseif #bestCombo == 2 then
 				local w1, w2 = bestCombo[1], bestCombo[2]
@@ -496,14 +498,15 @@ function api.DoTheThing(msg)
 					second.equipSlot = 17
 				end
 
-				-- Only need to handle valid dual-wield combos (16+17, 16+18, 18+17, 18+18)
+				-- Handle valid dual-wield combos AND 2H+2H
 				if (s1 == 16 and s2 == 17)
 				or (s1 == 16 and s2 == 18)
 				or (s1 == 18 and s2 == 17)
-				or (s1 == 18 and s2 == 18) then
+				or (s1 == 18 and s2 == 18)
+				or (s1 == 1617 and s2 == 1617) then
 
-					-- Special handling for 18+18
-					if s1 == 18 and s2 == 18 then
+					-- Special handling for 18+18 or 1617+1617
+					if (s1 == 18 and s2 == 18) or (s1 == 1617 and s2 == 1617) then
 						-- One equipped? keep its bagSlot
 						if w1.bag == -1 and w2.bag ~= -1 then
 							if w1.bagSlot == 16 then assignSlots(w1, w2) else assignSlots(w2, w1) end
