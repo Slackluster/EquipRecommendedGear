@@ -204,7 +204,6 @@ function api.DoTheThing(msg)
 							if typeNumber == itemType and not (itemType == "4.1" or itemType == "4.2" or itemType == "4.3" or itemType == "4.4" or (itemType == "4.0" and itemEquipLoc ~= "INVTYPE_HOLDABLE" and itemEquipLoc ~= "INVTYPE_WEAPONOFFHAND")) then
 								for _, spec in pairs(app.Weapon[typeText]) do
 									if spec == app.SpecID then
-										print(itemLink)
 										for stat, _ in pairs(C_Item.GetItemStats(itemLink)) do
 											if primaryStat == stat then
 												equippable = true
