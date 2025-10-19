@@ -49,11 +49,12 @@ function app.Settings()
 		ddSetting, GetOptions, ddName, ddTooltip)
 	layout:AddInitializer(initializer)
 
+	local variable, name, tooltip = "ignoreLemixJewelry", L.SETTINGS_IGNORELEMIXJEWELRY_TITLE, L.SETTINGS_IGNORELEMIXJEWELRY_TOOLTIP
+	local setting = Settings.RegisterAddOnSetting(category, appName .. "_" .. variable, variable, EquipRecommendedGear_Settings, Settings.VarType.Boolean, name, true)
+	checkbox = Settings.CreateCheckbox(category, setting, tooltip)
+
 	local variable, name, tooltip = "includeWeapons", L.SETTINGS_INCLUDEWEAPONS_TITLE, L.SETTINGS_INCLUDEWEAPONS_TOOLTIP
 	local setting = Settings.RegisterAddOnSetting(category, appName .. "_" .. variable, variable, EquipRecommendedGear_CharSettings, Settings.VarType.Boolean, name, true)
 	checkbox = Settings.CreateCheckbox(category, setting, tooltip)
-
-	if PlayerGetTimerunningSeasonID() ~= nil then
-		EquipRecommendedGear_CharSettings["includeWeapons"] = false
-	end
+	if PlayerGetTimerunningSeasonID() then EquipRecommendedGear_CharSettings["includeWeapons"] = false end
 end
