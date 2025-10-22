@@ -6,6 +6,7 @@
 local appName, app = ...
 
 -- Used strings
+app.Name = "Equip Recommended Gear"
 app.NameLong = app.Colour("Equip Recommended Gear")
 app.NameShort = app.Colour("ERG")
 
