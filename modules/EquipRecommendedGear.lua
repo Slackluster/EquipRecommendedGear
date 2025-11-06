@@ -50,7 +50,7 @@ function app.CreateAssets()
 	app.Button.Tooltip:SetBackdropColor(0, 0, 0, 0.7)
 	app.Button.Tooltip:EnableMouse(true)
 
-	local string = app.Button.Tooltip:CreateFontString("ARTWORK", nil, "GameFontNormal")
+	local string = app.Button.Tooltip:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 	string:SetPoint("CENTER", app.Button.Tooltip, "CENTER", 0, 0)
 	string:SetPoint("TOP", app.Button.Tooltip, "TOP", 0, -10)
 	string:SetJustifyH("CENTER")
@@ -84,7 +84,7 @@ function api.DoTheThing(msg)
 
 	-- Use custom specIDs for Fury Warr to handle 2x2H vs 2x1H
 	if app.SpecID == 72 then
-		if IsPlayerSpell(81099) then
+		if C_SpellBook.IsSpellKnown(81099) then
 			app.SpecID = 721
 		else
 			app.SpecID = 722
