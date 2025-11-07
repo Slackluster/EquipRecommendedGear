@@ -27,6 +27,13 @@ local L = app.locales
 -- L.EQUIP_UPDGRADE =					"Equipped gear recommended for"	-- Followed by " Spec Class."
 
 -- Settings
+-- L.SETTINGS_SUPPORT_TEXTLONG =			"Developing this addon takes a significant amount of time and effort.\nPlease consider financially supporting the developer."
+-- L.SETTINGS_SUPPORT_TEXT =				"Support"
+-- L.SETTINGS_SUPPORT_BUTTON =				"Link"
+-- L.SETTINGS_SUPPORT_DESC =				"Thank you!"
+-- L.SETTINGS_SUPPORT_COPY =				"Ctrl+C to copy:"
+-- L.SETTINGS_SUPPORT_COPIED =				"Link copied to clipboard"
+
 -- L.RUN_AFTER_QUEST =					"Run on Quest Completion"
 -- L.RUN_AFTER_QUEST_DESC =			"Run " .. app.NameShort .. " whenever you complete a quest."
 -- L.CHAT_MESSAGE =					"Send Chat Message"
