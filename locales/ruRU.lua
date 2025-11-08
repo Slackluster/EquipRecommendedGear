@@ -2,7 +2,7 @@
 -- Equip Recommended Gear: ruRU.lua --
 --------------------------------------
 -- Russian (Russia) localisation
--- Translator(s):
+-- Translator(s): ZamestoTV
 
 -- Initialisation
 if GetLocale() ~= "ruRU" then return end
@@ -10,44 +10,44 @@ local appName, app = ...
 local L = app.locales
 
 -- Slash commands
--- L.DEBUG_ENABLED =						"Debug mode enabled."
--- L.DEBUG_DISABLED =						"Debug mode disabled."
--- L.INVALID_COMMAND =						"Invalid command."
+L.DEBUG_ENABLED = "Режим отладки включён."
+L.DEBUG_DISABLED = "Режим отладки отключён."
+L.INVALID_COMMAND = "Неверная команда."
 
 -- Version comms
--- L.NEW_VERSION_AVAILABLE =				"There is a newer version of " .. app.NameLong .. " available:"
+L.NEW_VERSION_AVAILABLE = "Доступна новая версия " .. app.NameLong .. ":"
 
 -- Equip Recommended Gear
--- L.TRY_AGAIN =							"Please try again in a few seconds."
--- L.ERROR_COMBAT =						"Cannot recommend gear while in combat."
--- L.ERROR_INVENTORY =						"Could not read items in inventory." .. " " .. L.TRY_AGAIN
--- L.ERROR_EQUIPPED =						"Could not read equipped items." .. " " .. L.TRY_AGAIN
--- L.ERROR_EQUIP =							"Could not equip recommended gear." .. " " .. L.TRY_AGAIN
--- L.EQUIP_NO_UPDGRADE =					"You are currently equipped with the recommended gear for"	-- Followed by " Spec Class."
--- L.EQUIP_UPDGRADE =						"Equipped gear recommended for"	-- Followed by " Spec Class."
+L.TRY_AGAIN = "Пожалуйста, попробуйте снова через несколько секунд."
+L.ERROR_COMBAT = "Нельзя рекомендовать экипировку во время боя."
+L.ERROR_INVENTORY = "Не удалось прочитать предметы в сумках." .. " " .. L.TRY_AGAIN
+L.ERROR_EQUIPPED = "Не удалось прочитать надетые предметы." .. " " .. L.TRY_AGAIN
+L.ERROR_EQUIP = "Не удалось надеть рекомендованную экипировку." .. " " .. L.TRY_AGAIN
+L.EQUIP_NO_UPDGRADE = "У вас уже надета рекомендованная экипировка для"	
+L.EQUIP_UPGRADE = "Надета рекомендованная экипировка для"
 
 -- Settings
--- L.SETTINGS_SUPPORT_TEXTLONG =			"Developing this addon takes a significant amount of time and effort.\nPlease consider financially supporting the developer."
--- L.SETTINGS_SUPPORT_TEXT =				"Support"
--- L.SETTINGS_SUPPORT_BUTTON =				"Link"
--- L.SETTINGS_SUPPORT_DESC =				"Thank you!"
--- L.SETTINGS_SUPPORT_COPY =				"Ctrl+C to copy:"
--- L.SETTINGS_SUPPORT_COPIED =				"Link copied to clipboard"
+L.SETTINGS_SUPPORT_TEXTLONG = "Разработка этого аддона требует значительного времени и усилий.\nПожалуйста, рассмотрите возможность финансовой поддержки разработчика."
+L.SETTINGS_SUPPORT_TEXT = "Поддержать"
+L.SETTINGS_SUPPORT_BUTTON = "Ссылка"
+L.SETTINGS_SUPPORT_DESC = "Спасибо!"
+L.SETTINGS_SUPPORT_COPY = "Ctrl+C — скопировать:"
+L.SETTINGS_SUPPORT_COPIED = "Ссылка скопирована в буфер обмена"
 
--- L.RUN_AFTER_QUEST =						"Run on Quest Completion"
--- L.RUN_AFTER_QUEST_DESC =				"Run " .. app.NameShort .. " whenever you complete a quest."
--- L.CHAT_MESSAGE =						"Send Chat Message"
--- L.CHAT_MESSAGE_DESC =					"These settings only affect the chat message sent after quest completion."
--- L.MESSAGE_NEVER =						"Never Send Message"
--- L.MESSAGE_NEVER_DESC =					"Don't send a message in chat, even if " .. app.NameShort .. " has equipped an item level upgrade."
--- L.MESSAGE_UPGRADE =						"Only With Upgrade"
--- L.MESSAGE_UPGRADE_DESC =				"Only send a message in chat if " .. app.NameShort .. " has equipped an item level upgrade."
--- L.MESSAGE_ALWAYS =						"Always Send Message"
--- L.MESSAGE_ALWAYS_DESC =					"Always send a chat message, even if " .. app.NameShort .. " hasn't equipped an item level upgrade."
--- L.SETTINGS_INCLUDEWEAPONS_TITLE	=		"Include Weapons"
--- L.SETTINGS_INCLUDEWEAPONS_TOOLTIP =		"Include weapons when doing the thing.\nThis is a character-specific setting."
--- L.SETTINGS_IGNORELEMIXJEWELRY_TITLE =	"[Remix] Ignore jewelry"
--- L.SETTINGS_IGNORELEMIXJEWELRY_TOOLTIP =	"Ignore jewelry for Legion Timerunners."
+L.RUN_AFTER_QUEST = "Запускать после выполнения задания"
+L.RUN_AFTER_QUEST_DESC = "Запускать " .. app.NameShort .. " каждый раз после выполнения задания."
+L.CHAT_MESSAGE = "Сообщение в чат"
+L.CHAT_MESSAGE_DESC = "Эти настройки влияют только на сообщение в чат после выполнения задания."
+L.MESSAGE_NEVER = "Никогда не отправлять"
+L.MESSAGE_NEVER_DESC = "Не отправлять сообщение в чат, даже если " .. app.NameShort .. " надел улучшение по уровню предмета."
+L.MESSAGE_UPGRADE = "Только при улучшении"
+L.MESSAGE_UPGRADE_DESC = "Отправлять сообщение в чат, только если " .. app.NameShort .. " надел улучшение по уровню предмета."
+L.MESSAGE_ALWAYS = "Всегда отправлять"
+L.MESSAGE_ALWAYS_DESC = "Всегда отправлять сообщение в чат, даже если " .. app.NameShort .. " не надел улучшение."
+L.SETTINGS_INCLUDEWEAPONS_TITLE = "Учитывать оружие"
+L.SETTINGS_INCLUDEWEAPONS_TOOLTIP = "Учитывать оружие при рекомендациях.\nНастройка для каждого персонажа отдельно."
+L.SETTINGS_IGNORELEMIXJEWELRY_TITLE = "[Remix] Игнорировать украшения"
+L.SETTINGS_IGNORELEMIXJEWELRY_TOOLTIP = "Игнорировать украшения для таймеруннеров Легиона."
 
 -- Keybinds
--- _G["BINDING_NAME_ERG_DOTHETHING"] =		"Equip Recommended Gear"	-- This time it's not the addon name, but the keybind action, so may be translated
+_G["BINDING_NAME_ERG_DOTHETHING"] = "Equip Recommended Gear"
