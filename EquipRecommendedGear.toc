@@ -27,6 +27,8 @@ Database.lua
 Settings.lua
 SettingsTemplates.xml
 modules\EquipRecommendedGear.lua
+modules\ItemInfo.lua
+integrations\Baganator.lua
 locales\enUS.lua
 locales\deDE.lua
 locales\esES.lua

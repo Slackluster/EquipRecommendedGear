@@ -189,30 +189,7 @@ function api.DoTheThing(msg)
 							end
 						end
 
-						local itemType = classID.."."..subclassID
-						local equippable = false
-
-						-- Filter by armor class
-						if itemType == app.Type[armorClass] or (itemType == app.Type["General"] and itemEquipLoc ~= "INVTYPE_TABARD" and itemEquipLoc ~= "INVTYPE_BODY" and itemEquipLoc ~= "INVTYPE_WEAPONOFFHAND" and itemEquipLoc ~= "INVTYPE_HOLDABLE" and itemEquipLoc ~= "INVTYPE_SHIELD") or itemEquipLoc == "INVTYPE_CLOAK" then
-							equippable = true
-						end
-
-						-- Filter by spec-appropriate weapons
-						if itemType == "2.19" then itemEquipLoc = "INVTYPE_WEAPONMAINHAND" end	-- Adjust Wands because goddammit Blizzard
-							--722
-						for typeText, typeNumber in pairs(app.Type) do
-							if typeNumber == itemType and not (itemType == "4.1" or itemType == "4.2" or itemType == "4.3" or itemType == "4.4" or (itemType == "4.0" and itemEquipLoc ~= "INVTYPE_HOLDABLE" and itemEquipLoc ~= "INVTYPE_WEAPONOFFHAND")) then
-								for _, spec in pairs(app.Weapon[typeText]) do
-									if spec == app.SpecID then
-										for stat, _ in pairs(C_Item.GetItemStats(itemLink)) do
-											if primaryStat == stat then
-												equippable = true
-											end
-										end
-									end
-								end
-							end
-						end
+						local equippable = api.IsItemEquippable(itemLink)
 
 						if EquipRecommendedGear_Settings["ignoreLemixJewelry"] and PlayerGetTimerunningSeasonID() == 2 and (itemEquipLoc == "INVTYPE_NECK" or itemEquipLoc == "INVTYPE_FINGER" or itemEquipLoc == "INVTYPE_TRINKET") then
 							equippable = false
