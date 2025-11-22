@@ -90,52 +90,44 @@ function api.IsItemUpgrade(itemLink)
 	if not itemLink then return false end
 	if not api.IsItemEquippable(itemLink) then return false end
 
-	local equippedItemLevel = 0
+	local equippedItemLevel = {}
 	local itemLevel = C_Item.GetDetailedItemLevelInfo(itemLink)
 	local _, _, _, _, _, _, _, _, itemEquipLoc, _, _, classID, subclassID = C_Item.GetItemInfo(itemLink)
 
 	if classID.."."..subclassID == "2.19" then itemEquipLoc = "INVTYPE_WEAPONMAINHAND" end	-- Adjust Wands because goddammit Blizzard
 
 	if app.Slot[itemEquipLoc] <= 10 or app.Slot[itemEquipLoc] == 15 or app.Slot[itemEquipLoc] == 16 or app.Slot[itemEquipLoc] == 17 then
-		local equippedItemLink = GetInventoryItemLink("player", app.Slot[itemEquipLoc])
-
-		if equippedItemLink then
-			equippedItemLevel = C_Item.GetCurrentItemLevel(ItemLocation:CreateFromEquipmentSlot(app.Slot[itemEquipLoc]))
+		if GetInventoryItemLink("player", app.Slot[itemEquipLoc]) then
+			table.insert(equippedItemLevel, C_Item.GetCurrentItemLevel(ItemLocation:CreateFromEquipmentSlot(app.Slot[itemEquipLoc])))
+		else
+			table.insert(equippedItemLevel, 0)
 		end
 	elseif app.Slot[itemEquipLoc] == 11 then
-		for _, slot in { 11, 12 } do
-			local equippedItemLink = GetInventoryItemLink("player", slot)
-
-			if equippedItemLink then
-				local ilv = C_Item.GetCurrentItemLevel(ItemLocation:CreateFromEquipmentSlot(slot))
-				if ilv > equippedItemLevel then
-					equippedItemLevel = ilv
-				end
+		for _, slot in ipairs({ 11, 12 }) do
+			if GetInventoryItemLink("player", slot) then
+				table.insert(equippedItemLevel, C_Item.GetCurrentItemLevel(ItemLocation:CreateFromEquipmentSlot(slot)))
+			else
+				table.insert(equippedItemLevel, 0)
 			end
 		end
 	elseif app.Slot[itemEquipLoc] == 13 then
-		for _, slot in { 13, 14 } do
-			local equippedItemLink = GetInventoryItemLink("player", slot)
-
-			if equippedItemLink then
-				local ilv = C_Item.GetCurrentItemLevel(ItemLocation:CreateFromEquipmentSlot(slot))
-				if ilv > equippedItemLevel then
-					equippedItemLevel = ilv
-				end
+		for _, slot in ipairs({ 13, 14 }) do
+			if GetInventoryItemLink("player", slot) then
+				table.insert(equippedItemLevel, C_Item.GetCurrentItemLevel(ItemLocation:CreateFromEquipmentSlot(slot)))
+			else
+				table.insert(equippedItemLevel, 0)
 			end
 		end
 	elseif app.Slot[itemEquipLoc] == 1617 or app.Slot[itemEquipLoc] == 18 then
-		for _, slot in { 16, 17 } do
-			local equippedItemLink = GetInventoryItemLink("player", slot)
-
-			if equippedItemLink then
-				local ilv = C_Item.GetCurrentItemLevel(ItemLocation:CreateFromEquipmentSlot(slot))
-				if ilv > equippedItemLevel then
-					equippedItemLevel = ilv
-				end
+		for _, slot in ipairs({ 16, 17 }) do
+			if GetInventoryItemLink("player", slot) then
+				table.insert(equippedItemLevel, C_Item.GetCurrentItemLevel(ItemLocation:CreateFromEquipmentSlot(slot)))
+			else
+				table.insert(equippedItemLevel, 0)
 			end
 		end
 	end
+	equippedItemLevel = math.min(unpack(equippedItemLevel))
 
 	return itemLevel > equippedItemLevel
 end
