@@ -119,9 +119,17 @@ function api.IsItemUpgrade(itemLink)
 			end
 		end
 	elseif app.Slot[itemEquipLoc] == 1617 or app.Slot[itemEquipLoc] == 18 then
-		for _, slot in ipairs({ 16, 17 }) do
-			if GetInventoryItemLink("player", slot) then
-				table.insert(equippedItemLevel, C_Item.GetCurrentItemLevel(ItemLocation:CreateFromEquipmentSlot(slot)))
+		if PlayerUtil.GetCurrentSpecID() == 72 and not C_SpellBook.IsSpellKnown(81099) then
+			for _, slot in ipairs({ 16, 17 }) do
+				if GetInventoryItemLink("player", slot) then
+					table.insert(equippedItemLevel, C_Item.GetCurrentItemLevel(ItemLocation:CreateFromEquipmentSlot(slot)))
+				else
+					table.insert(equippedItemLevel, 0)
+				end
+			end
+		else
+			if GetInventoryItemLink("player", 16) then
+				table.insert(equippedItemLevel, C_Item.GetCurrentItemLevel(ItemLocation:CreateFromEquipmentSlot(16)))
 			else
 				table.insert(equippedItemLevel, 0)
 			end
