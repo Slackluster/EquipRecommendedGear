@@ -338,176 +338,132 @@ function api.DoTheThing(msg)
 		end
 	end
 
-	-- Weapon upgrades
+	-- Weapon upgrades (Gemini version!)
 	if EquipRecommendedGear_CharSettings["includeWeapons"] then
-		local filtered = {}
 		local weapons = {}
+
+		-- 1. Extract and Normalize Weapon Data
+		-- We cache the numeric slot ID here to avoid looking it up repeatedly in loops
 		for _, item in ipairs(eligibleItems) do
-			if app.Slot[item.itemEquipLoc] > 15 then
-				tinsert(weapons, { itemLink = item.itemLink, itemID = item.itemID, ilv = item.ilv, bag = item.bag, bagSlot = item.bagSlot, equipSlot = app.Slot[item.itemEquipLoc] })
-			else
-				tinsert(filtered, item)
+			local s = app.Slot[item.itemEquipLoc]
+			if s and s > 15 then
+				tinsert(weapons, {
+					itemLink = item.itemLink,
+					itemID = item.itemID,
+					ilv = item.ilv,
+					bag = item.bag,
+					bagSlot = item.bagSlot,
+					equipSlot = s, -- 16 (MH), 17 (OH), 18 (1H), 1617 (2H)
+					obj = item     -- Reference for strict equality checks
+				})
 			end
 		end
-		eligibleItems = filtered
 
-		-- Get best weapon combo (thanks, ChatGPT)
-		local function findBestWeaponCombo(weaponUpgrade)
-			if #weaponUpgrade == 0 then return {} end
+		-- 2. Solver Function
+		local function findBestWeaponCombo(candidates)
+			if #candidates == 0 then return {} end
 
-			-- Single weapon: return as-is (normalize 2H to 16)
-			if #weaponUpgrade == 1 then
-				local single = weaponUpgrade[1]
-				if single.equipSlot == 1617 then
-					single.equipSlot = 16
-				end
-				return { single }
-			end
-
-			local maxIlv = 0
+			local bestScore = 0
 			local bestCombo = {}
+			local canTitanGrip = (app.SpecID == 722) -- Fury Warrior (Titan's Grip)
 
-			-- HELPER FUNCTIONS
+			-- Helper: Update best combo if the new score is higher
+			local function checkUpdate(combo, score)
+				local isUpgrade = false
+				if score > bestScore then
+					isUpgrade = true
+				elseif score == bestScore and score > 0 then
+					-- Tie-breaker 1: Prefer currently equipped items (minimize swapping)
+					local newEquipped = (combo[1].bag == -1 and 1 or 0) + (combo[2] and combo[2].bag == -1 and 1 or 0)
+					local oldEquipped = (bestCombo[1] and bestCombo[1].bag == -1 and 1 or 0) + (bestCombo[2] and bestCombo[2].bag == -1 and 1 or 0)
 
-			-- Compute total ilvl of a combo; returns 0 for invalid combos
-			local function comboScore(w1, w2)
-				if not w2 then
-					-- Single weapon: 2H counts double
-					return (w1.equipSlot == 1617) and (w1.ilv * 2) or w1.ilv
+					if newEquipped > oldEquipped then
+						isUpgrade = true
+					elseif newEquipped == oldEquipped then
+						-- Tie-breaker 2: Deterministic sort by ItemID sum
+						local newId = combo[1].itemID + (combo[2] and combo[2].itemID or 0)
+						local oldId = (bestCombo[1] and bestCombo[1].itemID or 0) + (bestCombo[2] and bestCombo[2].itemID or 0)
+						if newId > oldId then isUpgrade = true end
+					end
 				end
 
-				-- Disallow mixing 2H with anything else
-				if w1.equipSlot == 1617 or w2.equipSlot == 1617 then
-					return 0
+				if isUpgrade then
+					bestScore = score
+					bestCombo = combo
 				end
-
-				-- Only valid dual-wield combos
-				local valid =
-					(w1.equipSlot == 16 and w2.equipSlot == 17) or
-					(w1.equipSlot == 16 and w2.equipSlot == 18) or
-					(w1.equipSlot == 18 and w2.equipSlot == 17) or
-					(w1.equipSlot == 18 and w2.equipSlot == 18)
-
-				return valid and (w1.ilv + w2.ilv) or 0
 			end
 
-			-- Determines if a new combo is better than the current best
-			local function isBetterCombo(newCombo, newScore)
-				if newScore > maxIlv then
+			-- Helper: Check if two items can be dual-wielded
+			local function isValidPair(mh, oh)
+				if mh.obj == oh.obj then return false end -- Cannot equip the literal same object twice
+
+				-- Fury Warrior: Allow 2H + 2H
+				if canTitanGrip and mh.equipSlot == 1617 and oh.equipSlot == 1617 then
 					return true
-				elseif newScore == maxIlv then
-					-- Tie-breaking: prefer more equipped weapons
-					local equippedNew, equippedOld = 0, 0
-					local idNew, idOld = 0, 0
-					for _, w in ipairs(newCombo) do
-						if w.bag == -1 then equippedNew = equippedNew + 1 end
-						idNew = idNew + w.itemID
-					end
-					for _, w in ipairs(bestCombo) do
-						if w.bag == -1 then equippedOld = equippedOld + 1 end
-						idOld = idOld + w.itemID
-					end
-
-					if equippedNew > equippedOld then return true
-					elseif equippedNew < equippedOld then return false end
-					-- Final tie-breaker: higher itemID
-					return idNew > idOld
 				end
-				return false
+
+				-- Standard Rules
+				-- 1. Main Hand valid? (16, 18, or 1617 if TG)
+				local validMH = (mh.equipSlot == 16 or mh.equipSlot == 18) or (canTitanGrip and mh.equipSlot == 1617)
+				if not validMH then return false end
+
+				-- 2. Off Hand valid? (17, 18, or 1617 if TG)
+				local validOH = (oh.equipSlot == 17 or oh.equipSlot == 18) or (canTitanGrip and oh.equipSlot == 1617)
+				if not validOH then return false end
+
+				-- 3. No mixing 2H with 1H/Shield (Strict rule, simplifies logic)
+				if (mh.equipSlot == 1617) ~= (oh.equipSlot == 1617) then return false end
+
+				return true
 			end
 
-			-- FURY WARRIOR
-			if app.SpecID == 722 then
-				for i = 1, #weaponUpgrade - 1 do
-					local w1 = weaponUpgrade[i]
-					if w1.equipSlot == 1617 then
-						for j = i + 1, #weaponUpgrade do
-							local w2 = weaponUpgrade[j]
-							if w2.equipSlot == 1617 then
-								local score = w1.ilv + w2.ilv
-								if isBetterCombo({ w1, w2 }, score) then
-									maxIlv = score
-									bestCombo = { w1, w2 }
-								end
-							end
-						end
-					end
-				end
-			else
-				-- OTHER SPECS
-				for i = 1, #weaponUpgrade do
-					local w1 = weaponUpgrade[i]
-
-					-- Single 2H
-					if w1.equipSlot == 1617 then
-						local score = w1.ilv * 2
-						if isBetterCombo({ w1 }, score) then
-							maxIlv = score
-							bestCombo = { w1 }
-						end
-					end
-
-					-- Dual-wield combos
-					for j = i + 1, #weaponUpgrade do
-						local w2 = weaponUpgrade[j]
-						local score = comboScore(w1, w2)
-						if score > 0 and isBetterCombo({ w1, w2 }, score) then
-							maxIlv = score
-							bestCombo = { w1, w2 }
-						end
+			-- A. Iterate Single Items (For non-Fury 2H users)
+			if not canTitanGrip then
+				for _, w in ipairs(candidates) do
+					if w.equipSlot == 1617 then
+						local combo = { [1] = w }
+						combo[1].targetSlot = 16 -- Force 2H to slot 16
+						checkUpdate(combo, w.ilv * 2) -- Normalize score to match dual wield
 					end
 				end
 			end
 
-			-- ADJUST EQUIPSLOT
-			if #bestCombo == 1 and bestCombo[1].equipSlot == 1617 then
-				-- Single 2H → main hand (16)
-				bestCombo[1].equipSlot = 16
-			elseif #bestCombo == 2 then
-				local w1, w2 = bestCombo[1], bestCombo[2]
-				local s1, s2 = w1.equipSlot, w2.equipSlot
+			-- B. Iterate Combinations (Dual Wield / Titan's Grip)
+			for i = 1, #candidates do
+				for j = 1, #candidates do
+					if i ~= j then
+						local w1, w2 = candidates[i], candidates[j]
 
-				local function assignSlots(first, second)
-					first.equipSlot = 16
-					second.equipSlot = 17
-				end
-
-				-- Handle valid dual-wield combos AND 2H+2H
-				if (s1 == 16 and s2 == 17)
-				or (s1 == 16 and s2 == 18)
-				or (s1 == 18 and s2 == 17)
-				or (s1 == 18 and s2 == 18)
-				or (s1 == 1617 and s2 == 1617) then
-
-					-- Special handling for 18+18 or 1617+1617
-					if (s1 == 18 and s2 == 18) or (s1 == 1617 and s2 == 1617) then
-						-- One equipped? keep its bagSlot
-						if w1.bag == -1 and w2.bag ~= -1 then
-							if w1.bagSlot == 16 then assignSlots(w1, w2) else assignSlots(w2, w1) end
-						elseif w2.bag == -1 and w1.bag ~= -1 then
-							if w2.bagSlot == 16 then assignSlots(w2, w1) else assignSlots(w1, w2) end
-						else
-							-- Neither or both equipped → higher ilv in slot 16, tie → higher itemID
-							if w1.ilv > w2.ilv or (w1.ilv == w2.ilv and w1.itemID > w2.itemID) then
-								assignSlots(w1, w2)
-							else
-								assignSlots(w2, w1)
-							end
+						-- Attempt w1 as Main Hand, w2 as Off Hand
+						if isValidPair(w1, w2) then
+							local combo = { [1] = w1, [2] = w2 }
+							combo[1].targetSlot = 16
+							combo[2].targetSlot = 17
+							checkUpdate(combo, w1.ilv + w2.ilv)
 						end
-					else
-						-- Normal dual-wield: assign 16+17
-						assignSlots(w1, w2)
 					end
 				end
 			end
 
 			return bestCombo
 		end
-		weapons = findBestWeaponCombo(weapons)
 
-		for _, item in ipairs(weapons) do
-			if item.bag ~= -1 then
-				tinsert(upgrades, { itemLink = item.itemLink, bag = item.bag, bagSlot = item.bagSlot, equipSlot = item.equipSlot })
+		-- 3. Calculate and Apply
+		local bestWeaponCombo = findBestWeaponCombo(weapons)
+
+		for _, weapon in ipairs(bestWeaponCombo) do
+			-- If we calculated a specific target slot, apply it now
+			local finalSlot = weapon.targetSlot or weapon.equipSlot
+			if finalSlot == 1617 then finalSlot = 16 end -- Safety fallback
+
+			-- Only queue upgrade if it's in the bag (not already equipped)
+			if weapon.bag ~= -1 then
+				tinsert(upgrades, {
+					itemLink = weapon.itemLink,
+					bag = weapon.bag,
+					bagSlot = weapon.bagSlot,
+					equipSlot = finalSlot
+				})
 			end
 		end
 	end
