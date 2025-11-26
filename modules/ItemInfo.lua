@@ -95,8 +95,13 @@ function api.IsItemUpgrade(itemLink)
 	local _, _, _, _, _, _, _, _, itemEquipLoc, _, _, classID, subclassID = C_Item.GetItemInfo(itemLink)
 
 	if classID.."."..subclassID == "2.19" then itemEquipLoc = "INVTYPE_WEAPONMAINHAND" end	-- Adjust Wands because goddammit Blizzard
+	local dualwield = false
+	for _, spec in pairs(app.DualWield) do
+		if PlayerUtil.GetCurrentSpecID() == spec then dualwield = true end
+		break
+	end
 
-	if app.Slot[itemEquipLoc] <= 10 or app.Slot[itemEquipLoc] == 15 or app.Slot[itemEquipLoc] == 16 or app.Slot[itemEquipLoc] == 17 then
+	if app.Slot[itemEquipLoc] <= 10 or app.Slot[itemEquipLoc] == 15 then
 		if GetInventoryItemLink("player", app.Slot[itemEquipLoc]) then
 			table.insert(equippedItemLevel, C_Item.GetCurrentItemLevel(ItemLocation:CreateFromEquipmentSlot(app.Slot[itemEquipLoc])))
 		else
@@ -118,7 +123,29 @@ function api.IsItemUpgrade(itemLink)
 				table.insert(equippedItemLevel, 0)
 			end
 		end
-	elseif app.Slot[itemEquipLoc] == 1617 or app.Slot[itemEquipLoc] == 18 then
+	elseif dualwield and app.Slot[itemEquipLoc] == 18 then
+		for _, slot in ipairs({ 16, 17 }) do
+			if GetInventoryItemLink("player", slot) then
+				table.insert(equippedItemLevel, C_Item.GetCurrentItemLevel(ItemLocation:CreateFromEquipmentSlot(slot)))
+			else
+				table.insert(equippedItemLevel, 0)
+			end
+		end
+	elseif app.Slot[itemEquipLoc] == 16 or app.Slot[itemEquipLoc] == 18 then
+		if GetInventoryItemLink("player", 16) then
+			table.insert(equippedItemLevel, C_Item.GetCurrentItemLevel(ItemLocation:CreateFromEquipmentSlot(16)))
+		else
+			table.insert(equippedItemLevel, 0)
+		end
+	elseif app.Slot[itemEquipLoc] == 17 then
+		if GetInventoryItemLink("player", 17) then
+			table.insert(equippedItemLevel, C_Item.GetCurrentItemLevel(ItemLocation:CreateFromEquipmentSlot(17)))
+		elseif GetInventoryItemLink("player", 16) then
+			table.insert(equippedItemLevel, C_Item.GetCurrentItemLevel(ItemLocation:CreateFromEquipmentSlot(16)))
+		else
+			table.insert(equippedItemLevel, 0)
+		end
+	elseif app.Slot[itemEquipLoc] == 1617 then
 		if PlayerUtil.GetCurrentSpecID() == 72 and not C_SpellBook.IsSpellKnown(81099) then
 			for _, slot in ipairs({ 16, 17 }) do
 				if GetInventoryItemLink("player", slot) then
