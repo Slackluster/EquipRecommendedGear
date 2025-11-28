@@ -204,14 +204,19 @@ function api.DoTheThing(msg)
 		end
 	end
 
+	local canDualWield = false
 	for _, spec in pairs(app.DualWield) do
 		if app.SpecID == spec then
-			for i, item in pairs(eligibleItems) do
-				if app.Slot[item.itemEquipLoc] == 18 then
-					eligibleItems[i].itemEquipLoc = "INVTYPE_WEAPONMAINHAND"
-				end
-			end
+			canDualWield = true
 			break
+		end
+	end
+
+	if not canDualWield then
+		for i, item in pairs(eligibleItems) do
+			if app.Slot[item.itemEquipLoc] == 18 then
+				eligibleItems[i].itemEquipLoc = "INVTYPE_WEAPONMAINHAND"
+			end
 		end
 	end
 
