@@ -12,10 +12,10 @@ local L = app.locales
 -- Slash commands
 -- L.DEBUG_ENABLED =						"Debug mode enabled."
 -- L.DEBUG_DISABLED =						"Debug mode disabled."
--- L.INVALID_COMMAND =						"Invalid command."
+L.INVALID_COMMAND =						"Commande non valide."
 
 -- Version comms
--- L.NEW_VERSION_AVAILABLE =				"There is a newer version of " .. app.NameLong .. " available:"
+L.NEW_VERSION_AVAILABLE =				"Une nouvelle version de " .. app.NameLong .. " est disponible :"
 
 -- Equip Recommended Gear
 -- L.TRY_AGAIN =							"Please try again in a few seconds."
