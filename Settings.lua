@@ -19,6 +19,8 @@ app.Event:Register("ADDON_LOADED", function(addOnName, containsBindings)
 		app.CreateLinkCopiedFrame()
 		app.Settings()
 
+		EquipRecommendedGear_CharSettings["includeWeapons"] = false
+
 		-- Midnight cleanup
 		if EquipRecommendedGear_Settings["ignoreLemixJewelry"] ~= nil then EquipRecommendedGear_Settings["ignoreLemixJewelry"] = nil end
 	end
@@ -116,8 +118,16 @@ function app.Settings()
 	layout:AddInitializer(initializer)
 
 	local variable, name, tooltip = "includeWeapons", L.SETTINGS_INCLUDEWEAPONS_TITLE, L.SETTINGS_INCLUDEWEAPONS_TOOLTIP
-	local setting = Settings.RegisterAddOnSetting(category, appName .. "_" .. variable, variable, EquipRecommendedGear_CharSettings, Settings.VarType.Boolean, name, true)
+	local setting = Settings.RegisterAddOnSetting(category, appName .. "_" .. variable, variable, EquipRecommendedGear_CharSettings, Settings.VarType.Boolean, name, false)
 	local checkbox = Settings.CreateCheckbox(category, setting, tooltip)
+	setting:SetValueChangedCallback(function()
+		C_Timer.After(0.5, function()
+			if EquipRecommendedGear_CharSettings["includeWeapons"] then
+				setting:SetValue(false)
+				app.Print("This feature is temporarily disabled, until I can fix its bugs.")
+			end
+		end)
+	end)
 end
 
 function app.CreateLinkCopiedFrame()
