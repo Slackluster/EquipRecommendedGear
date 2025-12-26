@@ -118,7 +118,6 @@ function app.Settings()
 	local variable, name, tooltip = "includeWeapons", L.SETTINGS_INCLUDEWEAPONS_TITLE, L.SETTINGS_INCLUDEWEAPONS_TOOLTIP
 	local setting = Settings.RegisterAddOnSetting(category, appName .. "_" .. variable, variable, EquipRecommendedGear_CharSettings, Settings.VarType.Boolean, name, true)
 	local checkbox = Settings.CreateCheckbox(category, setting, tooltip)
-	if PlayerGetTimerunningSeasonID() then EquipRecommendedGear_CharSettings["includeWeapons"] = false end
 end
 
 function app.CreateLinkCopiedFrame()
