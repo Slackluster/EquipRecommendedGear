@@ -25,7 +25,7 @@ libs\ChatThrottleLib\ChatThrottleLib.xml
 Core.lua
 Database.lua
 Settings.lua
-SettingsTemplates.xml
+FrameTemplates.xml
 modules\EquipRecommendedGear.lua
 modules\ItemInfo.lua
 integrations\Baganator.lua
