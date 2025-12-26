@@ -52,8 +52,6 @@ L.MESSAGE_ALWAYS =						"Всегда отправлять"
 L.MESSAGE_ALWAYS_DESC =					"Всегда отправлять сообщение в чат, даже если " .. app.NameShort .. " не надел улучшение."
 L.SETTINGS_INCLUDEWEAPONS_TITLE =		"Учитывать оружие"
 L.SETTINGS_INCLUDEWEAPONS_TOOLTIP =		"Учитывать оружие при рекомендациях.\nНастройка для каждого персонажа отдельно."
-L.SETTINGS_IGNORELEMIXJEWELRY_TITLE =	"[Remix] Игнорировать украшения"
-L.SETTINGS_IGNORELEMIXJEWELRY_TOOLTIP =	"Игнорировать украшения для таймеруннеров Легиона."
 
 -- Keybinds
 _G["BINDING_NAME_ERG_DOTHETHING"] =		"Equip Recommended Gear"

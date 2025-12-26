@@ -18,6 +18,9 @@ app.Event:Register("ADDON_LOADED", function(addOnName, containsBindings)
 
 		app.CreateLinkCopiedFrame()
 		app.Settings()
+
+		-- Midnight cleanup
+		if EquipRecommendedGear_Settings["ignoreLemixJewelry"] ~= nil then EquipRecommendedGear_Settings["ignoreLemixJewelry"] = nil end
 	end
 end)
 
@@ -111,10 +114,6 @@ function app.Settings()
 		cbSetting, cbName, cbTooltip,
 		ddSetting, GetOptions, ddName, ddTooltip)
 	layout:AddInitializer(initializer)
-
-	local variable, name, tooltip = "ignoreLemixJewelry", L.SETTINGS_IGNORELEMIXJEWELRY_TITLE, L.SETTINGS_IGNORELEMIXJEWELRY_TOOLTIP
-	local setting = Settings.RegisterAddOnSetting(category, appName .. "_" .. variable, variable, EquipRecommendedGear_Settings, Settings.VarType.Boolean, name, true)
-	local checkbox = Settings.CreateCheckbox(category, setting, tooltip)
 
 	local variable, name, tooltip = "includeWeapons", L.SETTINGS_INCLUDEWEAPONS_TITLE, L.SETTINGS_INCLUDEWEAPONS_TOOLTIP
 	local setting = Settings.RegisterAddOnSetting(category, appName .. "_" .. variable, variable, EquipRecommendedGear_CharSettings, Settings.VarType.Boolean, name, true)

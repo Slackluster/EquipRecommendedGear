@@ -191,10 +191,6 @@ function api.DoTheThing(msg)
 
 						local equippable = api.IsItemEquippable(itemLink)
 
-						if EquipRecommendedGear_Settings["ignoreLemixJewelry"] and PlayerGetTimerunningSeasonID() == 2 and (itemEquipLoc == "INVTYPE_NECK" or itemEquipLoc == "INVTYPE_FINGER" or itemEquipLoc == "INVTYPE_TRINKET") then
-							equippable = false
-						end
-
 						if equippable then
 							tinsert(eligibleItems, { itemLink = itemLink, itemID = itemID, itemEquipLoc = itemEquipLoc, unique = unique, ilv = ilv, bag = bag, bagSlot = bagSlot })
 						end
