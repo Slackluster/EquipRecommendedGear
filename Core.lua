@@ -40,7 +40,7 @@ end)
 
 -- App colour
 function app.Colour(string)
-	return "|cffC69B6D" .. string .. "|R"
+	return "|cff3FC7EB" .. string .. "|R"
 end
 
 -- Print with addon prefix
