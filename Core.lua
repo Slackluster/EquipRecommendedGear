@@ -59,6 +59,9 @@ app.Event:Register("ADDON_LOADED", function(addOnName, containsBindings)
 
 		C_ChatInfo.RegisterAddonMessagePrefix("EquipRecGear")
 
+		SLASH_RELOADUI1 = "/rl"
+		SlashCmdList.RELOADUI = ReloadUI
+
 		SLASH_EquipRecommendedGear1 = "/erg";
 		function SlashCmdList.EquipRecommendedGear(msg, editBox)
 			-- Split message into command and rest
