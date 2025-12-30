@@ -1,7 +1,7 @@
 ## Interface: 120000
 ## Title: |cff3FC7EBEquip Recommended Gear|r
 ## Author: Slackluster
-## IconTexture: Interface\AddOns\EquipRecommendedGear\assets\erg_icon.blp
+## IconTexture: Interface\AddOns\EquipRecommendedGear\assets\icon.png
 ## Version: @project-version@
 ## X-Curse-Project-ID: 962128
 ## X-Wago-ID: bGoMqq60
