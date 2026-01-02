@@ -6,15 +6,15 @@ A World of Warcraft addon. Download locations: [CurseForge](https://www.cursefor
 **Equip Recommended Gear** adds a button to your character pane that equips the highest item level gear for your class & spec. Inspired by the same feature available in **Final Fantasy XIV Online**.
 
 **Features**
-- Adds a button. When you click the button, it does the thing;
+- Adds a button. When you click the button, it does the thing.
 - Instead of the button, you can also set a keybind or use `EquipRecommendedGear.DoTheThing()`. Refer to the API.lua documentation for more information.
 
 **Limitations**
-- It will only consider soulbound items;
-- It will only consider weapons suitable for your specialisation (2-handed weapons for Survival Hunter, daggers for Assassination Rogues, etc.);
-- It will only consider weapons with your primary stat (Agility, Intellect, Strength) on them;
-- It will not check rings or trinkets for your primary stat;
-- It will not check the secondary stats of any gear;
+- It will only consider soulbound items.
+- It will only consider weapons suitable for your specialisation. (2-handed weapons for Survival Hunter, daggers for Assassination Rogues, etc.)
+- It will only consider weapons with your primary stat (Agility, Intellect, Strength) on them.
+- It will not check rings or trinkets for your primary stat.
+- It will not check the secondary stats of any gear.
 - It will not use weights of any kind. It just looks at the item level. Number go up, happy brain chemicals.
 
 **Known bugs**

@@ -4,12 +4,26 @@
 		<Size y="28" />
 		<Layers>
 			<Layer level="OVERLAY">
-				<FontString parentKey="Text" inherits="GameFontNormal" justifyH="LEFT" justifyV="TOP">
+				<FontString parentKey="LeftText" inherits="GameFontNormal" justifyH="LEFT" justifyV="TOP">
 					<Anchors>
 						<Anchor point="TOPLEFT" x="37" y="-8" />
 					</Anchors>
 				</FontString>
+				<FontString parentKey="MiddleText" inherits="GameFontNormal" justifyH="LEFT" justifyV="TOP">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="240" y="-8" />
+					</Anchors>
+				</FontString>
+				<FontString parentKey="RightText" inherits="GameFontNormal" justifyH="LEFT" justifyV="TOP">
+					<Anchors>
+						<Anchor point="TOPLEFT" x="280" y="-8" />
+					</Anchors>
+				</FontString>
 			</Layer>
 		</Layers>
+	</Frame>
+
+	<Frame name="EquipRecommendedGear_SettingsExpandTemplate" inherits="SettingsExpandableSectionTemplate" mixin="EquipRecommendedGear_SettingsExpandMixin" virtual="true">
+		<Size y="24" />
 	</Frame>
 </Ui>

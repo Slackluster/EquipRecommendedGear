@@ -27,6 +27,7 @@ L.NEW_VERSION_AVAILABLE =				"Une nouvelle version de " .. app.NameLong .. " est
 -- L.EQUIP_UPDGRADE =						"Equipped gear recommended for"	-- Followed by " Spec Class."
 
 -- Settings
+-- L.SETTINGS_VERSION =					GAME_VERSION_LABEL .. ":"	-- "Version"
 L.SETTINGS_SUPPORT_TEXTLONG =			"Le développement de cette extension demande beaucoup de temps et d’efforts.\nVeuillez envisager de soutenir financièrement le développeur."
 L.SETTINGS_SUPPORT_TEXT =				"Soutien"
 L.SETTINGS_SUPPORT_BUTTON =				"Buy Me a Coffee"	-- Brand name, if there isn't a localised version, keep it the way it is
@@ -40,6 +41,12 @@ L.SETTINGS_ISSUES_DESC =				"Consultez le système de suivi des problèmes (« I
 L.SETTINGS_URL_COPY =					"Ctrl + C pour copier :"
 L.SETTINGS_URL_COPIED =					"Lien copié dans le presse-papiers"
 
+L.SETTINGS_KEYSLASH_TITLE =				SETTINGS_KEYBINDINGS_LABEL .. " & Commandes « Slash »"	-- "Keybindings"
+-- _G["BINDING_NAME_ERG_DOTHETHING"] =		"Equip Recommended Gear"	-- This time it's not the addon name, but the keybind action, so may be translated
+L.SETTINGS_SLASH_SETTINGS =				"Ouvrir les paramètres"
+-- L.SETTINGS_SLASH_DEBUG =				"Toggle debug mode"
+
+-- L.GENERAL =								GENERAL	-- "General"
 -- L.RUN_AFTER_QUEST =						"Run on Quest Completion"
 -- L.RUN_AFTER_QUEST_DESC =				"Run " .. app.NameShort .. " whenever you complete a quest."
 -- L.CHAT_MESSAGE =						"Send Chat Message"
@@ -52,6 +59,3 @@ L.SETTINGS_URL_COPIED =					"Lien copié dans le presse-papiers"
 -- L.MESSAGE_ALWAYS_DESC =					"Always send a chat message, even if " .. app.NameShort .. " hasn't equipped an item level upgrade."
 -- L.SETTINGS_INCLUDEWEAPONS_TITLE	=		"Include Weapons"
 -- L.SETTINGS_INCLUDEWEAPONS_TOOLTIP =		"Include weapons when doing the thing.\nThis is a character-specific setting."
-
--- Keybinds
--- _G["BINDING_NAME_ERG_DOTHETHING"] =		"Equip Recommended Gear"	-- This time it's not the addon name, but the keybind action, so may be translated

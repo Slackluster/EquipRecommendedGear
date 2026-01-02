@@ -62,12 +62,11 @@ app.Event:Register("ADDON_LOADED", function(addOnName, containsBindings)
 		SLASH_RELOADUI1 = "/rl"
 		SlashCmdList.RELOADUI = ReloadUI
 
-		SLASH_EquipRecommendedGear1 = "/erg";
+		SLASH_EquipRecommendedGear1 = "/erg"
 		function SlashCmdList.EquipRecommendedGear(msg, editBox)
 			-- Split message into command and rest
 			local command, rest = msg:match("^(%S*)%s*(.-)$")
 
-			-- Toggle debug
 			if command == "debug" then
 				if EquipRecommendedGear_Settings["debug"] == false then
 					EquipRecommendedGear_Settings["debug"] = true
@@ -76,7 +75,8 @@ app.Event:Register("ADDON_LOADED", function(addOnName, containsBindings)
 					EquipRecommendedGear_Settings["debug"] = false
 					app.Print(L.DEBUG_DISABLED)
 				end
-			-- Unlisted command
+			elseif command == "settings" then
+				app.OpenSettings()
 			else
 				app.Print(L.INVALID_COMMAND)
 			end

@@ -27,6 +27,7 @@ L.EQUIP_NO_UPDGRADE =					"У вас уже надета рекомендова�
 L.EQUIP_UPGRADE =						"Надета рекомендованная экипировка для"
 
 -- Settings
+-- L.SETTINGS_VERSION =					GAME_VERSION_LABEL .. ":"	-- "Version"
 L.SETTINGS_SUPPORT_TEXTLONG =			"Разработка этого аддона требует значительного времени и усилий.\nПожалуйста, рассмотрите возможность финансовой поддержки разработчика."
 L.SETTINGS_SUPPORT_TEXT =				"Поддержать"
 L.SETTINGS_SUPPORT_BUTTON =				"Buy Me a Coffee" -- Brand name, if there isn't a localised version, keep it the way it is
@@ -40,6 +41,12 @@ L.SETTINGS_ISSUES_DESC =				"Просмотреть трекер ошибок н
 L.SETTINGS_URL_COPY =					"Ctrl+C — скопировать:"
 L.SETTINGS_URL_COPIED =					"Ссылка скопирована в буфер обмена"
 
+L.SETTINGS_KEYSLASH_TITLE =				SETTINGS_KEYBINDINGS_LABEL .. " & Слэш-команды"	-- "Keybindings"
+_G["BINDING_NAME_ERG_DOTHETHING"] =		"Наденьте рекомендованная экипировка"	-- This time it's not the addon name, but the keybind action, so may be translated
+L.SETTINGS_SLASH_SETTINGS =				"Откройте настройки"
+-- L.SETTINGS_SLASH_DEBUG =				"Toggle debug mode"
+
+-- L.GENERAL =								GENERAL	-- "General"
 L.RUN_AFTER_QUEST =						"Запускать после выполнения задания"
 L.RUN_AFTER_QUEST_DESC =				"Запускать " .. app.NameShort .. " каждый раз после выполнения задания."
 L.CHAT_MESSAGE =						"Сообщение в чат"
@@ -52,6 +59,3 @@ L.MESSAGE_ALWAYS =						"Всегда отправлять"
 L.MESSAGE_ALWAYS_DESC =					"Всегда отправлять сообщение в чат, даже если " .. app.NameShort .. " не надел улучшение."
 L.SETTINGS_INCLUDEWEAPONS_TITLE =		"Учитывать оружие"
 L.SETTINGS_INCLUDEWEAPONS_TOOLTIP =		"Учитывать оружие при рекомендациях.\nНастройка для каждого персонажа отдельно."
-
--- Keybinds
-_G["BINDING_NAME_ERG_DOTHETHING"] =		"Equip Recommended Gear"
