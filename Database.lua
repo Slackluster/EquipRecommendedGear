@@ -10,6 +10,10 @@ app.Name = "Equip Recommended Gear"
 app.NameLong = app.Colour("Equip Recommended Gear")
 app.NameShort = app.Colour("ERG")
 
+app.IconWaiting = "|TInterface\\RaidFrame\\ReadyCheck-Waiting:0|t"
+app.IconReady = "|TInterface\\RaidFrame\\ReadyCheck-Ready:0|t"
+app.IconNotReady = "|TInterface\\RaidFrame\\ReadyCheck-NotReady:0|t"
+
 -- ItemEquipLoc to key
 app.Slot = {
 	["INVTYPE_HEAD"] = 1,
