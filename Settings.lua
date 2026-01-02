@@ -83,7 +83,7 @@ function app.Settings()
 		end,
 	}
 	local function onSupportButtonClick()
-		StaticPopup_Show("EQUIPRECOMMENDEDGEAR_URL", nil, nil, "https://buymeacoffee.com/slackluster")
+		StaticPopup_Show("EQUIPRECOMMENDEDGEAR_URL", nil, nil, "https://buymeacoffee.com/Slackluster")
 	end
 	layout:AddInitializer(CreateSettingsButtonInitializer(L.SETTINGS_SUPPORT_TEXT, L.SETTINGS_SUPPORT_BUTTON, onSupportButtonClick, L.SETTINGS_SUPPORT_DESC, true))
 
