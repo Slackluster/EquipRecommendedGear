@@ -7,8 +7,8 @@ local appName, app = ...
 
 -- Used strings
 app.Name = "Equip Recommended Gear"
-app.NameLong = app.Colour("Equip Recommended Gear")
-app.NameShort = app.Colour("ERG")
+app.NameLong = app:Colour("Equip Recommended Gear")
+app.NameShort = app:Colour("ERG")
 
 app.IconWaiting = "|TInterface\\RaidFrame\\ReadyCheck-Waiting:0|t"
 app.IconReady = "|TInterface\\RaidFrame\\ReadyCheck-Ready:0|t"

@@ -20,7 +20,9 @@ end)
 -- ITEM INFORMATION --
 ----------------------
 
-function api.IsItemEquippable(itemLink)
+function api:IsItemEquippable(itemLink)
+	assert(self == api, "Call EquipRecommendedGear:IsItemEquippable(), not EquipRecommendedGear.IsItemEquippable()")
+
 	if not itemLink then return false end
 	if app.IsItemEquippable[itemLink] ~= nil then return app.IsItemEquippable[itemLink] end
 	if not C_Item.IsEquippableItem(itemLink) then return false end
@@ -86,9 +88,11 @@ function api.IsItemEquippable(itemLink)
 	return equippable
 end
 
-function api.IsItemUpgrade(itemLink)
+function api:IsItemUpgrade(itemLink)
+	assert(self == api, "Call EquipRecommendedGear:IsItemUpgrade(), not EquipRecommendedGear.IsItemUpgrade()")
+
 	if not itemLink then return false end
-	if not api.IsItemEquippable(itemLink) then return false end
+	if not api:IsItemEquippable(itemLink) then return false end
 
 	local equippedItemLevel = {}
 	local itemLevel = C_Item.GetDetailedItemLevelInfo(itemLink)

@@ -4,7 +4,7 @@ local api = app.api
 -- Baganator integration
 EventUtil.ContinueOnAddOnLoaded("Baganator", function()
 	Baganator.API.RegisterUpgradePlugin("Equip Recommended Gear", "equip_recommended_gear", function(itemLink)
-		return api.IsItemUpgrade(itemLink)
+		return api:IsItemUpgrade(itemLink)
 	end)
 
 	app.Event:Register("PLAYER_LEVEL_UP", function(level, healthDelta, powerDelta, numNewTalents, numNewPvpTalentSlots, strengthDelta, agilityDelta, staminaDelta, intellectDelta)

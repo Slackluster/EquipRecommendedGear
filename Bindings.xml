@@ -1,5 +1,5 @@
 <Bindings>
   <Binding name="ERG_DOTHETHING" category="Equip Recommended Gear">
-    EquipRecommendedGear.DoTheThing()
+    EquipRecommendedGear:DoTheThing()
   </Binding>
 </Bindings>

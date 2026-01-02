@@ -16,7 +16,7 @@ app.Event:Register("ADDON_LOADED", function(addOnName, containsBindings)
 		app.Sex = C_PlayerInfo.GetSex(PlayerLocation:CreateFromUnit("player"))
 		app.ClassID = PlayerUtil.GetClassID()
 
-		app.CreateAssets()
+		app:CreateAssets()
 	end
 end)
 
@@ -24,7 +24,7 @@ end)
 -- EQUIP RECOMMENDED GEAR --
 ----------------------------
 
-function app.CreateAssets()
+function app:CreateAssets()
 	app.Button = CreateFrame("Button", "rcButton", PaperDollSidebarTabs)
 	app.Button:SetWidth(32)
 	app.Button:SetHeight(32)
@@ -35,7 +35,7 @@ function app.CreateAssets()
 	app.Button:SetFrameStrata("HIGH")
 	app.Button:RegisterForClicks("AnyDown", "AnyUp")
 	app.Button:SetScript("OnClick", function()
-		api.DoTheThing()
+		api:DoTheThing()
 	end)
 	app.Button:HookScript("OnMouseDown", function()
 		app.Button:GetHighlightTexture():Hide()
@@ -74,13 +74,15 @@ function app.CreateAssets()
 	app.Button.Tooltip:SetPoint("BOTTOMLEFT", app.Button, "TOPRIGHT", 0, 4)
 end
 
-function api.DoTheThing(msg)
+function api:DoTheThing(msg)
+	assert(self == api, "Call EquipRecommendedGear:DoTheThing(), not EquipRecommendedGear.DoTheThing()")
+
 	if not app.Flag.Busy then app.Flag.Busy = false end
 	if app.Flag.Busy == true then return end
 
 	if InCombatLockdown() then
 		C_Timer.After(1, function()
-			app.Print(L.ERROR_COMBAT)
+			app:Print(L.ERROR_COMBAT)
 			app.Flag.Busy = false
 		end)
 		return
@@ -135,7 +137,7 @@ function api.DoTheThing(msg)
 
 			if itemEquipLoc == nil or classID == nil or subclassID == nil then
 				C_Timer.After(1, function()
-					app.Print(L.ERROR_EQUIPPED)
+					app:Print(L.ERROR_EQUIPPED)
 					app.Flag.Busy = false
 				end)
 				return
@@ -150,7 +152,7 @@ function api.DoTheThing(msg)
 					end
 				else
 					C_Timer.After(1, function()
-						app.Print(L.ERROR_EQUIPPED)
+						app:Print(L.ERROR_EQUIPPED)
 						app.Flag.Busy = false
 					end)
 					return
@@ -175,7 +177,7 @@ function api.DoTheThing(msg)
 
 					if itemEquipLoc == nil or classID == nil or subclassID == nil then
 						C_Timer.After(1, function()
-							app.Print(L.ERROR_INVENTORY)
+							app:Print(L.ERROR_INVENTORY)
 							app.Flag.Busy = false
 						end)
 						return
@@ -194,14 +196,14 @@ function api.DoTheThing(msg)
 								end
 							else
 								C_Timer.After(1, function()
-									app.Print(L.ERROR_INVENTORY)
+									app:Print(L.ERROR_INVENTORY)
 									app.Flag.Busy = false
 								end)
 								return
 							end
 						end
 
-						local equippable = api.IsItemEquippable(itemLink)
+						local equippable = api:IsItemEquippable(itemLink)
 
 						if equippable then
 							tinsert(eligibleItems, { itemLink = itemLink, itemID = itemID, itemEquipLoc = itemEquipLoc, unique = unique, ilv = ilv, bag = bag, bagSlot = bagSlot })
@@ -229,7 +231,7 @@ function api.DoTheThing(msg)
 	end
 
 	if EquipRecommendedGear_Settings["debug"] then
-		app.Print("DEBUG: ELIGIBLE ITEMS")
+		app:Print("DEBUG: ELIGIBLE ITEMS")
 		for _, v in ipairs(eligibleItems) do
 			local unique = "false"
 			if v.unique then unique = "true" end
@@ -268,7 +270,7 @@ function api.DoTheThing(msg)
 	eligibleItems = filtered
 
 	if EquipRecommendedGear_Settings["debug"] then
-		app.Print("DEBUG: ELIGIBLE ITEMS MINUS UNIQUE DUPES")
+		app:Print("DEBUG: ELIGIBLE ITEMS MINUS UNIQUE DUPES")
 		for _, v in ipairs(eligibleItems) do
 			local unique = "false"
 			if v.unique then unique = "true" end
@@ -311,7 +313,7 @@ function api.DoTheThing(msg)
 	eligibleItems = filtered
 
 	if EquipRecommendedGear_Settings["debug"] then
-		app.Print("DEBUG: BEST ITEMS")
+		app:Print("DEBUG: BEST ITEMS")
 		for _, v in ipairs(eligibleItems) do
 			local unique = "false"
 			if v.unique then unique = "true" end
@@ -482,7 +484,7 @@ function api.DoTheThing(msg)
 	end
 
 	if EquipRecommendedGear_Settings["debug"] then
-		app.Print("DEBUG: UPGRADES")
+		app:Print("DEBUG: UPGRADES")
 		for _, v in ipairs(upgrades) do
 			print(v.itemLink..", " .. v.bag.."."..v.bagSlot..", " .. v.equipSlot)
 		end
@@ -502,14 +504,14 @@ function api.DoTheThing(msg)
 		local next = next
 		if next(upgrades) == nil and specName then
 			if msg == 2 then
-				app.Print(L.EQUIP_NO_UPDGRADE, "|c" .. classColor .. specName .. " " .. className .. "|R.")
+				app:Print(L.EQUIP_NO_UPDGRADE, "|c" .. classColor .. specName .. " " .. className .. "|R.")
 			end
 		elseif specName then
 			if msg >= 1 then
-				app.Print(L.EQUIP_UPDGRADE, "|c" .. classColor .. specName .. " " .. className .. "|R.")
+				app:Print(L.EQUIP_UPDGRADE, "|c" .. classColor .. specName .. " " .. className .. "|R.")
 			end
 		else
-			app.Print(L.ERROR_EQUIP)
+			app:Print(L.ERROR_EQUIP)
 		end
 
 		app.Flag.Busy = false
@@ -519,7 +521,7 @@ end
 app.Event:Register("QUEST_TURNED_IN", function(questID, xpReward, moneyReward)
 	if EquipRecommendedGear_Settings["runAfterQuest"] == true and not InCombatLockdown() then
 		C_Timer.After(1, function()
-			api.DoTheThing(EquipRecommendedGear_Settings["chatMessage"])
+			api:DoTheThing(EquipRecommendedGear_Settings["chatMessage"])
 		end)
 	end
 end)

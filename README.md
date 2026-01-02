@@ -7,7 +7,7 @@ A World of Warcraft addon. Download locations: [CurseForge](https://www.cursefor
 
 **Features**
 - Adds a button. When you click the button, it does the thing.
-- Instead of the button, you can also set a keybind or use `EquipRecommendedGear.DoTheThing()`. Refer to the API.lua documentation for more information.
+- Instead of the button, you can also set a keybind or use `EquipRecommendedGear:DoTheThing()`. Refer to the API.lua documentation for more information.
 
 **Limitations**
 - It will only consider soulbound items.

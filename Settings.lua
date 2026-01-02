@@ -16,8 +16,8 @@ app.Event:Register("ADDON_LOADED", function(addOnName, containsBindings)
 		if not EquipRecommendedGear_Settings["debug"] then EquipRecommendedGear_Settings["debug"] = false end
 		if not EquipRecommendedGear_CharSettings then EquipRecommendedGear_CharSettings = {} end
 
-		app.CreateLinkCopiedFrame()
-		app.Settings()
+		app:CreateLinkCopiedFrame()
+		app:CreateSettings()
 
 		EquipRecommendedGear_CharSettings["includeWeapons"] = false
 
@@ -30,15 +30,15 @@ end)
 -- SETTINGS --
 --------------
 
-function app.OpenSettings()
-	Settings.OpenToCategory(app.Category:GetID())
+function app:OpenSettings()
+	Settings.OpenToCategory(app.Settings:GetID())
 end
 
 -- Settings
-function app.Settings()
+function app:CreateSettings()
 	local category, layout = Settings.RegisterVerticalLayoutCategory(app.Name)
 	Settings.RegisterAddOnCategory(category)
-	app.Category = category
+	app.Settings = category
 
 	EquipRecommendedGear_SettingsTextMixin = {}
 	function EquipRecommendedGear_SettingsTextMixin:Init(initializer)
@@ -199,13 +199,13 @@ function app.Settings()
 		C_Timer.After(0.5, function()
 			if EquipRecommendedGear_CharSettings["includeWeapons"] then
 				setting:SetValue(false)
-				app.Print("This feature is temporarily disabled, until I can fix its bugs.")
+				app:Print("This feature is temporarily disabled, until I can fix its bugs.")
 			end
 		end)
 	end)
 end
 
-function app.CreateLinkCopiedFrame()
+function app:CreateLinkCopiedFrame()
 	app.LinkCopiedFrame= CreateFrame("Frame", nil, UIParent, "BackdropTemplate")
 	app.LinkCopiedFrame:SetPoint("CENTER")
 	app.LinkCopiedFrame:SetFrameStrata("TOOLTIP")
