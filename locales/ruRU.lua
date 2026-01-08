@@ -27,7 +27,7 @@ L.EQUIP_NO_UPDGRADE =					"У вас уже надета рекомендова�
 L.EQUIP_UPGRADE =						"Надета рекомендованная экипировка для"
 
 -- Settings
--- L.SETTINGS_VERSION =					GAME_VERSION_LABEL .. ":"	-- "Version"
+L.SETTINGS_VERSION =					GAME_VERSION_LABEL .. ":"	-- "Version"
 L.SETTINGS_SUPPORT_TEXTLONG =			"Разработка этого аддона требует значительного времени и усилий.\nПожалуйста, рассмотрите возможность финансовой поддержки разработчика."
 L.SETTINGS_SUPPORT_TEXT =				"Поддержать"
 L.SETTINGS_SUPPORT_BUTTON =				"Buy Me a Coffee" -- Brand name, if there isn't a localised version, keep it the way it is
@@ -44,7 +44,7 @@ L.SETTINGS_URL_COPIED =					"Ссылка скопирована в буфер �
 L.SETTINGS_KEYSLASH_TITLE =				SETTINGS_KEYBINDINGS_LABEL .. " & Слэш-команды"	-- "Keybindings"
 _G["BINDING_NAME_ERG_DOTHETHING"] =		"Наденьте рекомендованная экипировка"	-- This time it's not the addon name, but the keybind action, so may be translated
 L.SETTINGS_SLASH_SETTINGS =				"Откройте настройки"
--- L.SETTINGS_SLASH_DEBUG =				"Toggle debug mode"
+L.SETTINGS_SLASH_DEBUG =				"Включить режим отладки"
 
 -- L.GENERAL =								GENERAL	-- "General"
 L.RUN_AFTER_QUEST =						"Запускать после выполнения задания"
