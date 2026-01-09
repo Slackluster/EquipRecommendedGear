@@ -504,11 +504,11 @@ function api:DoTheThing(msg)
 		local next = next
 		if next(upgrades) == nil and specName then
 			if msg == 2 then
-				app:Print(L.EQUIP_NO_UPDGRADE, "|c" .. classColor .. specName .. " " .. className .. "|R.")
+				app:Print(L.EQUIP_NO_UPDGRADE, "|c" .. classColor .. specName .. " " .. className .. "|r.")
 			end
 		elseif specName then
 			if msg >= 1 then
-				app:Print(L.EQUIP_UPDGRADE, "|c" .. classColor .. specName .. " " .. className .. "|R.")
+				app:Print(L.EQUIP_UPDGRADE, "|c" .. classColor .. specName .. " " .. className .. "|r.")
 			end
 		else
 			app:Print(L.ERROR_EQUIP)
