@@ -239,7 +239,7 @@ function api:DoTheThing(msg)
 		end
 	end
 
-	-- Filter unique-equipped (thanks, ChatGPT)
+	-- Filter unique-equipped (Vibecoded)
 	local filtered = {}
 	local seen = {}
 
@@ -278,7 +278,7 @@ function api:DoTheThing(msg)
 		end
 	end
 
-	-- Keep the highest iLv entries (thanks, ChatGPT)
+	-- Keep the highest iLv entries (Vibecoded)
 	local filtered = {}
 	local grouped = {}
 
@@ -353,7 +353,7 @@ function api:DoTheThing(msg)
 		end
 	end
 
-	-- Weapon upgrades (Gemini version!)
+	-- Weapon upgrades (Vibecoded)
 	if EquipRecommendedGear_CharSettings["includeWeapons"] then
 		local weapons = {}
 
