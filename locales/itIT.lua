@@ -42,7 +42,7 @@ local L = app.locales
 -- L.SETTINGS_URL_COPIED =					"Link copied to clipboard"
 
 -- L.SETTINGS_KEYSLASH_TITLE =				SETTINGS_KEYBINDINGS_LABEL .. " & Slash Commands"	-- "Keybindings"
--- _G["BINDING_NAME_ERG_DOTHETHING"] =		"Equip Recommended Gear"	-- This time it's not the addon name, but the keybind action, so may be translated
+-- _G["BINDING_NAME_ERG_DOTHETHING"] =		app.NameShort .. ": Equip Recommended Gear"	-- This time it's not the addon name, but the keybind action, so may be translated
 -- L.SETTINGS_SLASH_SETTINGS =				"Open the settings"
 -- L.SETTINGS_SLASH_DEBUG =				"Toggle debug mode"
 

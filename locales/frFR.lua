@@ -42,7 +42,7 @@ L.SETTINGS_URL_COPY =					"Ctrl + C pour copier :"
 L.SETTINGS_URL_COPIED =					"Lien copié dans le presse-papiers"
 
 L.SETTINGS_KEYSLASH_TITLE =				SETTINGS_KEYBINDINGS_LABEL .. " & Commandes « Slash »"	-- "Keybindings"
--- _G["BINDING_NAME_ERG_DOTHETHING"] =		"Equip Recommended Gear"	-- This time it's not the addon name, but the keybind action, so may be translated
+-- _G["BINDING_NAME_ERG_DOTHETHING"] =		app.NameShort .. ": Equip Recommended Gear"	-- This time it's not the addon name, but the keybind action, so may be translated
 L.SETTINGS_SLASH_SETTINGS =				"Ouvrir les paramètres"
 -- L.SETTINGS_SLASH_DEBUG =				"Toggle debug mode"
 
