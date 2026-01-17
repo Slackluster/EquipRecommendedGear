@@ -1,5 +1,5 @@
 <Bindings>
-  <Binding name="ERG_DOTHETHING" category="|cff3FC7EBEquip Recommended Gear|r" searchTags="BINDING_NAME_EQUIPRECOMMENDEDGEAR,BINDING_NAME_SLACKWARE">
-    EquipRecommendedGear:DoTheThing()
-  </Binding>
+	<Binding name="ERG_DOTHETHING" category="|cff3FC7EBEquip Recommended Gear|r" searchTags="BINDING_NAME_EQUIPRECOMMENDEDGEAR,BINDING_NAME_SLACKWARE">
+		EquipRecommendedGear:DoTheThing()
+	</Binding>
 </Bindings>

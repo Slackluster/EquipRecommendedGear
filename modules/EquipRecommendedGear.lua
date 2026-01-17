@@ -368,8 +368,8 @@ function api:DoTheThing(msg)
 					ilv = item.ilv,
 					bag = item.bag,
 					bagSlot = item.bagSlot,
-					equipSlot = s, -- 16 (MH), 17 (OH), 18 (1H), 1617 (2H)
-					obj = item     -- Reference for strict equality checks
+					equipSlot = s,	-- 16 (MH), 17 (OH), 18 (1H), 1617 (2H)
+					obj = item	-- Reference for strict equality checks
 				})
 			end
 		end

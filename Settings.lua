@@ -135,7 +135,7 @@ function app:CreateSettings()
 
 	function EquipRecommendedGear_SettingsExpandMixin:OnExpandedChanged(expanded)
 		self:EvaluateVisibility(expanded)
-        SettingsInbound.RepairDisplay()
+		SettingsInbound.RepairDisplay()
 	end
 
 	function EquipRecommendedGear_SettingsExpandMixin:EvaluateVisibility(expanded)
