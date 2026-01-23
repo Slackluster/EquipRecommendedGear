@@ -96,6 +96,9 @@ function api:IsItemUpgrade(itemLink)
 
 	local equippedItemLevel = {}
 	local itemLevel = C_Item.GetDetailedItemLevelInfo(itemLink)
+	if itemLevel >= 400 then
+		itemLevel = C_CurveUtil.EvaluateGameCurve(92181, itemLevel)
+	end
 	local _, _, _, _, _, _, _, _, itemEquipLoc, _, _, classID, subclassID = C_Item.GetItemInfo(itemLink)
 
 	if classID.."."..subclassID == "2.19" then itemEquipLoc = "INVTYPE_WEAPONMAINHAND" end	-- Adjust Wands because goddammit Blizzard
