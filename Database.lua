@@ -15,6 +15,7 @@ _G["BINDING_NAME_SLACKWARE"] = "Slackware"
 app.IconWaiting = "|TInterface\\RaidFrame\\ReadyCheck-Waiting:0|t"
 app.IconReady = "|TInterface\\RaidFrame\\ReadyCheck-Ready:0|t"
 app.IconNotReady = "|TInterface\\RaidFrame\\ReadyCheck-NotReady:0|t"
+app.IconNew = "|TInterface\\AddOns\\EquipRecommendedGear\\assets\\new.png:20:28|t"
 
 -- ItemEquipLoc to key
 app.Slot = {
