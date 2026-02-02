@@ -113,11 +113,6 @@ function app:CreateSettings()
 	end
 	layout:AddInitializer(CreateSettingsButtonInitializer(L.SETTINGS_HELP_TEXT, L.SETTINGS_HELP_BUTTON, onHelpButtonClick, L.SETTINGS_HELP_DESC, true))
 
-	local function onIssuesButtonClick()
-		StaticPopup_Show("EQUIPRECOMMENDEDGEAR_URL", nil, nil, "https://github.com/slackluster/EquipRecommendedGear/issues")
-	end
-	layout:AddInitializer(CreateSettingsButtonInitializer(L.SETTINGS_ISSUES_TEXT, L.SETTINGS_ISSUES_BUTTON, onIssuesButtonClick, L.SETTINGS_ISSUES_DESC, true))
-
 	EquipRecommendedGear_SettingsExpandMixin = CreateFromMixins(SettingsExpandableSectionMixin)
 
 	function EquipRecommendedGear_SettingsExpandMixin:Init(initializer)
