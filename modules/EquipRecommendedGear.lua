@@ -327,6 +327,8 @@ function api:DoTheThing(msg)
 				tinsert(oneHand, item)
 			end
 		end
+		table.sort(twoHand, function(a, b) return a.ilv > b.ilv end)
+		table.sort(oneHand, function(a, b) return a.ilv > b.ilv end)
 
 		local weaponUpgrades = {}
 		local function addCombo(list)
@@ -418,13 +420,19 @@ function api:DoTheThing(msg)
 			DevTools_Dump(weaponUpgrades[1])
 		end
 
-		if weaponUpgrades[1] and weaponUpgrades[1].weapons[1].bag ~= -1 then
+		if weaponUpgrades[1] and not (weaponUpgrades[1].weapons[1].bag == -1 and weaponUpgrades[1].weapons[1].bagSlot == 16) then
 			tinsert(upgrades, { itemLink = weaponUpgrades[1].weapons[1].itemLink, bag = weaponUpgrades[1].weapons[1].bag, bagSlot = weaponUpgrades[1].weapons[1].bagSlot, equipSlot = 16 })
 		end
-		if weaponUpgrades[1] and weaponUpgrades[1].weapons[2].bag ~= -1 then
+		if weaponUpgrades[1] and not (weaponUpgrades[1].weapons[2].bag == -1 and weaponUpgrades[1].weapons[2].bagSlot == 17) then
 			tinsert(upgrades, { itemLink = weaponUpgrades[1].weapons[2].itemLink, bag = weaponUpgrades[1].weapons[2].bag, bagSlot = weaponUpgrades[1].weapons[2].bagSlot, equipSlot = 17 })
 		end
 	end
+
+	table.sort(upgrades, function(a, b)
+		if a.bag ~= b.bag then
+			return a.bag == -1
+		end
+	end)
 
 	if EquipRecommendedGear_Settings["debug"] then
 		app:Print("DEBUG: UPGRADES")
@@ -434,8 +442,11 @@ function api:DoTheThing(msg)
 	end
 
 	for _, item in ipairs(upgrades) do
-		if item.bag and item.bagSlot then
-			ClearCursor()
+		ClearCursor()
+		if item.bag == -1 then
+			PickupInventoryItem(item.bagSlot)       -- pick up currently equipped weapon
+			EquipCursorItem(item.equipSlot)        -- move it to the desired slot
+		else
 			C_Container.PickupContainerItem(item.bag, item.bagSlot)
 			EquipCursorItem(item.equipSlot)
 		end
