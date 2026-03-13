@@ -96,8 +96,16 @@ function api:IsItemUpgrade(itemLink)
 
 	local equippedItemLevel = {}
 	local itemLevel = C_Item.GetDetailedItemLevelInfo(itemLink)
-	if itemLevel >= 400 then
-		itemLevel = C_CurveUtil.EvaluateGameCurve(92181, itemLevel)
+	if itemLevel >= 350 then
+		local tooltipData = C_TooltipInfo.GetHyperlink(itemLink)
+		if tooltipData and tooltipData.lines then
+			for _, lineData in ipairs(tooltipData.lines) do
+				if lineData.type == Enum.TooltipDataLineType.ItemLevel then
+					itemLevel = lineData.itemLevel
+					break
+				end
+			end
+		end
 	end
 	local _, _, _, _, _, _, _, _, itemEquipLoc, _, _, classID, subclassID = C_Item.GetItemInfo(itemLink)
 
