@@ -88,13 +88,7 @@ function api:IsItemEquippable(itemLink)
 	return equippable
 end
 
-function api:IsItemUpgrade(itemLink)
-	assert(self == api, "Call EquipRecommendedGear:IsItemUpgrade(), not EquipRecommendedGear.IsItemUpgrade()")
-
-	if not itemLink then return false end
-	if not api:IsItemEquippable(itemLink) then return false end
-
-	local equippedItemLevel = {}
+function app:GetItemLevel(itemLink)
 	local itemLevel = C_Item.GetDetailedItemLevelInfo(itemLink)
 	if itemLevel >= 350 then
 		local tooltipData = C_TooltipInfo.GetHyperlink(itemLink)
@@ -107,6 +101,17 @@ function api:IsItemUpgrade(itemLink)
 			end
 		end
 	end
+	return itemLevel
+end
+
+function api:IsItemUpgrade(itemLink)
+	assert(self == api, "Call EquipRecommendedGear:IsItemUpgrade(), not EquipRecommendedGear.IsItemUpgrade()")
+
+	if not itemLink then return false end
+	if not api:IsItemEquippable(itemLink) then return false end
+
+	local equippedItemLevel = {}
+	local itemLevel = app:GetItemLevel(itemLink)
 	local _, _, _, _, _, _, _, _, itemEquipLoc, _, _, classID, subclassID = C_Item.GetItemInfo(itemLink)
 
 	if classID.."."..subclassID == "2.19" then itemEquipLoc = "INVTYPE_WEAPONMAINHAND" end	-- Adjust Wands because goddammit Blizzard
