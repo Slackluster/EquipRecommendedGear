@@ -117,7 +117,7 @@ function api:IsItemUpgrade(itemLink)
 	end
 	if not app.Slot[itemEquipLoc] then return end
 
-	if app.Slot[itemEquipLoc] <= 10 or app.Slot[itemEquipLoc] == 15 then
+	if app.Slot[itemEquipLoc] <= 10 or app.Slot[itemEquipLoc] == 15 or app.Slot[itemEquipLoc] == 17 then
 		if GetInventoryItemLink("player", app.Slot[itemEquipLoc]) then
 			table.insert(equippedItemLevel, C_Item.GetCurrentItemLevel(ItemLocation:CreateFromEquipmentSlot(app.Slot[itemEquipLoc])))
 		else
