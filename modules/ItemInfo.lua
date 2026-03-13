@@ -161,7 +161,7 @@ function api:IsItemUpgrade(itemLink)
 			table.insert(equippedItemLevel, 0)
 		end
 
-		if (mainhand and not (app.Slot[mhItemEquipLoc] == 1617 and mhClassID.."."..mhSubclassID ~= "2.19")) or not mainhand then
+		if (mainhand and (not (app.Slot[mhItemEquipLoc] == 1617 and mhClassID.."."..mhSubclassID ~= "2.19") or PlayerUtil.GetCurrentSpecID() == 72)) or not mainhand then
 			if GetInventoryItemLink("player", 17) then
 				table.insert(equippedItemLevel, C_Item.GetCurrentItemLevel(ItemLocation:CreateFromEquipmentSlot(17)))
 			elseif app.Slot[itemEquipLoc] == 17 or (dualwield and app.Slot[itemEquipLoc] == 18) then

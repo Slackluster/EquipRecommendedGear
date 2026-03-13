@@ -79,19 +79,19 @@ app.Armor = {
 
 -- Weapon -> Spec
 app.Weapon = {
-	["General"] = { 250, 251, 252, 577, 581, 102, 103, 104, 1467, 1468, 1473, 253, 254, 255, 62, 63, 64, 268, 270, 269, 65, 66, 70, 256, 257, 258, 259, 260, 261, 262, 263, 264, 265, 266, 267, 71, 721, 722, 73 },	-- Everyone
+	["General"] = { 250, 251, 252, 577, 581, 102, 103, 104, 1467, 1468, 1473, 253, 254, 255, 62, 63, 64, 268, 270, 269, 65, 66, 70, 256, 257, 258, 259, 260, 261, 262, 263, 264, 265, 266, 267, 71, 72, 73 },	-- Everyone
 	["Shield"] = { 65, 66, 73, 262, 264 },	-- Holy + Prot Pala, Prot Warr, Ele + Resto Shaman
-	["Axe1H"] = { 251, 577, 581, 1467, 1468, 1473, 268, 269, 270, 65, 66, 260, 262, 263, 264, 721, 73 },	-- Frost DK, 2x DH, 3x Evoker, 3x Monk, Holy + Prot Pala, Outlaw Rogue, 3x Shaman, Fury + Prot Warr
-	["Axe2H"] = { 65, 70, 71, 722, 250, 251, 252, 1467, 1468, 1473, 255, 262, 264 },	-- Holy + Ret Pala, Arms + Fury Warr, 3x DK, 3x Evoker, Surv Hunter, Ele + Resto Shaman
+	["Axe1H"] = { 251, 577, 581, 1467, 1468, 1473, 268, 269, 270, 65, 66, 260, 262, 263, 264, 73 },	-- Frost DK, 2x DH, 3x Evoker, 3x Monk, Holy + Prot Pala, Outlaw Rogue, 3x Shaman, Fury + Prot Warr
+	["Axe2H"] = { 65, 70, 71, 72, 250, 251, 252, 1467, 1468, 1473, 255, 262, 264 },	-- Holy + Ret Pala, Arms + Fury Warr, 3x DK, 3x Evoker, Surv Hunter, Ele + Resto Shaman
 	["Bow"] = { 253, 254 },	-- BM + Mark Hunter
 	["Gun"] = { 253, 254 },	-- BM + Mark Hunter
-	["Mace1H"] = { 251, 102, 105, 1467, 1468, 1473, 268, 269, 270, 65, 66, 256, 257, 258, 260, 262, 263, 264, 721, 73 },	-- Frost DK, Balance + Resto Druid, 3x Evoker, 3x Monk, Holy + Prot Pala, 3x Priest, Outlaw Rogue, 3x Shaman, Fury + Prot Warr
-	["Mace2H"] = { 65, 70, 71, 722, 250, 251, 252, 102, 103, 104, 105, 1467, 1468, 1473, 262, 264 },	-- Holy + Ret Pala, Arms + Fury Warr, 3x DK, 4x Druid, 3x Evoker, Ele + Resto Shaman
-	["Polearm"] = { 250, 251, 252, 102, 103, 104, 105, 255, 268, 269, 270, 65, 70, 71, 722 },	-- 3x DK, 4x Druid, Surv Hunt, 3x Monk, Holy + Ret Pala, Arms + Fury Warr
-	["Sword1H"] = { 251, 577, 581, 1467, 1468, 1473, 62, 63, 64, 268, 269, 270, 65, 66, 260, 265, 266, 267, 721, 73 },	-- Frost DK, 2x DH, 3x Evoker, 3x Mage, 3x Monk, Holy + Prot Pala, Outlaw Rogue, 3x Lock, Fury + Prot Warr
-	["Sword2H"] = { 65, 70, 71, 722, 250, 251, 252, 1467, 1468, 1469, 255 },	-- Holy + Ret Pala, Arms + Fury Warr, 3x DK, 3x Evoker, Surv Hunt
+	["Mace1H"] = { 251, 102, 105, 1467, 1468, 1473, 268, 269, 270, 65, 66, 256, 257, 258, 260, 262, 263, 264, 73 },	-- Frost DK, Balance + Resto Druid, 3x Evoker, 3x Monk, Holy + Prot Pala, 3x Priest, Outlaw Rogue, 3x Shaman, Fury + Prot Warr
+	["Mace2H"] = { 65, 70, 71, 72, 250, 251, 252, 102, 103, 104, 105, 1467, 1468, 1473, 262, 264 },	-- Holy + Ret Pala, Arms + Fury Warr, 3x DK, 4x Druid, 3x Evoker, Ele + Resto Shaman
+	["Polearm"] = { 250, 251, 252, 102, 103, 104, 105, 255, 268, 269, 270, 65, 70, 71, 72 },	-- 3x DK, 4x Druid, Surv Hunt, 3x Monk, Holy + Ret Pala, Arms + Fury Warr
+	["Sword1H"] = { 251, 577, 581, 1467, 1468, 1473, 62, 63, 64, 268, 269, 270, 65, 66, 260, 265, 266, 267, 73 },	-- Frost DK, 2x DH, 3x Evoker, 3x Mage, 3x Monk, Holy + Prot Pala, Outlaw Rogue, 3x Lock, Fury + Prot Warr
+	["Sword2H"] = { 65, 70, 71, 72, 250, 251, 252, 1467, 1468, 1469, 255 },	-- Holy + Ret Pala, Arms + Fury Warr, 3x DK, 3x Evoker, Surv Hunt
 	["Warglaive"] = { 577, 581 },	-- 2x DH
-	["Staff"] = { 102, 103, 104, 105, 1467, 1468, 1473, 255, 62, 63, 64, 268, 269, 270, 256, 257, 258, 262, 264, 265, 266, 267, 71, 722 },	-- 4x Druid, 3x Evoker, Surv Hunter, 3x Mage, 3x Monk, 3x Priest, Ele + Resto Shaman, 3x Lock, Fury + Arms Warr
+	["Staff"] = { 102, 103, 104, 105, 1467, 1468, 1473, 255, 62, 63, 64, 268, 269, 270, 256, 257, 258, 262, 264, 265, 266, 267, 71, 72 },	-- 4x Druid, 3x Evoker, Surv Hunter, 3x Mage, 3x Monk, 3x Priest, Ele + Resto Shaman, 3x Lock, Fury + Arms Warr
 	["Fist"] = { 577, 581, 1467, 1468, 1473, 268, 269, 270, 260, 262, 263, 264, 73 },	-- 2x DH, 3x Evoker, 3x Monk, Outlaw Rogue, 3x Shaman, Prot Warr
 	["Dagger"] = { 102, 105, 1467, 1468, 1473, 62, 63, 64, 256, 257, 258, 259, 261, 262, 263, 264 },	-- Balance + Resto Druid, 3x Evoker, 3x Mage, 3x Priest, Ass + Sub Rogue, 3x Shaman
 	["Crossbow"] = { 253, 254 },	-- BM + Mark Hunter
@@ -102,6 +102,6 @@ app.Weapon = {
 app.Stat = {
 	["ITEM_MOD_AGILITY_SHORT"] = { 577, 581, 103, 104, 253, 254, 255, 268, 269, 259, 260, 261, 263 },	-- 2x DH, Feral + Guardian Druid, 3x Hunter, Brew + Wind Monk, 3x Rogue, Enh Shaman
 	["ITEM_MOD_INTELLECT_SHORT"] = { 102, 105, 1467, 1468, 1473, 62, 63, 64, 270, 65, 256, 257, 258, 262, 264, 265, 266, 267 },	-- Balance + Resto Druid, 3x Evoker, 3x Mage, Mist Monk, Holy Pala, 3x Priest, Ele + Resto Shaman, 3x Lock
-	["ITEM_MOD_STRENGTH_SHORT"] = { 250, 251, 252, 66, 70, 71, 721, 722, 73 },	-- 3x DK, Prot + Ret Pala, 3x Warr
+	["ITEM_MOD_STRENGTH_SHORT"] = { 250, 251, 252, 66, 70, 71, 72, 73 },	-- 3x DK, Prot + Ret Pala, 3x Warr
 }
-app.DualWield = { 577, 581, 259, 260, 261, 251, 721, 722, 263, 268, 269 }	-- 2x DH, 3x Rogue, Frost DK, Fury Warr, Enh Shaman, Brew + Wind Monk
+app.DualWield = { 577, 581, 259, 260, 261, 251, 72, 263, 268, 269 }	-- 2x DH, 3x Rogue, Frost DK, Fury Warr, Enh Shaman, Brew + Wind Monk
