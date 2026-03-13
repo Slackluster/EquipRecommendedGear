@@ -110,6 +110,15 @@ function api:IsItemUpgrade(itemLink)
 	local _, _, _, _, _, _, _, _, itemEquipLoc, _, _, classID, subclassID = C_Item.GetItemInfo(itemLink)
 
 	if classID.."."..subclassID == "2.19" then itemEquipLoc = "INVTYPE_WEAPONMAINHAND" end	-- Adjust Wands because goddammit Blizzard
+	local uniqueEquipped = false
+	if C_Item.GetItemUniquenessByID(itemLink) then
+		local itemID = C_Item.GetItemIDForItemInfo(itemLink)
+		for slot = 1, 17 do
+			if GetInventoryItemLink("player", slot) and C_Item.GetItemID(ItemLocation:CreateFromEquipmentSlot(slot)) == itemID then
+				uniqueEquipped = slot
+			end
+		end
+	end
 	local dualwield = false
 	for _, spec in pairs(app.DualWield) do
 		if PlayerUtil.GetCurrentSpecID() == spec then dualwield = true end
@@ -117,7 +126,9 @@ function api:IsItemUpgrade(itemLink)
 	end
 	if not app.Slot[itemEquipLoc] then return end
 
-	if app.Slot[itemEquipLoc] <= 10 or app.Slot[itemEquipLoc] == 15 or app.Slot[itemEquipLoc] == 17 then
+	if uniqueEquipped then
+		table.insert(equippedItemLevel, C_Item.GetCurrentItemLevel(ItemLocation:CreateFromEquipmentSlot(uniqueEquipped)))
+	elseif app.Slot[itemEquipLoc] <= 10 or app.Slot[itemEquipLoc] == 15 or app.Slot[itemEquipLoc] == 17 then
 		if GetInventoryItemLink("player", app.Slot[itemEquipLoc]) then
 			table.insert(equippedItemLevel, C_Item.GetCurrentItemLevel(ItemLocation:CreateFromEquipmentSlot(app.Slot[itemEquipLoc])))
 		else
