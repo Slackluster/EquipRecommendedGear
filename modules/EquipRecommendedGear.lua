@@ -173,6 +173,7 @@ function api:DoTheThing(msg)
 						end
 
 						if api:IsItemUpgrade(itemLink) then
+							if classID == 2 and subclassID == 19 then itemEquipLoc = "INVTYPE_WEAPONMAINHAND" end	-- Adjust Wands because goddammit Blizzard
 							tinsert(eligibleItems, { itemLink = itemLink, itemID = itemID, itemEquipLoc = itemEquipLoc, unique = unique, ilv = ilv, bag = bag, bagSlot = bagSlot })
 						end
 					end
@@ -267,7 +268,7 @@ function api:DoTheThing(msg)
 		end
 	end
 
-	-- Check ring and trinket slots
+	-- Gear upgrades
 	local openSlots = { [11] = true, [12] = true, [13] = true, [14] = true }
 	for _, item in ipairs(eligibleItems) do
 		if (app.Slot[item.itemEquipLoc] == 11 or app.Slot[item.itemEquipLoc] == 13) and item.bag == -1 then
@@ -275,7 +276,6 @@ function api:DoTheThing(msg)
 		end
 	end
 
-	-- Gear upgrades
 	local upgrades = {}
 	local function ringTrinketSlots(item, a, b)
 		if openSlots[a] == true then
@@ -299,7 +299,131 @@ function api:DoTheThing(msg)
 
 	-- Weapon upgrades
 	if EquipRecommendedGear_CharSettings["includeWeapons"] then
-		-- TBD
+		local dualWield = false
+		for _, spec in pairs(app.DualWield) do
+			if app.SpecID == spec then
+				dualWield = true
+				break
+			end
+		end
+
+		if not dualWield then
+			for i, item in pairs(eligibleItems) do
+				if app.Slot[item.itemEquipLoc] == 18 then
+					eligibleItems[i].itemEquipLoc = "INVTYPE_WEAPONMAINHAND"
+				end
+			end
+		end
+
+		local twoHand, mainHand, offHand, oneHand = {}, {}, {}, {}
+		for _, item in ipairs(eligibleItems) do
+			if app.Slot[item.itemEquipLoc] == 1617 then
+				tinsert(twoHand, item)
+			elseif app.Slot[item.itemEquipLoc] == 16 then
+				tinsert(mainHand, item)
+			elseif app.Slot[item.itemEquipLoc] == 17 then
+				tinsert(offHand, item)
+			elseif app.Slot[item.itemEquipLoc] == 18 then
+				tinsert(oneHand, item)
+			end
+		end
+
+		local weaponUpgrades = {}
+		local function addCombo(list)
+			local comboItemLevel = 0
+			for _, weapon in ipairs(list) do
+				comboItemLevel = comboItemLevel + app:GetItemLevel(weapon.itemLink)
+			end
+			tinsert(weaponUpgrades, { ilv = comboItemLevel / #list, weapons = list })
+		end
+
+		if EquipRecommendedGear_Settings["debug"] then
+			app:Print("DEBUG: ELIGIBLE WEAPONS")
+			DevTools_Dump(twoHand)
+			DevTools_Dump(mainHand)
+			DevTools_Dump(offHand)
+			DevTools_Dump(oneHand)
+		end
+
+		-- 2H
+		if #twoHand >= 1 and app.SpecID ~= 72 then
+			for _, item in ipairs(twoHand) do
+				addCombo({ item })
+			end
+		end
+		-- 2H + 2H (Fury)
+		if #twoHand >= 2 and app.SpecID == 72 then
+			for i = 1, #twoHand do
+				for j = i + 1, #twoHand do
+					addCombo({ twoHand[i], twoHand[j] })
+				end
+			end
+		end
+		-- MH + OH
+		for _, mh in ipairs(mainHand) do
+			for _, oh in ipairs(offHand) do
+				addCombo({ mh, oh })
+			end
+		end
+		-- MH + 1H
+		for _, mh in ipairs(mainHand) do
+			for _, oh in ipairs(oneHand) do
+				addCombo({ mh, oh })
+			end
+		end
+		-- 1H + OH
+		for _, mh in ipairs(oneHand) do
+			for _, oh in ipairs(offHand) do
+				addCombo({ mh, oh })
+			end
+		end
+		-- 1H + 1H
+		for i = 1, #oneHand do
+			for j = i + 1, #oneHand do
+				addCombo({ oneHand[i], oneHand[j] })
+			end
+		end
+
+		if EquipRecommendedGear_Settings["debug"] then
+			app:Print("DEBUG: ELIGIBLE WEAPON COMBOS")
+			DevTools_Dump(weaponUpgrades)
+		end
+
+		table.sort(weaponUpgrades, function(a, b)
+			if a.ilv ~= b.ilv then
+				return a.ilv > b.ilv
+			end
+
+			-- If tie, prefer equipped
+			local function countEquipped(combo)
+				local count = 0
+				for _, w in ipairs(combo.weapons) do
+						if w.bag == -1 then count = count + 1 end
+				end
+				return count
+			end
+
+			local aEquipped = countEquipped(a)
+			local bEquipped = countEquipped(b)
+			if aEquipped ~= bEquipped then
+				return aEquipped > bEquipped
+			end
+
+			-- If still tie, use itemID to be deterministic
+			return a.weapons[1].itemID > b.weapons[1].itemID
+		end)
+
+		if EquipRecommendedGear_Settings["debug"] then
+			app:Print("DEBUG: BEST WEAPON COMBO")
+			DevTools_Dump(weaponUpgrades[1])
+		end
+
+		if weaponUpgrades[1] and weaponUpgrades[1].weapons[1].bag ~= -1 then
+			tinsert(upgrades, { itemLink = weaponUpgrades[1].weapons[1].itemLink, bag = weaponUpgrades[1].weapons[1].bag, bagSlot = weaponUpgrades[1].weapons[1].bagSlot, equipSlot = 16 })
+		end
+		if weaponUpgrades[1] and weaponUpgrades[1].weapons[2].bag ~= -1 then
+			tinsert(upgrades, { itemLink = weaponUpgrades[1].weapons[2].itemLink, bag = weaponUpgrades[1].weapons[2].bag, bagSlot = weaponUpgrades[1].weapons[2].bagSlot, equipSlot = 17 })
+		end
 	end
 
 	if EquipRecommendedGear_Settings["debug"] then
