@@ -77,8 +77,7 @@ end
 function api:DoTheThing(msg)
 	assert(self == api, "Call EquipRecommendedGear:DoTheThing(), not EquipRecommendedGear.DoTheThing()")
 
-	if not app.Flag.Busy then app.Flag.Busy = false end
-	if app.Flag.Busy == true then return end
+	if app.Flag.Busy then return end
 
 	if InCombatLockdown() then
 		C_Timer.After(1, function()
@@ -96,40 +95,11 @@ function api:DoTheThing(msg)
 	local className, classFile = GetClassInfo(app.ClassID)
 	local _, _, _, classColor = GetClassColor(classFile)
 
-	-- Use custom specIDs for Fury Warr to handle 2x2H vs 2x1H
-	if app.SpecID == 72 then
-		if C_SpellBook.IsSpellKnown(81099) then
-			app.SpecID = 721
-		else
-			app.SpecID = 722
-		end
-	end
-
-	local armorClass
-	for armor, classes in pairs(app.Armor) do
-		for _, class in pairs(classes) do
-			if class == app.ClassID then
-				armorClass = armor
-				break
-			end
-		end
-	end
-
-	local primaryStat
-	for stat, specs in pairs(app.Stat) do
-		for _, spec in pairs(specs) do
-			if spec == app.SpecID then
-				primaryStat = stat
-				break
-			end
-		end
-	end
-
 	local eligibleItems = {}
-	-- Equipped items are eligible by default
+
 	for slot = 1, 17 do
 		local itemLink = GetInventoryItemLink("player", slot)
-		if itemLink and slot ~= 4 then	-- Skip shirt slot
+		if itemLink and slot ~= 4 then
 			local itemID = C_Item.GetItemInfoInstant(itemLink)
 			local unique = C_Item.GetItemUniquenessByID(itemID)
 			local ilv = C_Item.GetCurrentItemLevel(ItemLocation:CreateFromEquipmentSlot(slot))
@@ -183,7 +153,6 @@ function api:DoTheThing(msg)
 						return
 					end
 
-					-- Only handle soulbound items
 					if C_Item.IsBound(ItemLocation:CreateFromBagAndSlot(bag, bagSlot)) and app.Level >= itemMinLevel then
 						local ilv = C_Item.GetCurrentItemLevel(ItemLocation:CreateFromBagAndSlot(bag, bagSlot))
 
@@ -203,9 +172,7 @@ function api:DoTheThing(msg)
 							end
 						end
 
-						local equippable = api:IsItemEquippable(itemLink)
-
-						if equippable then
+						if api:IsItemUpgrade(itemLink) then
 							tinsert(eligibleItems, { itemLink = itemLink, itemID = itemID, itemEquipLoc = itemEquipLoc, unique = unique, ilv = ilv, bag = bag, bagSlot = bagSlot })
 						end
 					end
@@ -214,32 +181,15 @@ function api:DoTheThing(msg)
 		end
 	end
 
-	local canDualWield = false
-	for _, spec in pairs(app.DualWield) do
-		if app.SpecID == spec then
-			canDualWield = true
-			break
-		end
-	end
-
-	if not canDualWield then
-		for i, item in pairs(eligibleItems) do
-			if app.Slot[item.itemEquipLoc] == 18 then
-				eligibleItems[i].itemEquipLoc = "INVTYPE_WEAPONMAINHAND"
-			end
-		end
-	end
-
 	if EquipRecommendedGear_Settings["debug"] then
 		app:Print("DEBUG: ELIGIBLE ITEMS")
 		for _, v in ipairs(eligibleItems) do
-			local unique = "false"
-			if v.unique then unique = "true" end
+			local unique = v.unique and "true" or "false"
 			print(v.itemLink..", " .. v.itemID..", " .. v.itemEquipLoc..", " .. unique..", " .. v.ilv..", " .. v.bag.."."..v.bagSlot)
 		end
 	end
 
-	-- Filter unique-equipped (Vibecoded)
+	-- Filter unique-equipped
 	local filtered = {}
 	local seen = {}
 
@@ -250,7 +200,6 @@ function api:DoTheThing(msg)
 				if item.ilv > existing.ilv then
 					seen[item.itemID] = item
 				elseif item.ilv == existing.ilv then
-					-- Prefer already equipped
 					if item.bag == -1 and existing.bag ~= -1 then
 						seen[item.itemID] = item
 					end
@@ -272,13 +221,12 @@ function api:DoTheThing(msg)
 	if EquipRecommendedGear_Settings["debug"] then
 		app:Print("DEBUG: ELIGIBLE ITEMS MINUS UNIQUE DUPES")
 		for _, v in ipairs(eligibleItems) do
-			local unique = "false"
-			if v.unique then unique = "true" end
+			local unique = v.unique and "true" or "false"
 			print(v.itemLink..", " .. v.itemID..", " .. v.itemEquipLoc..", " .. unique..", " .. v.ilv..", " .. v.bag.."."..v.bagSlot)
 		end
 	end
 
-	-- Keep the highest iLv entries (Vibecoded)
+	-- Keep the highest iLv entries
 	local filtered = {}
 	local grouped = {}
 
@@ -291,7 +239,6 @@ function api:DoTheThing(msg)
 	end
 
 	for slot, items in pairs(grouped) do
-		-- Prefer higher item level > equipped items > higher itemID
 		table.sort(items, function(a, b)
 			if a.ilv ~= b.ilv then
 				return a.ilv > b.ilv
@@ -315,8 +262,7 @@ function api:DoTheThing(msg)
 	if EquipRecommendedGear_Settings["debug"] then
 		app:Print("DEBUG: BEST ITEMS")
 		for _, v in ipairs(eligibleItems) do
-			local unique = "false"
-			if v.unique then unique = "true" end
+			local unique = v.unique and "true" or "false"
 			print(v.itemLink..", " .. v.itemID..", " .. v.itemEquipLoc..", " .. unique..", " .. v.ilv..", " .. v.bag.."."..v.bagSlot)
 		end
 	end
@@ -331,156 +277,29 @@ function api:DoTheThing(msg)
 
 	-- Gear upgrades
 	local upgrades = {}
+	local function ringTrinketSlots(item, a, b)
+		if openSlots[a] == true then
+			tinsert(upgrades, { itemLink = item.itemLink, bag = item.bag, bagSlot = item.bagSlot, equipSlot = a })
+			openSlots[a] = false
+		elseif openSlots[b] == true then
+			tinsert(upgrades, { itemLink = item.itemLink, bag = item.bag, bagSlot = item.bagSlot, equipSlot = b })
+			openSlots[b] = false
+		end
+	end
+
 	for _, item in ipairs(eligibleItems) do
 		if (app.Slot[item.itemEquipLoc] <= 10 or app.Slot[item.itemEquipLoc] == 15) and item.bag ~= -1 then
 			tinsert(upgrades, { itemLink = item.itemLink, bag = item.bag, bagSlot = item.bagSlot, equipSlot = app.Slot[item.itemEquipLoc] })
 		elseif app.Slot[item.itemEquipLoc] == 11 and item.bag ~= -1 then
-			if openSlots[11] == true then
-				tinsert(upgrades, { itemLink = item.itemLink, bag = item.bag, bagSlot = item.bagSlot, equipSlot = 11 })
-				openSlots[11] = false
-			elseif openSlots[12] == true then
-				tinsert(upgrades, { itemLink = item.itemLink, bag = item.bag, bagSlot = item.bagSlot, equipSlot = 12 })
-				openSlots[12] = false
-			end
+			ringTrinketSlots(item, 11, 12)
 		elseif app.Slot[item.itemEquipLoc] == 13 and item.bag ~= -1 then
-			if openSlots[13] == true then
-				tinsert(upgrades, { itemLink = item.itemLink, bag = item.bag, bagSlot = item.bagSlot, equipSlot = 13 })
-				openSlots[13] = false
-			elseif openSlots[14] == true then
-				tinsert(upgrades, { itemLink = item.itemLink, bag = item.bag, bagSlot = item.bagSlot, equipSlot = 14 })
-				openSlots[14] = false
-			end
+			ringTrinketSlots(item, 13, 14)
 		end
 	end
 
-	-- Weapon upgrades (Vibecoded)
+	-- Weapon upgrades
 	if EquipRecommendedGear_CharSettings["includeWeapons"] then
-		local weapons = {}
-
-		-- 1. Extract and Normalize Weapon Data
-		-- We cache the numeric slot ID here to avoid looking it up repeatedly in loops
-		for _, item in ipairs(eligibleItems) do
-			local s = app.Slot[item.itemEquipLoc]
-			if s and s > 15 then
-				tinsert(weapons, {
-					itemLink = item.itemLink,
-					itemID = item.itemID,
-					ilv = item.ilv,
-					bag = item.bag,
-					bagSlot = item.bagSlot,
-					equipSlot = s,	-- 16 (MH), 17 (OH), 18 (1H), 1617 (2H)
-					obj = item	-- Reference for strict equality checks
-				})
-			end
-		end
-
-		-- 2. Solver Function
-		local function findBestWeaponCombo(candidates)
-			if #candidates == 0 then return {} end
-
-			local bestScore = 0
-			local bestCombo = {}
-			local canTitanGrip = (app.SpecID == 722) -- Fury Warrior (Titan's Grip)
-
-			-- Helper: Update best combo if the new score is higher
-			local function checkUpdate(combo, score)
-				local isUpgrade = false
-				if score > bestScore then
-					isUpgrade = true
-				elseif score == bestScore and score > 0 then
-					-- Tie-breaker 1: Prefer currently equipped items (minimize swapping)
-					local newEquipped = (combo[1].bag == -1 and 1 or 0) + (combo[2] and combo[2].bag == -1 and 1 or 0)
-					local oldEquipped = (bestCombo[1] and bestCombo[1].bag == -1 and 1 or 0) + (bestCombo[2] and bestCombo[2].bag == -1 and 1 or 0)
-
-					if newEquipped > oldEquipped then
-						isUpgrade = true
-					elseif newEquipped == oldEquipped then
-						-- Tie-breaker 2: Deterministic sort by ItemID sum
-						local newId = combo[1].itemID + (combo[2] and combo[2].itemID or 0)
-						local oldId = (bestCombo[1] and bestCombo[1].itemID or 0) + (bestCombo[2] and bestCombo[2].itemID or 0)
-						if newId > oldId then isUpgrade = true end
-					end
-				end
-
-				if isUpgrade then
-					bestScore = score
-					bestCombo = combo
-				end
-			end
-
-			-- Helper: Check if two items can be dual-wielded
-			local function isValidPair(mh, oh)
-				if mh.obj == oh.obj then return false end -- Cannot equip the literal same object twice
-
-				-- Fury Warrior: Allow 2H + 2H
-				if canTitanGrip and mh.equipSlot == 1617 and oh.equipSlot == 1617 then
-					return true
-				end
-
-				-- Standard Rules
-				-- 1. Main Hand valid? (16, 18, or 1617 if TG)
-				local validMH = (mh.equipSlot == 16 or mh.equipSlot == 18) or (canTitanGrip and mh.equipSlot == 1617)
-				if not validMH then return false end
-
-				-- 2. Off Hand valid? (17, 18, or 1617 if TG)
-				local validOH = (oh.equipSlot == 17 or oh.equipSlot == 18) or (canTitanGrip and oh.equipSlot == 1617)
-				if not validOH then return false end
-
-				-- 3. No mixing 2H with 1H/Shield (Strict rule, simplifies logic)
-				if (mh.equipSlot == 1617) ~= (oh.equipSlot == 1617) then return false end
-
-				return true
-			end
-
-			-- A. Iterate Single Items (For non-Fury 2H users)
-			if not canTitanGrip then
-				for _, w in ipairs(candidates) do
-					if w.equipSlot == 1617 then
-						local combo = { [1] = w }
-						combo[1].targetSlot = 16 -- Force 2H to slot 16
-						checkUpdate(combo, w.ilv * 2) -- Normalize score to match dual wield
-					end
-				end
-			end
-
-			-- B. Iterate Combinations (Dual Wield / Titan's Grip)
-			for i = 1, #candidates do
-				for j = 1, #candidates do
-					if i ~= j then
-						local w1, w2 = candidates[i], candidates[j]
-
-						-- Attempt w1 as Main Hand, w2 as Off Hand
-						if isValidPair(w1, w2) then
-							local combo = { [1] = w1, [2] = w2 }
-							combo[1].targetSlot = 16
-							combo[2].targetSlot = 17
-							checkUpdate(combo, w1.ilv + w2.ilv)
-						end
-					end
-				end
-			end
-
-			return bestCombo
-		end
-
-		-- 3. Calculate and Apply
-		local bestWeaponCombo = findBestWeaponCombo(weapons)
-
-		for _, weapon in ipairs(bestWeaponCombo) do
-			-- If we calculated a specific target slot, apply it now
-			local finalSlot = weapon.targetSlot or weapon.equipSlot
-			if finalSlot == 1617 then finalSlot = 16 end -- Safety fallback
-
-			-- Only queue upgrade if it's in the bag (not already equipped)
-			if weapon.bag ~= -1 then
-				tinsert(upgrades, {
-					itemLink = weapon.itemLink,
-					bag = weapon.bag,
-					bagSlot = weapon.bagSlot,
-					equipSlot = finalSlot
-				})
-			end
-		end
+		-- TBD
 	end
 
 	if EquipRecommendedGear_Settings["debug"] then
@@ -491,7 +310,7 @@ function api:DoTheThing(msg)
 	end
 
 	for _, item in ipairs(upgrades) do
-		if item.bag and item.bagSlot then	-- This gets weird in super niche situations, so let's doublecheck if the data exists
+		if item.bag and item.bagSlot then
 			ClearCursor()
 			C_Container.PickupContainerItem(item.bag, item.bagSlot)
 			EquipCursorItem(item.equipSlot)
