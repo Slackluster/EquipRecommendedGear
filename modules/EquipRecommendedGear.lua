@@ -423,7 +423,7 @@ function api:DoTheThing(msg)
 		if weaponUpgrades[1] and not (weaponUpgrades[1].weapons[1].bag == -1 and weaponUpgrades[1].weapons[1].bagSlot == 16) then
 			tinsert(upgrades, { itemLink = weaponUpgrades[1].weapons[1].itemLink, bag = weaponUpgrades[1].weapons[1].bag, bagSlot = weaponUpgrades[1].weapons[1].bagSlot, equipSlot = 16 })
 		end
-		if weaponUpgrades[1] and not (weaponUpgrades[1].weapons[2].bag == -1 and weaponUpgrades[1].weapons[2].bagSlot == 17) then
+		if weaponUpgrades[2] and not (weaponUpgrades[1].weapons[2].bag == -1 and weaponUpgrades[1].weapons[2].bagSlot == 17) then
 			tinsert(upgrades, { itemLink = weaponUpgrades[1].weapons[2].itemLink, bag = weaponUpgrades[1].weapons[2].bag, bagSlot = weaponUpgrades[1].weapons[2].bagSlot, equipSlot = 17 })
 		end
 	end
