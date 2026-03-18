@@ -77,6 +77,7 @@ function api:IsItemEquippable(itemLink)
 					for stat, _ in pairs(C_Item.GetItemStats(itemLink)) do
 						if primaryStat == stat then
 							equippable = true
+							break
 						end
 					end
 				end
