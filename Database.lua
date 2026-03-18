@@ -33,7 +33,7 @@ app.Slot = {
 	-- Custom code for rings and trinkets
 	["INVTYPE_FINGER"] = 11,	-- Also 12
 	["INVTYPE_TRINKET"] = 13,	-- Also 14
-	--- Custom code for weapons
+	-- Custom code for weapons
 	["INVTYPE_RANGED"] = 1617,	-- Main hand, no off hand
 	["INVTYPE_RANGEDRIGHT"] = 1617,	-- Main hand, no off hand (but also Wands, goddammit Blizzard)
 	["INVTYPE_2HWEAPON"] = 1617,	-- Main hand, no off hand

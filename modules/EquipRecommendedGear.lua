@@ -400,7 +400,7 @@ function api:DoTheThing(msg)
 			local function countEquipped(combo)
 				local count = 0
 				for _, w in ipairs(combo.weapons) do
-						if w.bag == -1 then count = count + 1 end
+					if w.bag == -1 then count = count + 1 end
 				end
 				return count
 			end
