@@ -33,44 +33,52 @@ function api:IsItemEquippable(itemLink)
 	-- Filter class/spec eligibility
 	app.SpecID = PlayerUtil.GetCurrentSpecID()
 
-	local armorClass
-	for armor, classes in pairs(app.Armor) do
-		for _, class in pairs(classes) do
-			if class == app.ClassID then
-				armorClass = armor
-				break
-			end
-		end
-	end
-
-	local primaryStat
-	for stat, specs in pairs(app.Stat) do
-		for _, spec in pairs(specs) do
-			if spec == app.SpecID then
-				primaryStat = stat
-				break
-			end
-		end
-	end
-
 	local itemType = classID.."."..subclassID
 	local equippable = false
 
-	-- Filter by armor class
-	if itemType == app.Type[armorClass] or (itemType == app.Type["General"] and itemEquipLoc ~= "INVTYPE_TABARD" and itemEquipLoc ~= "INVTYPE_BODY" and itemEquipLoc ~= "INVTYPE_WEAPONOFFHAND" and itemEquipLoc ~= "INVTYPE_HOLDABLE" and itemEquipLoc ~= "INVTYPE_SHIELD") or itemEquipLoc == "INVTYPE_CLOAK" then
-		equippable = true
-	end
+	local specs = C_Item.GetItemSpecInfo(itemLink)
+	if specs and itemEquipLoc == "INVTYPE_TRINKET" then	-- Only use spec info for trinkets for now, I'm not sure if it's reliable enough yet
+		for _, specID in ipairs(specs) do
+			if specID == app.SpecID then
+				equippable = true
+			end
+		end
+	else
+		local armorClass
+		for armor, classes in pairs(app.Armor) do
+			for _, class in pairs(classes) do
+				if class == app.ClassID then
+					armorClass = armor
+					break
+				end
+			end
+		end
 
-	-- Filter by spec-appropriate weapons
-	if itemType == "2.19" then itemEquipLoc = "INVTYPE_WEAPONMAINHAND" end	-- Adjust Wands because goddammit Blizzard
-	for typeText, typeNumber in pairs(app.Type) do
-		if typeNumber == itemType and not (itemType == "4.1" or itemType == "4.2" or itemType == "4.3" or itemType == "4.4" or (itemType == "4.0" and itemEquipLoc ~= "INVTYPE_HOLDABLE" and itemEquipLoc ~= "INVTYPE_WEAPONOFFHAND")) then
-			for _, spec in pairs(app.Weapon[typeText]) do
+		local primaryStat
+		for stat, specs in pairs(app.Stat) do
+			for _, spec in pairs(specs) do
 				if spec == app.SpecID then
-					for stat, _ in pairs(C_Item.GetItemStats(itemLink)) do
-						if primaryStat == stat then
-							equippable = true
-							break
+					primaryStat = stat
+					break
+				end
+			end
+		end
+
+		-- Armor class
+		if itemType == app.Type[armorClass] or (itemType == app.Type["General"] and itemEquipLoc ~= "INVTYPE_TABARD" and itemEquipLoc ~= "INVTYPE_BODY" and itemEquipLoc ~= "INVTYPE_WEAPONOFFHAND" and itemEquipLoc ~= "INVTYPE_HOLDABLE" and itemEquipLoc ~= "INVTYPE_SHIELD") or itemEquipLoc == "INVTYPE_CLOAK" then
+			equippable = true
+		end
+		-- Spec-appropriate weapons
+		if itemType == "2.19" then itemEquipLoc = "INVTYPE_WEAPONMAINHAND" end	-- Adjust Wands because goddammit Blizzard
+		for typeText, typeNumber in pairs(app.Type) do
+			if typeNumber == itemType and not (itemType == "4.1" or itemType == "4.2" or itemType == "4.3" or itemType == "4.4" or (itemType == "4.0" and itemEquipLoc ~= "INVTYPE_HOLDABLE" and itemEquipLoc ~= "INVTYPE_WEAPONOFFHAND")) then
+				for _, spec in pairs(app.Weapon[typeText]) do
+					if spec == app.SpecID then
+						for stat, _ in pairs(C_Item.GetItemStats(itemLink)) do
+							if primaryStat == stat then
+								equippable = true
+								break
+							end
 						end
 					end
 				end
@@ -78,7 +86,7 @@ function api:IsItemEquippable(itemLink)
 		end
 	end
 
-	app.IsItemEquippable[itemLink] = equippable
+	if itemEquipLoc ~= "INVTYPE_TRINKET" then app.IsItemEquippable[itemLink] = equippable end
 	return equippable
 end
 
