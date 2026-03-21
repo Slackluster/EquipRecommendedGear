@@ -32,13 +32,6 @@ function api:IsItemEquippable(itemLink)
 
 	-- Filter class/spec eligibility
 	app.SpecID = PlayerUtil.GetCurrentSpecID()
-	if app.SpecID == 72 then
-		if C_SpellBook.IsSpellKnown(81099) then
-			app.SpecID = 721
-		else
-			app.SpecID = 722
-		end
-	end
 
 	local armorClass
 	for armor, classes in pairs(app.Armor) do
