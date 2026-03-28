@@ -3,10 +3,10 @@
 --------------------------------------
 
 -- Initialisation
-local appName, app = ...	-- Returns the addon name and a unique table
-app.locales = {}	-- Localisation table
-app.api = {}	-- Our "API" prefix
-EquipRecommendedGear = app.api	-- Create a namespace for our "API"
+local appName, app = ... -- Returns the addon name and a unique table
+app.locales = {} -- Localisation table
+app.api = {} -- Our "API" prefix
+EquipRecommendedGear = app.api -- Create a namespace for our "API"
 local api = app.api
 local L = app.locales
 

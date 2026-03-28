@@ -28,7 +28,7 @@ function api:IsItemEquippable(itemLink)
 	if not C_Item.IsEquippableItem(itemLink) then return false end
 
 	local _, _, _, _, _, _, _, _, itemEquipLoc, _, _, classID, subclassID = C_Item.GetItemInfo(itemLink)
-	if app.Slot[itemEquipLoc] == 4 then return false end	-- Skip shirts
+	if app.Slot[itemEquipLoc] == 4 then return false end -- Skip shirts
 
 	-- Filter class/spec eligibility
 	app.SpecID = PlayerUtil.GetCurrentSpecID()
@@ -37,7 +37,7 @@ function api:IsItemEquippable(itemLink)
 	local equippable = false
 
 	local specs = C_Item.GetItemSpecInfo(itemLink)
-	if specs and itemEquipLoc == "INVTYPE_TRINKET" then	-- Only use spec info for trinkets for now, I'm not sure if it's reliable enough yet
+	if specs and itemEquipLoc == "INVTYPE_TRINKET" then -- Only use spec info for trinkets for now, I'm not sure if it's reliable enough yet
 		for _, specID in ipairs(specs) do
 			if specID == app.SpecID then
 				equippable = true
@@ -69,7 +69,7 @@ function api:IsItemEquippable(itemLink)
 			equippable = true
 		end
 		-- Spec-appropriate weapons
-		if itemType == "2.19" then itemEquipLoc = "INVTYPE_WEAPONMAINHAND" end	-- Adjust Wands because goddammit Blizzard
+		if itemType == "2.19" then itemEquipLoc = "INVTYPE_WEAPONMAINHAND" end -- Adjust Wands because goddammit Blizzard
 		for typeText, typeNumber in pairs(app.Type) do
 			if typeNumber == itemType and not (itemType == "4.1" or itemType == "4.2" or itemType == "4.3" or itemType == "4.4" or (itemType == "4.0" and itemEquipLoc ~= "INVTYPE_HOLDABLE" and itemEquipLoc ~= "INVTYPE_WEAPONOFFHAND")) then
 				for _, spec in pairs(app.Weapon[typeText]) do
@@ -116,7 +116,7 @@ function api:IsItemUpgrade(itemLink)
 	local itemLevel = app:GetItemLevel(itemLink)
 	local _, _, _, _, _, _, _, _, itemEquipLoc, _, _, classID, subclassID = C_Item.GetItemInfo(itemLink)
 
-	if classID.."."..subclassID == "2.19" then itemEquipLoc = "INVTYPE_WEAPONMAINHAND" end	-- Adjust Wands because goddammit Blizzard
+	if classID.."."..subclassID == "2.19" then itemEquipLoc = "INVTYPE_WEAPONMAINHAND" end -- Adjust Wands because goddammit Blizzard
 	local uniqueEquipped = false
 	if C_Item.GetItemUniquenessByID(itemLink) then
 		local itemID = C_Item.GetItemIDForItemInfo(itemLink)
@@ -157,7 +157,7 @@ function api:IsItemUpgrade(itemLink)
 				table.insert(equippedItemLevel, 0)
 			end
 		end
-	else	-- Weapons
+	else -- Weapons
 		local mainhand = GetInventoryItemLink("player", 16)
 		local _, mhItemEquipLoc
 		if mainhand then

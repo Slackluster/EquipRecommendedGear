@@ -118,7 +118,7 @@ function api:DoTheThing(msg)
 
 				if maxLevel then
 					if maxLevel >= app.Level then
-						ilv = 9999	-- If heirloom isn't maxed, assume player wants to use it
+						ilv = 9999 -- If heirloom isn't maxed, assume player wants to use it
 					end
 				else
 					C_Timer.After(1, function()
@@ -129,7 +129,7 @@ function api:DoTheThing(msg)
 				end
 			end
 
-			if classID == 2 and subclassID == 19 then itemEquipLoc = "INVTYPE_WEAPONMAINHAND" end	-- Adjust Wands because goddammit Blizzard
+			if classID == 2 and subclassID == 19 then itemEquipLoc = "INVTYPE_WEAPONMAINHAND" end -- Adjust Wands because goddammit Blizzard
 			tinsert(eligibleItems, { itemLink = itemLink, itemID = itemID, itemEquipLoc = itemEquipLoc, unique = unique, ilv = ilv, bag = -1, bagSlot = slot })
 		end
 	end
@@ -161,7 +161,7 @@ function api:DoTheThing(msg)
 
 							if maxLevel then
 								if maxLevel >= app.Level then
-									ilv = 9999	-- If heirloom isn't maxed, assume player wants to use it
+									ilv = 9999 -- If heirloom isn't maxed, assume player wants to use it
 								end
 							else
 								C_Timer.After(1, function()
@@ -173,7 +173,7 @@ function api:DoTheThing(msg)
 						end
 
 						if api:IsItemUpgrade(itemLink) then
-							if classID == 2 and subclassID == 19 then itemEquipLoc = "INVTYPE_WEAPONMAINHAND" end	-- Adjust Wands because goddammit Blizzard
+							if classID == 2 and subclassID == 19 then itemEquipLoc = "INVTYPE_WEAPONMAINHAND" end -- Adjust Wands because goddammit Blizzard
 							tinsert(eligibleItems, { itemLink = itemLink, itemID = itemID, itemEquipLoc = itemEquipLoc, unique = unique, ilv = ilv, bag = bag, bagSlot = bagSlot })
 						end
 					end
@@ -452,7 +452,7 @@ function api:DoTheThing(msg)
 		end
 	end
 
-	C_Timer.After(1, function()	-- Delay finishing, so the function doesn't run multiple times
+	C_Timer.After(1, function() -- Delay finishing, so the function doesn't run multiple times
 		if not msg or type(msg) ~= "number" then msg = 2 end
 
 		local next = next
