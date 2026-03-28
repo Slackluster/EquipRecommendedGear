@@ -194,7 +194,7 @@ function app:CreateSettings()
 		ddSetting, GetOptions, ddName, ddTooltip)
 	layout:AddInitializer(initializer)
 
-	local variable, name, tooltip = "includeWeapons", L.SETTINGS_INCLUDEWEAPONS_TITLE, L.SETTINGS_INCLUDEWEAPONS_TOOLTIP
+	local variable, name, tooltip = "includeWeapons", L.SETTINGS_INCLUDEWEAPONS_TITLE, L.SETTINGS_INCLUDEWEAPONS_DESC
 	local setting = Settings.RegisterAddOnSetting(category, appName .. "_" .. variable, variable, EquipRecommendedGear_CharSettings, Settings.VarType.Boolean, name, false)
 	local checkbox = Settings.CreateCheckbox(category, setting, tooltip)
 end
