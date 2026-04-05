@@ -2,10 +2,9 @@
 -- Equip Recommended Gear: Database.lua --
 ------------------------------------------
 
--- Initialisation
 local appName, app = ...
 
--- Used strings
+-- Strings
 app.Name = "Equip Recommended Gear"
 app.NameLong = app:Colour("Equip Recommended Gear")
 app.NameShort = app:Colour("ERG")
@@ -13,6 +12,7 @@ app.NamePrefix = "EquipRecGear"
 _G["BINDING_NAME_EQUIPRECOMMENDEDGEAR"] = app.Name
 _G["BINDING_NAME_SLACKWARE"] = "Slackware"
 
+-- Textures
 app.IconWaiting = "|TInterface\\RaidFrame\\ReadyCheck-Waiting:0|t"
 app.IconReady = "|TInterface\\RaidFrame\\ReadyCheck-Ready:0|t"
 app.IconNotReady = "|TInterface\\RaidFrame\\ReadyCheck-NotReady:0|t"

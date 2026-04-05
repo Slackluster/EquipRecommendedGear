@@ -2,7 +2,6 @@
 -- Equip Recommended Gear: EquipRecommendedGear.lua --
 ------------------------------------------------------
 
--- Initialisation
 local appName, app = ...
 local api = app.api
 local L = app.locales
@@ -444,15 +443,15 @@ function api:DoTheThing(msg)
 	for _, item in ipairs(upgrades) do
 		ClearCursor()
 		if item.bag == -1 then
-			PickupInventoryItem(item.bagSlot)       -- pick up currently equipped weapon
-			EquipCursorItem(item.equipSlot)        -- move it to the desired slot
+			PickupInventoryItem(item.bagSlot)
+			EquipCursorItem(item.equipSlot)
 		else
 			C_Container.PickupContainerItem(item.bag, item.bagSlot)
 			EquipCursorItem(item.equipSlot)
 		end
 	end
 
-	C_Timer.After(1, function() -- Delay finishing, so the function doesn't run multiple times
+	C_Timer.After(1, function()
 		if not msg or type(msg) ~= "number" then msg = 2 end
 
 		local next = next

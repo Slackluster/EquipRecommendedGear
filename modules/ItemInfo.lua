@@ -2,7 +2,6 @@
 -- Equip Recommended Gear: ItemInfo.lua --
 ------------------------------------------
 
--- Initialisation
 local appName, app = ...
 local api = app.api
 
