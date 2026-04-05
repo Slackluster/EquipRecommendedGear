@@ -9,6 +9,7 @@ local appName, app = ...
 app.Name = "Equip Recommended Gear"
 app.NameLong = app:Colour("Equip Recommended Gear")
 app.NameShort = app:Colour("ERG")
+app.NamePrefix = "EquipRecGear"
 _G["BINDING_NAME_EQUIPRECOMMENDEDGEAR"] = app.Name
 _G["BINDING_NAME_SLACKWARE"] = "Slackware"
 

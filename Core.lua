@@ -2,11 +2,10 @@
 -- Equip Recommended Gear: Core.lua --
 --------------------------------------
 
--- Initialisation
-local appName, app = ... -- Returns the addon name and a unique table
-app.locales = {} -- Localisation table
-app.api = {} -- Our "API" prefix
-EquipRecommendedGear = app.api -- Create a namespace for our "API"
+local appName, app = ...
+app.locales = {}
+app.api = {}
+EquipRecommendedGear = app.api
 local api = app.api
 local L = app.locales
 
@@ -17,7 +16,6 @@ local L = app.locales
 app.Event = CreateFrame("Frame")
 app.Event.handlers = {}
 
--- Register the event and add it to the handlers table
 function app.Event:Register(eventName, func)
 	if not self.handlers[eventName] then
 		self.handlers[eventName] = {}
@@ -26,7 +24,6 @@ function app.Event:Register(eventName, func)
 	table.insert(self.handlers[eventName], func)
 end
 
--- Run all handlers for a given event, when it fires
 app.Event:SetScript("OnEvent", function(self, event, ...)
 	if self.handlers[event] then
 		for _, handler in ipairs(self.handlers[event]) do
@@ -35,20 +32,6 @@ app.Event:SetScript("OnEvent", function(self, event, ...)
 	end
 end)
 
-----------------------
--- HELPER FUNCTIONS --
-----------------------
-
--- App colour
-function app:Colour(string)
-	return "|cff3FC7EB" .. string .. "|r"
-end
-
--- Print with addon prefix
-function app:Print(...)
-	print(app.NameShort .. ":", ...)
-end
-
 -------------
 -- ON LOAD --
 -------------
@@ -56,32 +39,9 @@ end
 app.Event:Register("ADDON_LOADED", function(addOnName, containsBindings)
 	if addOnName == appName then
 		app.Flag = {}
-		app.Flag.VersionCheck = 0
 
 		C_ChatInfo.RegisterAddonMessagePrefix("EquipRecGear")
-
-		SLASH_RELOADUI1 = "/rl"
-		SlashCmdList.RELOADUI = ReloadUI
-
-		SLASH_EquipRecommendedGear1 = "/erg"
-		function SlashCmdList.EquipRecommendedGear(msg, editBox)
-			-- Split message into command and rest
-			local command, rest = msg:match("^(%S*)%s*(.-)$")
-
-			if command == "debug" then
-				if EquipRecommendedGear_Settings["debug"] == false then
-					EquipRecommendedGear_Settings["debug"] = true
-					app:Print(L.DEBUG_ENABLED)
-				else
-					EquipRecommendedGear_Settings["debug"] = false
-					app:Print(L.DEBUG_DISABLED)
-				end
-			elseif command == "settings" then
-				app:OpenSettings()
-			else
-				app:Print(L.INVALID_COMMAND)
-			end
-		end
+		app:CreateSlashCommands()
 	end
 end)
 
@@ -89,54 +49,89 @@ end)
 -- VERSION COMMS --
 -------------------
 
--- Send information to other ERG users
 function app:SendAddonMessage(message)
 	if IsInRaid(2) or IsInGroup(2) then
-		ChatThrottleLib:SendAddonMessage("NORMAL", "EquipRecGear", message, "INSTANCE_CHAT")
+		ChatThrottleLib:SendAddonMessage("NORMAL", app.NamePrefix, message, "INSTANCE_CHAT")
 	elseif IsInRaid() then
-		ChatThrottleLib:SendAddonMessage("NORMAL", "EquipRecGear", message, "RAID")
+		ChatThrottleLib:SendAddonMessage("NORMAL", app.NamePrefix, message, "RAID")
 	elseif IsInGroup() then
-		ChatThrottleLib:SendAddonMessage("NORMAL", "EquipRecGear", message, "PARTY")
+		ChatThrottleLib:SendAddonMessage("NORMAL", app.NamePrefix, message, "PARTY")
 	end
 end
 
--- When joining a group
 app.Event:Register("GROUP_ROSTER_UPDATE", function(category, partyGUID)
-	local message = "version:" .. C_AddOns.GetAddOnMetadata("EquipRecommendedGear", "Version")
+	local message = "version:" .. C_AddOns.GetAddOnMetadata(appName, "Version")
 	app:SendAddonMessage(message)
 end)
 
--- When we receive information over the addon comms
 app.Event:Register("CHAT_MSG_ADDON", function(prefix, text, channel, sender, target, zoneChannelID, localID, name, instanceID)
-	if prefix == "EquipRecGear" then
-		-- Version
+	if prefix == app.NamePrefix then
 		local version = text:match("version:(.+)")
-		if version then
-			if version ~= "@project-version@" then
-				local expansion, major, minor, iteration = version:match("v(%d+)%.(%d+)%.(%d+)%-(%d+)")
+		if version and not app.Flag.VersionCheck then
+			local expansion, major, minor, iteration = version:match("v(%d+)%.(%d+)%.(%d+)%-(%d+)")
+			if expansion then
 				expansion = string.format("%02d", expansion)
 				major = string.format("%02d", major)
 				minor = string.format("%02d", minor)
 				local otherGameVersion = tonumber(expansion .. major .. minor)
 				local otherAddonVersion = tonumber(iteration)
 
-				local localVersion = C_AddOns.GetAddOnMetadata("EquipRecommendedGear", "Version")
-				if localVersion ~= "@project-version@" then
-					expansion, major, minor, iteration = localVersion:match("v(%d+)%.(%d+)%.(%d+)%-(%d+)")
-					expansion = string.format("%02d", expansion)
-					major = string.format("%02d", major)
-					minor = string.format("%02d", minor)
-					local localGameVersion = tonumber(expansion .. major .. minor)
-					local localAddonVersion = tonumber(iteration)
+				local localVersion = C_AddOns.GetAddOnMetadata(appName, "Version")
+				local expansion2, major2, minor2, iteration2 = localVersion:match("v(%d+)%.(%d+)%.(%d+)%-(%d+)")
+				if expansion2 then
+					expansion2 = string.format("%02d", expansion2)
+					major2 = string.format("%02d", major2)
+					minor2 = string.format("%02d", minor2)
+					local localGameVersion = tonumber(expansion2 .. major2 .. minor2)
+					local localAddonVersion = tonumber(iteration2)
 
 					if otherGameVersion > localGameVersion or (otherGameVersion == localGameVersion and otherAddonVersion > localAddonVersion) then
-						if GetServerTime() - app.Flag.VersionCheck > 600 then
-							app:Print(L.NEW_VERSION_AVAILABLE, version)
-							app.Flag.VersionCheck = GetServerTime()
-						end
+						app:Print(L.NEW_VERSION_AVAILABLE, version)
+						app.Flag.VersionCheck = true
 					end
 				end
 			end
 		end
 	end
 end)
+
+--------------------
+-- SLASH COMMANDS --
+--------------------
+
+function app:CreateSlashCommands()
+	SLASH_RELOADUI1 = "/rl"
+	SlashCmdList.RELOADUI = ReloadUI
+
+	SLASH_EquipRecommendedGear1 = "/erg"
+	function SlashCmdList.EquipRecommendedGear(msg, editBox)
+		-- Split message into command and rest
+		local command, rest = msg:match("^(%S*)%s*(.-)$")
+
+		if command == "debug" then
+			if app.Settings["debug"] == false then
+				app.Settings["debug"] = true
+				app:Print(L.DEBUG_ENABLED)
+			else
+				app.Settings["debug"] = false
+				app:Print(L.DEBUG_DISABLED)
+			end
+		elseif command == "settings" then
+			app:OpenSettings()
+		else
+			app:Print(L.INVALID_COMMAND)
+		end
+	end
+end
+
+----------------------
+-- HELPER FUNCTIONS --
+----------------------
+
+function app:Colour(string)
+	return "|cff3FC7EB" .. string .. "|r"
+end
+
+function app:Print(...)
+	print(app.NameShort .. ":", ...)
+end

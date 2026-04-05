@@ -182,7 +182,7 @@ function api:DoTheThing(msg)
 		end
 	end
 
-	if EquipRecommendedGear_Settings["debug"] then
+	if app.Settings["debug"] then
 		app:Print("DEBUG: ELIGIBLE ITEMS")
 		for _, v in ipairs(eligibleItems) do
 			local unique = v.unique and "true" or "false"
@@ -219,7 +219,7 @@ function api:DoTheThing(msg)
 
 	eligibleItems = filtered
 
-	if EquipRecommendedGear_Settings["debug"] then
+	if app.Settings["debug"] then
 		app:Print("DEBUG: ELIGIBLE ITEMS MINUS UNIQUE DUPES")
 		for _, v in ipairs(eligibleItems) do
 			local unique = v.unique and "true" or "false"
@@ -260,7 +260,7 @@ function api:DoTheThing(msg)
 
 	eligibleItems = filtered
 
-	if EquipRecommendedGear_Settings["debug"] then
+	if app.Settings["debug"] then
 		app:Print("DEBUG: BEST ITEMS")
 		for _, v in ipairs(eligibleItems) do
 			local unique = v.unique and "true" or "false"
@@ -339,7 +339,7 @@ function api:DoTheThing(msg)
 			tinsert(weaponUpgrades, { ilv = comboItemLevel / #list, weapons = list })
 		end
 
-		if EquipRecommendedGear_Settings["debug"] then
+		if app.Settings["debug"] then
 			app:Print("DEBUG: ELIGIBLE WEAPONS")
 			DevTools_Dump(twoHand)
 			DevTools_Dump(mainHand)
@@ -386,7 +386,7 @@ function api:DoTheThing(msg)
 			end
 		end
 
-		if EquipRecommendedGear_Settings["debug"] then
+		if app.Settings["debug"] then
 			app:Print("DEBUG: ELIGIBLE WEAPON COMBOS")
 			DevTools_Dump(weaponUpgrades)
 		end
@@ -415,7 +415,7 @@ function api:DoTheThing(msg)
 			return a.weapons[1].itemID > b.weapons[1].itemID
 		end)
 
-		if EquipRecommendedGear_Settings["debug"] then
+		if app.Settings["debug"] then
 			app:Print("DEBUG: BEST WEAPON COMBO")
 			DevTools_Dump(weaponUpgrades[1])
 		end
@@ -434,7 +434,7 @@ function api:DoTheThing(msg)
 		end
 	end)
 
-	if EquipRecommendedGear_Settings["debug"] then
+	if app.Settings["debug"] then
 		app:Print("DEBUG: UPGRADES")
 		for _, v in ipairs(upgrades) do
 			print(v.itemLink..", " .. v.bag.."."..v.bagSlot..", " .. v.equipSlot)
@@ -473,9 +473,9 @@ function api:DoTheThing(msg)
 end
 
 app.Event:Register("QUEST_TURNED_IN", function(questID, xpReward, moneyReward)
-	if EquipRecommendedGear_Settings["runAfterQuest"] == true and not InCombatLockdown() then
+	if app.Settings["runAfterQuest"] == true and not InCombatLockdown() then
 		C_Timer.After(1, function()
-			api:DoTheThing(EquipRecommendedGear_Settings["chatMessage"])
+			api:DoTheThing(app.Settings["chatMessage"])
 		end)
 	end
 end)
