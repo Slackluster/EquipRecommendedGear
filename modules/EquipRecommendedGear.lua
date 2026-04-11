@@ -297,7 +297,7 @@ function api:DoTheThing(msg)
 	end
 
 	-- Weapon upgrades
-	if EquipRecommendedGear_CharSettings["includeWeapons"] then
+	if app.Settings["includeWeapons"] then
 		local dualWield = false
 		for _, spec in pairs(app.DualWield) do
 			if app.SpecID == spec then

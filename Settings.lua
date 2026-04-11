@@ -13,7 +13,6 @@ local L = app.locales
 app.Event:Register("ADDON_LOADED", function(addOnName, containsBindings)
 	if addOnName == appName then
 		EquipRecommendedGear_Settings = EquipRecommendedGear_Settings or {}
-		EquipRecommendedGear_CharSettings = EquipRecommendedGear_CharSettings or {}
 		app.Settings = EquipRecommendedGear_Settings
 
 		app.Settings["debug"] = app.Settings["debug"] or false

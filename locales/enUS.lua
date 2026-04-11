@@ -52,4 +52,4 @@ L.MESSAGE_UPGRADE_DESC =                 "Only send a message in chat if " .. ap
 L.MESSAGE_ALWAYS =                       "Always Send Message"
 L.MESSAGE_ALWAYS_DESC =                  "Always send a chat message, even if " .. app.NameShort .. " hasn't equipped an item level upgrade."
 L.SETTINGS_INCLUDEWEAPONS_TITLE =        "Include Weapons"
-L.SETTINGS_INCLUDEWEAPONS_DESC =         "Include weapons when doing the thing.\nThis is a character-specific setting."
+L.SETTINGS_INCLUDEWEAPONS_DESC =         "Include weapons when doing the thing."
