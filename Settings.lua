@@ -18,9 +18,6 @@ app.Event:Register("ADDON_LOADED", function(addOnName, containsBindings)
 		app.Settings["debug"] = app.Settings["debug"] or false
 
 		app:CreateSettings()
-
-		-- Midnight cleanup
-		app.Settings["ignoreLemixJewelry"] = nil
 	end
 end)
 
