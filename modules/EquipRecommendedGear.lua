@@ -24,7 +24,7 @@ end)
 ----------------------------
 
 function app:CreateAssets()
-	app.Button = CreateFrame("Button", "rcButton", PaperDollSidebarTabs)
+	app.Button = CreateFrame("Button", "EquipRecommendedGear_TheButton", PaperDollSidebarTabs)
 	app.Button:SetWidth(32)
 	app.Button:SetHeight(32)
 	app.Button:SetNormalTexture("Interface\\AddOns\\EquipRecommendedGear\\assets\\button-normal.png")
