@@ -62,7 +62,7 @@ function app:CreateAssets()
 	app.Button.Tooltip:EnableMouse(true)
 
 	local string = app.Button.Tooltip:CreateFontString(nil, "ARTWORK", "GameFontNormal")
-	string:SetPoint("CENTER", app.Button.Tooltip, "CENTER", 0, 0)
+	string:SetPoint("CENTER", app.Button.Tooltip, "CENTER")
 	string:SetPoint("TOP", app.Button.Tooltip, "TOP", 0, -10)
 	string:SetJustifyH("CENTER")
 	string:SetText(app.NameLong)
