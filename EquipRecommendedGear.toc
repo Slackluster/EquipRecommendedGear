@@ -1,6 +1,7 @@
 ## Interface: 120007
 ## Title: |cff3FC7EBEquip Recommended Gear|r
 ## Author: Slackluster
+## Notes: One button, maximum item level
 ## IconTexture: Interface\AddOns\EquipRecommendedGear\assets\icon.png
 ## Version: @project-version@
 ## X-Curse-Project-ID: 962128
