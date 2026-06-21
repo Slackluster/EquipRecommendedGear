@@ -3,7 +3,7 @@ A World of Warcraft addon. Download locations: [CurseForge](https://www.cursefor
 
 [![](https://media.forgecdn.net/attachments/1439/398/buymeacoffee-png.png)](https://www.buymeacoffee.com/Slackluster)
 
-**Equip Recommended Gear** adds a button to your character pane that equips the highest item level gear for your class & spec. Inspired by the same feature available in **Final Fantasy XIV Online**.
+**Equip Recommended Gear (ERG)** adds a button to your character pane that equips the highest item level gear for your class & spec. Inspired by the same feature available in **Final Fantasy XIV Online**.
 
 **Features**
 - Adds a button. When you click the button, it does the thing.
