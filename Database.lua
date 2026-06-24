@@ -13,6 +13,7 @@ _G["BINDING_NAME_EQUIPRECOMMENDEDGEAR"] = app.Name
 _G["BINDING_NAME_SLACKWARE"] = "Slackware"
 
 -- Textures
+app.Icon = "Interface\\Icons\\garrison_bluearmorupgrade"
 app.IconWaiting = "|TInterface\\RaidFrame\\ReadyCheck-Waiting:0|t"
 app.IconReady = "|TInterface\\RaidFrame\\ReadyCheck-Ready:0|t"
 app.IconNotReady = "|TInterface\\RaidFrame\\ReadyCheck-NotReady:0|t"
