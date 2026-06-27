@@ -91,7 +91,8 @@ end
 
 function app:GetItemLevel(itemLink)
 	local itemLevel = C_Item.GetDetailedItemLevelInfo(itemLink)
-	if itemLevel >= 350 then
+	local itemID = C_Item.GetItemInfoInstant(itemLink)
+	if itemLevel >= 350 or itemID == 158075 then -- Heart of Azeroth
 		local tooltipData = C_TooltipInfo.GetHyperlink(itemLink)
 		if tooltipData and tooltipData.lines then
 			for _, lineData in ipairs(tooltipData.lines) do
