@@ -157,24 +157,19 @@ function api:IsItemUpgrade(itemLink)
 				table.insert(equippedItemLevel, 0)
 			end
 		end
-	else -- Weapons
-		local mainhand = GetInventoryItemLink("player", 16)
-		local _, mhItemEquipLoc
-		if mainhand then
-			_, _, _, _, _, _, _, _, mhItemEquipLoc = C_Item.GetItemInfo(mainhand)
-
-			table.insert(equippedItemLevel, C_Item.GetCurrentItemLevel(ItemLocation:CreateFromEquipmentSlot(16)))
-		else
-			table.insert(equippedItemLevel, 0)
-		end
-
-		local twohander = mainhand and app.Slot[mhItemEquipLoc] == 1617
-		if not twohander or PlayerUtil.GetCurrentSpecID() == 72 then
-			if GetInventoryItemLink("player", 17) then
-				table.insert(equippedItemLevel, C_Item.GetCurrentItemLevel(ItemLocation:CreateFromEquipmentSlot(17)))
-			elseif app.Slot[itemEquipLoc] == 17 or (dualwield and app.Slot[itemEquipLoc] == 18) then
+	elseif app.Slot[itemEquipLoc] == 1617 or app.Slot[itemEquipLoc] == 18 then
+		for _, slot in ipairs({ 16, 17 }) do
+			if GetInventoryItemLink("player", slot) then
+				table.insert(equippedItemLevel, C_Item.GetCurrentItemLevel(ItemLocation:CreateFromEquipmentSlot(slot)))
+			else
 				table.insert(equippedItemLevel, 0)
 			end
+		end
+	else
+		if GetInventoryItemLink("player", app.Slot[itemEquipLoc]) then
+			table.insert(equippedItemLevel, C_Item.GetCurrentItemLevel(ItemLocation:CreateFromEquipmentSlot(app.Slot[itemEquipLoc])))
+		else
+			table.insert(equippedItemLevel, 0)
 		end
 	end
 
