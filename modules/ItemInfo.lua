@@ -92,14 +92,12 @@ end
 function api:GetItemLevel(itemLink)
 	local itemLevel = C_Item.GetDetailedItemLevelInfo(itemLink)
 	local itemID = C_Item.GetItemInfoInstant(itemLink)
-	if itemLevel >= 350 or C_Heirloom.IsItemHeirloom(itemID) or itemID == 158075 then -- Heart of Azeroth
-		local tooltipData = C_TooltipInfo.GetHyperlink(itemLink)
-		if tooltipData and tooltipData.lines then
-			for _, lineData in ipairs(tooltipData.lines) do
-				if lineData.type == Enum.TooltipDataLineType.ItemLevel then
-					itemLevel = lineData.itemLevel
-					break
-				end
+	local tooltipData = C_TooltipInfo.GetHyperlink(itemLink)
+	if tooltipData and tooltipData.lines then
+		for _, lineData in ipairs(tooltipData.lines) do
+			if lineData.type == Enum.TooltipDataLineType.ItemLevel then
+				itemLevel = lineData.itemLevel
+				break
 			end
 		end
 	end
