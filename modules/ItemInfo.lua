@@ -89,7 +89,7 @@ function api:IsItemEquippable(itemLink)
 	return equippable
 end
 
-function app:GetItemLevel(itemLink)
+function api:GetItemLevel(itemLink)
 	local itemLevel = C_Item.GetDetailedItemLevelInfo(itemLink)
 	local itemID = C_Item.GetItemInfoInstant(itemLink)
 	if itemLevel >= 350 or C_Heirloom.IsItemHeirloom(itemID) or itemID == 158075 then -- Heart of Azeroth
@@ -113,7 +113,7 @@ function api:IsItemUpgrade(itemLink)
 	if not api:IsItemEquippable(itemLink) then return false end
 
 	local equippedItemLevel = {}
-	local itemLevel = app:GetItemLevel(itemLink)
+	local itemLevel = api:GetItemLevel(itemLink)
 	local _, _, _, _, _, _, _, _, itemEquipLoc, _, _, classID, subclassID = C_Item.GetItemInfo(itemLink)
 
 	if classID.."."..subclassID == "2.19" then itemEquipLoc = "INVTYPE_WEAPONMAINHAND" end -- Adjust Wands because goddammit Blizzard

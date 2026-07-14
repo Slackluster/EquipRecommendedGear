@@ -333,7 +333,7 @@ function api:DoTheThing(msg)
 		local function addCombo(list)
 			local comboItemLevel = 0
 			for _, weapon in ipairs(list) do
-				comboItemLevel = comboItemLevel + app:GetItemLevel(weapon.itemLink)
+				comboItemLevel = comboItemLevel + api:GetItemLevel(weapon.itemLink)
 			end
 			tinsert(weaponUpgrades, { ilv = comboItemLevel / #list, weapons = list })
 		end
