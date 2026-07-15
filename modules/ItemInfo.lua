@@ -138,7 +138,7 @@ function api:IsItemUpgrade(itemLink)
 
 	if uniqueEquipped then
 		table.insert(equippedItemLevel, C_Item.GetCurrentItemLevel(ItemLocation:CreateFromEquipmentSlot(uniqueEquipped)))
-	elseif app.Slot[itemEquipLoc] <= 10 or app.Slot[itemEquipLoc] == 15 then
+	elseif app.Slot[itemEquipLoc] <= 10 or app.Slot[itemEquipLoc] == 15 or app.Slot[itemEquipLoc] == 16 then
 		if GetInventoryItemLink("player", app.Slot[itemEquipLoc]) then
 			table.insert(equippedItemLevel, C_Item.GetCurrentItemLevel(ItemLocation:CreateFromEquipmentSlot(app.Slot[itemEquipLoc])))
 		else
@@ -168,8 +168,14 @@ function api:IsItemUpgrade(itemLink)
 				table.insert(equippedItemLevel, C_Item.GetCurrentItemLevel(ItemLocation:CreateFromEquipmentSlot(slot)))
 			end
 		end
-	elseif GetInventoryItemLink("player", app.Slot[itemEquipLoc]) then
-		table.insert(equippedItemLevel, C_Item.GetCurrentItemLevel(ItemLocation:CreateFromEquipmentSlot(app.Slot[itemEquipLoc])))
+	elseif app.Slot[itemEquipLoc] == 17 then
+		if GetInventoryItemLink("player", app.Slot[itemEquipLoc]) then
+			table.insert(equippedItemLevel, C_Item.GetCurrentItemLevel(ItemLocation:CreateFromEquipmentSlot(app.Slot[itemEquipLoc])))
+		elseif GetInventoryItemLink("player", 16) then
+			table.insert(equippedItemLevel, C_Item.GetCurrentItemLevel(ItemLocation:CreateFromEquipmentSlot(16)))
+		else
+			table.insert(equippedItemLevel, 0)
+		end
 	end
 
 	equippedItemLevel = math.min(unpack(equippedItemLevel))
