@@ -441,6 +441,13 @@ function api:DoTheThing(msg)
 	end
 
 	for _, item in ipairs(upgrades) do
+		if InCombatLockdown() then -- Rare timing can apparently make this necessary
+			C_Timer.After(1, function()
+				app:Print(L.ERROR_COMBAT)
+				app.Flag.Busy = false
+			end)
+			return
+		end
 		ClearCursor()
 		if item.bag == -1 then
 			PickupInventoryItem(item.bagSlot)
