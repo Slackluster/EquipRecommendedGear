@@ -162,7 +162,20 @@ function api:IsItemUpgrade(itemLink)
 		end
 	elseif not GetInventoryItemLink("player", 16) and not GetInventoryItemLink("player", 17) then
 		table.insert(equippedItemLevel, 0)
-	elseif app.Slot[itemEquipLoc] == 1617 or app.Slot[itemEquipLoc] == 18 then
+	elseif app.Slot[itemEquipLoc] == 1617 then
+		if app.SpecID == 72 then
+			for _, slot in ipairs({ 16, 17 }) do
+				if GetInventoryItemLink("player", slot) then
+					table.insert(equippedItemLevel, C_Item.GetCurrentItemLevel(ItemLocation:CreateFromEquipmentSlot(slot)))
+				end
+			end
+		elseif GetInventoryItemLink("player", 16) and GetInventoryItemLink("player", 17) then
+			local avg = (C_Item.GetCurrentItemLevel(ItemLocation:CreateFromEquipmentSlot(16)) + C_Item.GetCurrentItemLevel(ItemLocation:CreateFromEquipmentSlot(17))) / 2
+			table.insert(equippedItemLevel, avg)
+		elseif GetInventoryItemLink("player", 16) then
+			table.insert(equippedItemLevel, C_Item.GetCurrentItemLevel(ItemLocation:CreateFromEquipmentSlot(16)))
+		end
+	elseif app.Slot[itemEquipLoc] == 18 then
 		for _, slot in ipairs({ 16, 17 }) do
 			if GetInventoryItemLink("player", slot) then
 				table.insert(equippedItemLevel, C_Item.GetCurrentItemLevel(ItemLocation:CreateFromEquipmentSlot(slot)))
