@@ -478,10 +478,22 @@ function api:DoTheThing(msg)
 	end)
 end
 
+------------
+-- RUN ON --
+------------
+
 app.Event:Register("QUEST_TURNED_IN", function(questID, xpReward, moneyReward)
 	if app.Settings["runAfterQuest"] == true and not InCombatLockdown() then
 		C_Timer.After(1, function()
 			api:DoTheThing(app.Settings["chatMessage"])
+		end)
+	end
+end)
+
+app.Event:Register("PLAYER_LEVEL_UP", function(level, healthDelta, powerDelta, numNewTalents, numNewPvpTalentSlots, strengthDelta, agilityDelta, staminaDelta, intellectDelta)
+	if app.Settings["runAfterLevelUp"] == true and not InCombatLockdown() then
+		C_Timer.After(1, function()
+			api:DoTheThing(app.Settings["chatMessage2"])
 		end)
 	end
 end)
