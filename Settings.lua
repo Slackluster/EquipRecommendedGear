@@ -26,7 +26,11 @@ end)
 --------------
 
 function app:OpenSettings()
-	Settings.OpenToCategory(app.SettingsCategory:GetID())
+	if InCombatLockdown() then
+		app:Print(ERR_AFFECTING_COMBAT..".")
+	else
+		Settings.OpenToCategory(app.SettingsCategory:GetID())
+	end
 end
 
 function app:CreateSettings()
