@@ -173,6 +173,8 @@ function api:IsItemUpgrade(itemLink)
 			for _, slot in ipairs({ 16, 17 }) do
 				if equippedItemLink[slot] and api:IsItemEquippable(equippedItemLink[slot]) then
 					table.insert(equippedItems, { equipped = equippedItemLink[slot], itemLevel = C_Item.GetCurrentItemLevel(ItemLocation:CreateFromEquipmentSlot(slot)) })
+				else
+					table.insert(equippedItems, { itemLevel = 0 })
 				end
 			end
 		elseif equippedItemLink[16] and api:IsItemEquippable(equippedItemLink[16]) and equippedItemLink[17] and api:IsItemEquippable(equippedItemLink[17]) then
