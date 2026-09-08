@@ -457,11 +457,10 @@ function api:DoTheThing(msg)
 		ClearCursor()
 		if item.bag == -1 then
 			PickupInventoryItem(item.bagSlot)
-			EquipCursorItem(item.equipSlot)
 		else
 			C_Container.PickupContainerItem(item.bag, item.bagSlot)
-			EquipCursorItem(item.equipSlot)
 		end
+		EquipCursorItem(item.equipSlot)
 	end
 
 	C_Timer.After(1, function()
