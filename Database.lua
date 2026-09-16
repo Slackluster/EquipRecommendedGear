@@ -16,7 +16,6 @@ _G["BINDING_NAME_SLACKWARE"] = "Slackware"
 app.Icon = "Interface\\Icons\\garrison_bluearmorupgrade"
 app.IconReady = CreateSimpleTextureMarkup("Interface\\RaidFrame\\ReadyCheck-Ready")
 app.IconNotReady = CreateSimpleTextureMarkup("Interface\\RaidFrame\\ReadyCheck-NotReady")
-app.IconNew = CreateAtlasMarkup("UI-Journeys-GreatVault-Tag-new", 40, 30)
 
 -- ItemEquipLoc to key
 app.Slot = {
