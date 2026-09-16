@@ -16,6 +16,7 @@ app.Event:Register("ADDON_LOADED", function(addOnName, containsBindings)
 		app.Settings = EquipRecommendedGear_Settings
 
 		app.Settings["debug"] = app.Settings["debug"] or false
+		app.Settings.seenNew = app.Settings.seenNew or {}
 
 		app:CreateSettings()
 	end
