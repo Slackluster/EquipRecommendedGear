@@ -16,7 +16,7 @@ app.Event:Register("ADDON_LOADED", function(addOnName, containsBindings)
 		app.Settings = EquipRecommendedGear_Settings
 
 		app.Settings["debug"] = app.Settings["debug"] or false
-		app.Settings.seenNew = app.Settings.seenNew or {}
+		app.Settings.seen = app.Settings.seen or {}
 
 		app:CreateSettings()
 	end
@@ -144,20 +144,35 @@ function app:CreateSettings()
 
 	local category, layout
 
-	local function addNewTag(initializer, variable, setting1, setting2)
-		if NewSettings and not app.Settings.seenNew[variable] then
-			local _, _, _, interfaceVersion = GetBuildInfo()
-			local patch = string.format("%d.%d.%d", math.floor(interfaceVersion / 10000), math.floor(interfaceVersion / 100) % 100, interfaceVersion % 100)
+	local function addNewTag(initializer)
+		initializer.data.newTagID = appName
+		app.HasNewFeatures = true
+	end
 
-			initializer.data.newTagID = appName .. "_" .. variable
-
-			table.insert(NewSettings[patch], appName .. "_" .. variable)
-
-			local function markAsSeen() app.Settings.seenNew[variable] = true end
-			if setting1 then setting1:SetValueChangedCallback(markAsSeen) end
-			if setting2 then setting2:SetValueChangedCallback(markAsSeen) end
+	local function showNewTag(self) -- Thank you, R41Z0R!
+		if self.data and self.data.newTagID and self.data.newTagID == appName then
+			self.NewFeature:SetShown(true)
 		end
 	end
+	hooksecurefunc(SettingsCheckboxControlMixin, "Init", showNewTag)
+	hooksecurefunc(SettingsDropdownControlMixin, "Init", showNewTag)
+	hooksecurefunc(SettingsCheckboxDropdownControlMixin, "Init", showNewTag)
+
+	hooksecurefunc(SettingsPanel, "DisplayCategory", function(self, category)
+		if category == app.SettingsCategory then
+			app.Settings.seen[app.Version] = true
+		end
+	end)
+
+	local function showNewCategoryTag(self)
+		if app.HasNewFeatures and not app.Settings.seen[app.Version] then
+			local data = self:GetData()
+			if data and data.data and data.data.category and data.data.category.ID == app.SettingsCategory:GetID() then
+				self.NewFeature:SetShown(true)
+			end
+		end
+	end
+	hooksecurefunc(SettingsCategoryListButtonMixin, "Init", showNewCategoryTag)
 
 	local function button(name, buttonName, description, func)
 		layout:AddInitializer(CreateSettingsButtonInitializer(name, buttonName, func, description, true))
@@ -176,7 +191,7 @@ function app:CreateSettings()
 			setting:SetValueChangedCallback(callback)
 		end
 
-		if isNew then addNewTag(checkbox, variable, setting) end
+		if isNew then addNewTag(checkbox) end
 
 		return setting, checkbox
 	end
@@ -200,7 +215,7 @@ function app:CreateSettings()
 			ddSetting:SetValueChangedCallback(callback)
 		end
 
-		if isNew then addNewTag(initializer, cbVariable, cbSetting, ddSetting) end
+		if isNew then addNewTag(initializer) end
 	end
 
 	local function dropdown(variable, name, description, default, options, callback, isNew)
@@ -219,7 +234,7 @@ function app:CreateSettings()
 			setting:SetValueChangedCallback(callback)
 		end
 
-		if isNew then addNewTag(initializer, variable, setting) end
+		if isNew then addNewTag(initializer) end
 	end
 
 	local function expandableHeader(name)
@@ -263,7 +278,7 @@ function app:CreateSettings()
 	Settings.RegisterAddOnCategory(category)
 	app.SettingsCategory = category
 
-	text(L.SETTINGS_VERSION .. " |cffFFFFFF" .. C_AddOns.GetAddOnMetadata(appName, "Version"), nil, nil, 14)
+	text(L.SETTINGS_VERSION .. " |cffFFFFFF" .. app.Version, nil, nil, 14)
 	text(L.SETTINGS_SUPPORT_TEXTLONG)
 	button(L.SETTINGS_SUPPORT_TEXT, L.SETTINGS_SUPPORT_BUTTON, L.SETTINGS_SUPPORT_DESC, function() StaticPopup_Show("EQUIPRECOMMENDEDGEAR_URL", nil, nil, "https://buymeacoffee.com/Slackluster") end)
 	button(L.SETTINGS_HELP_TEXT, L.SETTINGS_HELP_BUTTON, L.SETTINGS_HELP_DESC, function() StaticPopup_Show("EQUIPRECOMMENDEDGEAR_URL", nil, nil, "https://discord.gg/hGvF59hstx") end)
