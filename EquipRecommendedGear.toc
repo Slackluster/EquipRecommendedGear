@@ -1,4 +1,4 @@
-## Interface: 120100
+## Interface: 16001, 120100
 ## Title: |cff3FC7EBEquip Recommended Gear|r
 ## Author: Slackluster
 ## Notes: One button, maximum item level
@@ -24,6 +24,7 @@
 
 libs\ChatThrottleLib\ChatThrottleLib.xml
 Core.lua
+_[Game].lua
 Database.lua
 Settings.lua
 FrameTemplates.xml
