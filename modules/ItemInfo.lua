@@ -32,7 +32,7 @@ function api:IsItemEquippable(itemLink)
 	-- Filter class/spec eligibility
 	app.SpecID = PlayerUtil.GetCurrentSpecID()
 
-	local itemType = classID.."."..subclassID
+	local itemType = classID .. "." .. subclassID
 	local equippable = false
 
 	local specs = C_Item.GetItemSpecInfo(itemLink)
@@ -114,7 +114,7 @@ function api:IsItemUpgrade(itemLink)
 	local itemLevel = api:GetItemLevel(itemLink)
 	local _, _, _, _, _, _, _, _, itemEquipLoc, _, _, classID, subclassID = C_Item.GetItemInfo(itemLink)
 
-	if classID.."."..subclassID == "2.19" then itemEquipLoc = "INVTYPE_WEAPONMAINHAND" end -- Adjust Wands because goddammit Blizzard
+	if classID .. "." .. subclassID == "2.19" then itemEquipLoc = "INVTYPE_WEAPONMAINHAND" end -- Adjust Wands because goddammit Blizzard
 	local uniqueEquipped = false
 	if C_Item.GetItemUniquenessByID(itemLink) then
 		local itemID = C_Item.GetItemIDForItemInfo(itemLink)

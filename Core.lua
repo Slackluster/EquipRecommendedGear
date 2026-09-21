@@ -38,8 +38,11 @@ end)
 
 app.Event:Register("ADDON_LOADED", function(addOnName, containsBindings)
 	if addOnName == appName then
-		app.Flag = {}
+		EquipRecommendedGear_Settings = EquipRecommendedGear_Settings or {}
+
+		app.Settings = EquipRecommendedGear_Settings
 		app.Version = C_AddOns.GetAddOnMetadata(appName, "Version")
+		app.Flag = {}
 
 		C_ChatInfo.RegisterAddonMessagePrefix("EquipRecGear")
 		app:CreateSlashCommands()
@@ -115,11 +118,11 @@ function app:CreateSlashCommands()
 		local command, rest = msg:match("^(%S*)%s*(.-)$")
 
 		if command == "debug" then
-			if app.Settings["debug"] == false then
-				app.Settings["debug"] = true
+			if app.Settings.debug == false then
+				app.Settings.debug = true
 				app:Print(L.DEBUG_ENABLED)
 			else
-				app.Settings["debug"] = false
+				app.Settings.debug = false
 				app:Print(L.DEBUG_DISABLED)
 			end
 		elseif command == "settings" then

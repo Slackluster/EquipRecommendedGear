@@ -12,10 +12,7 @@ local L = app.locales
 
 app.Event:Register("ADDON_LOADED", function(addOnName, containsBindings)
 	if addOnName == appName then
-		EquipRecommendedGear_Settings = EquipRecommendedGear_Settings or {}
-		app.Settings = EquipRecommendedGear_Settings
-
-		app.Settings["debug"] = app.Settings["debug"] or false
+		app.Settings.debug = app.Settings.debug or false
 		app.Settings.seen = app.Settings.seen or {}
 
 		app:CreateSettings()
@@ -28,7 +25,7 @@ end)
 
 function app:OpenSettings()
 	if InCombatLockdown() then
-		app:Print(ERR_AFFECTING_COMBAT..".")
+		app:Print(ERR_AFFECTING_COMBAT .. ".")
 	else
 		Settings.OpenToCategory(app.SettingsCategory:GetID())
 	end
