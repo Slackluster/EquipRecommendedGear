@@ -296,22 +296,22 @@ function app:CreateSettings()
 
 	header(L.GENERAL)
 
-	checkboxDropdown("runAfterQuest", L.RUN_AFTER_QUEST, L.RUN_AFTER_QUEST_DESC, true, "chatMessage", 1, {
-		{ value = 0, name = L.MESSAGE_NEVER, description = L.MESSAGE_NEVER_DESC },
-		{ value = 1, name = L.MESSAGE_UPGRADE, description = L.MESSAGE_UPGRADE_DESC },
-		{ value = 2, name = L.MESSAGE_ALWAYS, description = L.MESSAGE_ALWAYS_DESC },
+	checkboxDropdown("runAfterQuest", L.RUN_AFTER_QUEST, string.format(L.RUN_AFTER_QUEST_DESC, app.NameShort), true, "chatMessage", 1, {
+		{ value = 0, name = L.MESSAGE_NEVER, description = string.format(L.MESSAGE_NEVER_DESC, app.NameShort) },
+		{ value = 1, name = L.MESSAGE_UPGRADE, description = string.format(L.MESSAGE_UPGRADE_DESC, app.NameShort) },
+		{ value = 2, name = L.MESSAGE_ALWAYS, description = string.format(L.MESSAGE_ALWAYS_DESC, app.NameShort) },
 	})
 
-	checkboxDropdown("runAfterLevelUp", L.RUN_AFTER_LEVELUP, L.RUN_AFTER_LEVELUP_DESC, true, "chatMessage2", 1, {
-		{ value = 0, name = L.MESSAGE_NEVER, description = L.MESSAGE_NEVER_DESC },
-		{ value = 1, name = L.MESSAGE_UPGRADE, description = L.MESSAGE_UPGRADE_DESC },
-		{ value = 2, name = L.MESSAGE_ALWAYS, description = L.MESSAGE_ALWAYS_DESC },
+	checkboxDropdown("runAfterLevelUp", L.RUN_AFTER_LEVELUP, string.format(L.RUN_AFTER_LEVELUP_DESC, app.NameShort), true, "chatMessage2", 1, {
+		{ value = 0, name = L.MESSAGE_NEVER, description = string.format(L.MESSAGE_NEVER_DESC, app.NameShort) },
+		{ value = 1, name = L.MESSAGE_UPGRADE, description = string.format(L.MESSAGE_UPGRADE_DESC, app.NameShort) },
+		{ value = 2, name = L.MESSAGE_ALWAYS, description = string.format(L.MESSAGE_ALWAYS_DESC, app.NameShort) },
 	}, nil, true)
 
-	checkboxDropdown("runAfterSpecSwitch", L.RUN_AFTER_SPECSWITCH, L.RUN_AFTER_SPECSWITCH_DESC, true, "chatMessage3", 1, {
-		{ value = 0, name = L.MESSAGE_NEVER, description = L.MESSAGE_NEVER_DESC },
-		{ value = 1, name = L.MESSAGE_UPGRADE, description = L.MESSAGE_UPGRADE_DESC },
-		{ value = 2, name = L.MESSAGE_ALWAYS, description = L.MESSAGE_ALWAYS_DESC },
+	checkboxDropdown("runAfterSpecSwitch", L.RUN_AFTER_SPECSWITCH, string.format(L.RUN_AFTER_SPECSWITCH_DESC, app.NameShort), true, "chatMessage3", 1, {
+		{ value = 0, name = L.MESSAGE_NEVER, description = string.format(L.MESSAGE_NEVER_DESC, app.NameShort) },
+		{ value = 1, name = L.MESSAGE_UPGRADE, description = string.format(L.MESSAGE_UPGRADE_DESC, app.NameShort) },
+		{ value = 2, name = L.MESSAGE_ALWAYS, description = string.format(L.MESSAGE_ALWAYS_DESC, app.NameShort) },
 	}, nil, true)
 
 	checkbox("includeWeapons", L.SETTINGS_INCLUDEWEAPONS_TITLE, L.SETTINGS_INCLUDEWEAPONS_DESC, true)

@@ -14,16 +14,16 @@ local L = app.locales
 -- L.INVALID_COMMAND =                      "Invalid command."
 
 -- Version comms
--- L.NEW_VERSION_AVAILABLE =                "There is a newer version of " .. app.NameLong .. " available:"
+-- L.NEW_VERSION_AVAILABLE =                "There is a newer version of %s available:" -- %s becomes the addon name
 
 -- Equip Recommended Gear
 -- L.TRY_AGAIN =                            "Please try again in a few seconds."
 -- L.ERROR_COMBAT =                         "Cannot recommend gear while in combat."
--- L.ERROR_INVENTORY =                      "Could not read items in inventory." .. " " .. L.TRY_AGAIN
--- L.ERROR_EQUIPPED =                       "Could not read equipped items." .. " " .. L.TRY_AGAIN
--- L.ERROR_EQUIP =                          "Could not equip recommended gear." .. " " .. L.TRY_AGAIN
--- L.EQUIP_NO_UPDGRADE =                    "You are currently equipped with the recommended gear for" -- Followed by " Spec Class."
--- L.EQUIP_UPDGRADE =                       "Equipped gear recommended for" -- Followed by " Spec Class."
+-- L.ERROR_INVENTORY =                      "Could not read items in inventory."
+-- L.ERROR_EQUIPPED =                       "Could not read equipped items."
+-- L.ERROR_EQUIP =                          "Could not equip recommended gear."
+-- L.EQUIP_NO_UPGRADE =                     "You are currently equipped with the recommended gear for %s." -- %s becomes "Spec Class"
+-- L.EQUIP_UPGRADE =                        "Equipped gear recommended for %s." -- %s becomes "Spec Class"
 
 -- Settings
 L.SETTINGS_VERSION =                     GAME_VERSION_LABEL .. ":" -- "Version"
@@ -44,16 +44,16 @@ L.SETTINGS_URL_COPIED =                  "Enlace copiado al portapapeles"
 
 -- L.GENERAL =                              GENERAL -- "General"
 -- L.RUN_AFTER_QUEST =                      "Run on Quest Completion"
--- L.RUN_AFTER_QUEST_DESC =                 "Run " .. app.NameShort .. " whenever you complete a quest."
+-- L.RUN_AFTER_QUEST_DESC =                 "Run %s whenever you complete a quest." -- %s becomes the addon name
 -- L.RUN_AFTER_LEVELUP =                    "Run on Level Up"
--- L.RUN_AFTER_LEVELUP_DESC =               "Run " .. app.NameShort .. " whenever you level up."
+-- L.RUN_AFTER_LEVELUP_DESC =               "Run %s whenever you level up." -- %s becomes the addon name
 -- L.RUN_AFTER_SPECSWITCH =                 "Run on Spec Switch"
--- L.RUN_AFTER_SPECSWITCH_DESC =            "Run " .. app.NameShort .. " whenever you switch specs."
+-- L.RUN_AFTER_SPECSWITCH_DESC =            "Run %s whenever you switch specs." -- %s becomes the addon name
 -- L.MESSAGE_NEVER =                        "Never Send Message"
--- L.MESSAGE_NEVER_DESC =                   "Don't send a message in chat, even if " .. app.NameShort .. " has equipped an item level upgrade."
+-- L.MESSAGE_NEVER_DESC =                   "Don't send a message in chat, even if %s has equipped an item level upgrade." -- %s becomes the addon name
 -- L.MESSAGE_UPGRADE =                      "Only With Upgrade"
--- L.MESSAGE_UPGRADE_DESC =                 "Only send a message in chat if " .. app.NameShort .. " has equipped an item level upgrade."
+-- L.MESSAGE_UPGRADE_DESC =                 "Only send a message in chat if %s has equipped an item level upgrade." -- %s becomes the addon name
 -- L.MESSAGE_ALWAYS =                       "Always Send Message"
--- L.MESSAGE_ALWAYS_DESC =                  "Always send a chat message, even if " .. app.NameShort .. " hasn't equipped an item level upgrade."
+-- L.MESSAGE_ALWAYS_DESC =                  "Always send a chat message, even if %s hasn't equipped an item level upgrade." -- %s becomes the addon name
 -- L.SETTINGS_INCLUDEWEAPONS_TITLE =        "Include Weapons"
 -- L.SETTINGS_INCLUDEWEAPONS_DESC =         "Include weapons when doing the thing."

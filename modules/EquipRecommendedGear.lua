@@ -106,7 +106,7 @@ function api:DoTheThing(msg)
 
 			if itemEquipLoc == nil or classID == nil or subclassID == nil then
 				C_Timer.After(1, function()
-					app:Print(L.ERROR_EQUIPPED)
+					app:Print(L.ERROR_EQUIPPED, L.TRY_AGAIN)
 					app.Flag.Busy = false
 				end)
 				return
@@ -121,7 +121,7 @@ function api:DoTheThing(msg)
 					end
 				else
 					C_Timer.After(1, function()
-						app:Print(L.ERROR_EQUIPPED)
+						app:Print(L.ERROR_EQUIPPED, L.TRY_AGAIN)
 						app.Flag.Busy = false
 					end)
 					return
@@ -148,7 +148,7 @@ function api:DoTheThing(msg)
 
 					if itemEquipLoc == nil or classID == nil or subclassID == nil then
 						C_Timer.After(1, function()
-							app:Print(L.ERROR_INVENTORY)
+							app:Print(L.ERROR_INVENTORY, L.TRY_AGAIN)
 							app.Flag.Busy = false
 						end)
 						return
@@ -166,7 +166,7 @@ function api:DoTheThing(msg)
 								end
 							else
 								C_Timer.After(1, function()
-									app:Print(L.ERROR_INVENTORY)
+									app:Print(L.ERROR_INVENTORY, L.TRY_AGAIN)
 									app.Flag.Busy = false
 								end)
 								return
@@ -469,14 +469,14 @@ function api:DoTheThing(msg)
 		local next = next
 		if next(upgrades) == nil and specName then
 			if msg == 2 then
-				app:Print(L.EQUIP_NO_UPDGRADE, "|c" .. classColor .. specName .. " " .. className .. "|r.")
+				app:Print(string.format(L.EQUIP_NO_UPGRADE, "|c" .. classColor .. specName .. " " .. className .. "|r"))
 			end
 		elseif specName then
 			if msg >= 1 then
-				app:Print(L.EQUIP_UPDGRADE, "|c" .. classColor .. specName .. " " .. className .. "|r.")
+				app:Print(string.format(L.EQUIP_UPGRADE, "|c" .. classColor .. specName .. " " .. className .. "|r"))
 			end
 		else
-			app:Print(L.ERROR_EQUIP)
+			app:Print(L.ERROR_EQUIP, L.TRY_AGAIN)
 		end
 
 		app.Flag.Busy = false

@@ -14,16 +14,16 @@ L.DEBUG_DISABLED =                       "Режим отладки отключ
 L.INVALID_COMMAND =                      "Неверная команда."
 
 -- Version comms
-L.NEW_VERSION_AVAILABLE =                "Доступна новая версия " .. app.NameLong .. ":"
+L.NEW_VERSION_AVAILABLE =                "Доступна новая версия %s:" -- %s becomes the addon name
 
 -- Equip Recommended Gear
 L.TRY_AGAIN =                            "Пожалуйста, попробуйте снова через несколько секунд."
 L.ERROR_COMBAT =                         "Нельзя рекомендовать экипировку во время боя."
-L.ERROR_INVENTORY =                      "Не удалось прочитать предметы в сумках." .. " " .. L.TRY_AGAIN
-L.ERROR_EQUIPPED =                       "Не удалось прочитать надетые предметы." .. " " .. L.TRY_AGAIN
-L.ERROR_EQUIP =                          "Не удалось надеть рекомендованную экипировку." .. " " .. L.TRY_AGAIN
-L.EQUIP_NO_UPDGRADE =                    "У вас уже надета рекомендованная экипировка для"
-L.EQUIP_UPGRADE =                        "Надета рекомендованная экипировка для"
+L.ERROR_INVENTORY =                      "Не удалось прочитать предметы в сумках."
+L.ERROR_EQUIPPED =                       "Не удалось прочитать надетые предметы."
+L.ERROR_EQUIP =                          "Не удалось надеть рекомендованную экипировку."
+L.EQUIP_NO_UPGRADE =                     "У вас уже надета рекомендованная экипировка для %s." -- %s becomes "Spec Class"
+L.EQUIP_UPGRADE =                        "Надета рекомендованная экипировка для %s." -- %s becomes "Spec Class"
 
 -- Settings
 L.SETTINGS_VERSION =                     GAME_VERSION_LABEL .. ":" -- "Version"
@@ -44,16 +44,16 @@ L.SETTINGS_SLASH_DEBUG =                 "Включить режим отлад
 
 L.GENERAL =                              GENERAL -- "General"
 L.RUN_AFTER_QUEST =                      "Запускать после выполнения задания"
-L.RUN_AFTER_QUEST_DESC =                 "Запускать " .. app.NameShort .. " каждый раз после выполнения задания."
+L.RUN_AFTER_QUEST_DESC =                 "Запускать %s каждый раз после выполнения задания." -- %s becomes the addon name
 L.RUN_AFTER_LEVELUP =                    "Запуск при повышении уровня"
-L.RUN_AFTER_LEVELUP_DESC =               "Запускать " .. app.NameShort .. " каждый раз, когда вы повышаете уровень."
+L.RUN_AFTER_LEVELUP_DESC =               "Запускать %s каждый раз, когда вы повышаете уровень." -- %s becomes the addon name
 L.RUN_AFTER_SPECSWITCH =                 "Запуск при смене специализации"
-L.RUN_AFTER_SPECSWITCH_DESC =            "Запускать " .. app.NameShort .. " каждый раз, когда вы меняете специализацию."
+L.RUN_AFTER_SPECSWITCH_DESC =            "Запускать %s каждый раз, когда вы меняете специализацию." -- %s becomes the addon name
 L.MESSAGE_NEVER =                        "Никогда не отправлять"
-L.MESSAGE_NEVER_DESC =                   "Не отправлять сообщение в чат, даже если " .. app.NameShort .. " надел улучшение по уровню предмета."
+L.MESSAGE_NEVER_DESC =                   "Не отправлять сообщение в чат, даже если %s надел улучшение по уровню предмета." -- %s becomes the addon name
 L.MESSAGE_UPGRADE =                      "Только при улучшении"
-L.MESSAGE_UPGRADE_DESC =                 "Отправлять сообщение в чат, только если " .. app.NameShort .. " надел улучшение по уровню предмета."
+L.MESSAGE_UPGRADE_DESC =                 "Отправлять сообщение в чат, только если %s надел улучшение по уровню предмета." -- %s becomes the addon name
 L.MESSAGE_ALWAYS =                       "Всегда отправлять"
-L.MESSAGE_ALWAYS_DESC =                  "Всегда отправлять сообщение в чат, даже если " .. app.NameShort .. " не надел улучшение."
+L.MESSAGE_ALWAYS_DESC =                  "Всегда отправлять сообщение в чат, даже если %s не надел улучшение." -- %s becomes the addon name
 L.SETTINGS_INCLUDEWEAPONS_TITLE =        "Учитывать оружие"
 L.SETTINGS_INCLUDEWEAPONS_DESC =         "Учитывать оружие при рекомендациях."
