@@ -29,7 +29,8 @@ L.SETTINGS_URL_COPY =                    "Ctrl+C — скопировать:"
 L.SETTINGS_URL_COPIED =                  "Ссылка скопирована в буфер обмена"
 
 L.SETTINGS_KEYSLASH_TITLE =              SETTINGS_KEYBINDINGS_LABEL .. " & Слэш-команды" -- "Keybindings"
-_G["BINDING_NAME_ERG_DOTHETHING"] =      app.NameShort .. ": Наденьте рекомендованная экипировка" -- This time it's not the addon name, but the keybind action, so may be translated
+_G["BINDING_NAME_ERG_DOTHETHING"] =      app.NameShort .. ": Наденьте рекомендованная экипировка" -- Not the addon name, but the action
+-- L.SLASH_DO_THE_THING =                   "Equip recommended gear" -- Not the addon name, but the action
 L.SLASH_OPEN_SETTINGS =                  "Откройте настройки"
 
 L.GENERAL =                              GENERAL -- "General"

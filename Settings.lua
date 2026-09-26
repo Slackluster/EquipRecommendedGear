@@ -285,8 +285,10 @@ function app:CreateSettings()
 		keybind("ERG_DOTHETHING", isExpanded)
 
 		local leftText = { "|cffFFFFFF" ..
+			"/erg",
 			"/erg settings" }
 		local middleText = {
+			L.SLASH_DO_THE_THING,
 			L.SLASH_OPEN_SETTINGS }
 		leftText = table.concat(leftText, "\n\n")
 		middleText = table.concat(middleText, "\n\n")

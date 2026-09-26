@@ -114,10 +114,11 @@ function app:CreateSlashCommands()
 
 	SLASH_EquipRecommendedGear1 = "/erg"
 	function SlashCmdList.EquipRecommendedGear(msg, editBox)
-		-- Split message into command and rest
 		local command, rest = msg:match("^(%S*)%s*(.-)$")
 
-		if command == "debug" then
+		if command == "" then
+			EquipRecommendedGear:DoTheThing()
+		elseif command == "debug" then
 			if app.Settings.debug == false then
 				app.Settings.debug = true
 				app:Print(L.DEBUG_ENABLED)

@@ -29,7 +29,8 @@ L.SETTINGS_URL_COPY =                    "按 Ctrl+C 复制："
 L.SETTINGS_URL_COPIED =                  "链接已复制到剪贴板"
 
 L.SETTINGS_KEYSLASH_TITLE =              SETTINGS_KEYBINDINGS_LABEL .. " & 斜杠命令" -- "Keybindings"
--- _G["BINDING_NAME_ERG_DOTHETHING"] =      app.NameShort .. ": Equip Recommended Gear" -- This time it's not the addon name, but the keybind action, so may be translated
+-- _G["BINDING_NAME_ERG_DOTHETHING"] =      app.NameShort .. ": Equip Recommended Gear" -- Not the addon name, but the action
+-- L.SLASH_DO_THE_THING =                   "Equip recommended gear" -- Not the addon name, but the action
 L.SLASH_OPEN_SETTINGS =                  "打开设置"
 
 L.GENERAL =                              GENERAL -- "General"
