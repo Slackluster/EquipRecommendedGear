@@ -106,7 +106,7 @@ function api:DoTheThing(msg)
 
 			if itemEquipLoc == nil or classID == nil or subclassID == nil then
 				C_Timer.After(1, function()
-					app:Print(L.ERROR_EQUIPPED, L.TRY_AGAIN)
+					app:Print(L.ERROR_EQUIPPED)
 					app.Flag.Busy = false
 				end)
 				return
@@ -121,7 +121,7 @@ function api:DoTheThing(msg)
 					end
 				else
 					C_Timer.After(1, function()
-						app:Print(L.ERROR_EQUIPPED, L.TRY_AGAIN)
+						app:Print(L.ERROR_EQUIPPED)
 						app.Flag.Busy = false
 					end)
 					return
@@ -148,7 +148,7 @@ function api:DoTheThing(msg)
 
 					if itemEquipLoc == nil or classID == nil or subclassID == nil then
 						C_Timer.After(1, function()
-							app:Print(L.ERROR_INVENTORY, L.TRY_AGAIN)
+							app:Print(L.ERROR_INVENTORY)
 							app.Flag.Busy = false
 						end)
 						return
@@ -166,7 +166,7 @@ function api:DoTheThing(msg)
 								end
 							else
 								C_Timer.After(1, function()
-									app:Print(L.ERROR_INVENTORY, L.TRY_AGAIN)
+									app:Print(L.ERROR_INVENTORY)
 									app.Flag.Busy = false
 								end)
 								return
@@ -476,7 +476,7 @@ function api:DoTheThing(msg)
 				app:Print(string.format(L.EQUIP_UPGRADE, "|c" .. classColor .. specName .. " " .. className .. "|r"))
 			end
 		else
-			app:Print(L.ERROR_EQUIP, L.TRY_AGAIN)
+			app:Print(L.ERROR_EQUIP)
 		end
 
 		app.Flag.Busy = false

@@ -8,26 +8,17 @@ if GetLocale() ~= "ruRU" then return end
 local appName, app = ...
 local L = app.locales
 
--- Slash commands
-L.DEBUG_ENABLED =                        "Режим отладки включён."
-L.DEBUG_DISABLED =                       "Режим отладки отключён."
-L.INVALID_COMMAND =                      "Неверная команда."
-
--- Version comms
+-- Core
 L.NEW_VERSION_AVAILABLE =                "Доступна новая версия %s:" -- %s becomes the addon name
 
--- Equip Recommended Gear
-L.TRY_AGAIN =                            "Пожалуйста, попробуйте снова через несколько секунд."
-L.ERROR_COMBAT =                         "Нельзя рекомендовать экипировку во время боя."
-L.ERROR_INVENTORY =                      "Не удалось прочитать предметы в сумках."
-L.ERROR_EQUIPPED =                       "Не удалось прочитать надетые предметы."
-L.ERROR_EQUIP =                          "Не удалось надеть рекомендованную экипировку."
-L.EQUIP_NO_UPGRADE =                     "У вас уже надета рекомендованная экипировка для %s." -- %s becomes "Spec Class"
-L.EQUIP_UPGRADE =                        "Надета рекомендованная экипировка для %s." -- %s becomes "Spec Class"
+L.DEBUG_ENABLED =                        "Режим отладки включён"
+L.DEBUG_DISABLED =                       "Режим отладки отключён"
+L.INVALID_COMMAND =                      "Неверная команда"
 
 -- Settings
 L.SETTINGS_VERSION =                     GAME_VERSION_LABEL .. ":" -- "Version"
-L.SETTINGS_SUPPORT_TEXTLONG =            "Разработка этого аддона требует значительного времени и усилий.\nПожалуйста, рассмотрите возможность финансовой поддержки разработчика."
+L.SETTINGS_SUPPORT_TEXTLONG1 =           "Разработка этого аддона требует значительного времени и усилий."
+L.SETTINGS_SUPPORT_TEXTLONG2 =           "Пожалуйста, рассмотрите возможность финансовой поддержки разработчика."
 L.SETTINGS_SUPPORT_TEXT =                "Поддержать"
 L.SETTINGS_SUPPORT_BUTTON =              "Buy Me a Coffee" -- Brand name, if there isn't a localised version, keep it the way it is
 L.SETTINGS_SUPPORT_DESC =                "Спасибо!"
@@ -39,8 +30,7 @@ L.SETTINGS_URL_COPIED =                  "Ссылка скопирована в
 
 L.SETTINGS_KEYSLASH_TITLE =              SETTINGS_KEYBINDINGS_LABEL .. " & Слэш-команды" -- "Keybindings"
 _G["BINDING_NAME_ERG_DOTHETHING"] =      app.NameShort .. ": Наденьте рекомендованная экипировка" -- This time it's not the addon name, but the keybind action, so may be translated
-L.SETTINGS_SLASH_SETTINGS =              "Откройте настройки"
-L.SETTINGS_SLASH_DEBUG =                 "Включить режим отладки"
+L.SLASH_OPEN_SETTINGS =                  "Откройте настройки"
 
 L.GENERAL =                              GENERAL -- "General"
 L.RUN_AFTER_QUEST =                      "Запускать после выполнения задания"
@@ -55,5 +45,13 @@ L.MESSAGE_UPGRADE =                      "Только при улучшении
 L.MESSAGE_UPGRADE_DESC =                 "Отправлять сообщение в чат, только если %s надел улучшение по уровню предмета." -- %s becomes the addon name
 L.MESSAGE_ALWAYS =                       "Всегда отправлять"
 L.MESSAGE_ALWAYS_DESC =                  "Всегда отправлять сообщение в чат, даже если %s не надел улучшение." -- %s becomes the addon name
-L.SETTINGS_INCLUDEWEAPONS_TITLE =        "Учитывать оружие"
-L.SETTINGS_INCLUDEWEAPONS_DESC =         "Учитывать оружие при рекомендациях."
+L.INCLUDE_WEAPONS =                      "Учитывать оружие"
+L.INCLUDE_WEAPONS_DESC =                 "Учитывать оружие при рекомендациях."
+
+-- Equip Recommended Gear
+L.ERROR_COMBAT =                         "Нельзя рекомендовать экипировку во время боя"
+L.ERROR_INVENTORY =                      "Не удалось прочитать предметы в сумках"
+L.ERROR_EQUIPPED =                       "Не удалось прочитать надетые предметы"
+L.ERROR_EQUIP =                          "Не удалось надеть рекомендованную экипировку"
+L.EQUIP_NO_UPGRADE =                     "У вас уже надета рекомендованная экипировка для %s" -- %s becomes "Spec Class"
+L.EQUIP_UPGRADE =                        "Надета рекомендованная экипировка для %s" -- %s becomes "Spec Class"

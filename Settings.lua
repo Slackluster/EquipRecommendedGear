@@ -276,7 +276,7 @@ function app:CreateSettings()
 	app.SettingsCategory = category
 
 	text(L.SETTINGS_VERSION .. " |cffFFFFFF" .. app.Version, nil, nil, 14)
-	text(L.SETTINGS_SUPPORT_TEXTLONG)
+	text(L.SETTINGS_SUPPORT_TEXTLONG1 .. "\n" .. L.SETTINGS_SUPPORT_TEXTLONG2)
 	button(L.SETTINGS_SUPPORT_TEXT, L.SETTINGS_SUPPORT_BUTTON, L.SETTINGS_SUPPORT_DESC, function() StaticPopup_Show("EQUIPRECOMMENDEDGEAR_URL", nil, nil, "https://buymeacoffee.com/Slackluster") end)
 	button(L.SETTINGS_HELP_TEXT, L.SETTINGS_HELP_BUTTON, L.SETTINGS_HELP_DESC, function() StaticPopup_Show("EQUIPRECOMMENDEDGEAR_URL", nil, nil, "https://discord.gg/hGvF59hstx") end)
 
@@ -285,11 +285,9 @@ function app:CreateSettings()
 		keybind("ERG_DOTHETHING", isExpanded)
 
 		local leftText = { "|cffFFFFFF" ..
-			"/erg settings",
-			"/erg debug" }
+			"/erg settings" }
 		local middleText = {
-			L.SETTINGS_SLASH_SETTINGS,
-			L.SETTINGS_SLASH_DEBUG }
+			L.SLASH_OPEN_SETTINGS }
 		leftText = table.concat(leftText, "\n\n")
 		middleText = table.concat(middleText, "\n\n")
 		text(leftText, middleText, nil, nil, isExpanded)
@@ -314,5 +312,5 @@ function app:CreateSettings()
 		{ value = 2, name = L.MESSAGE_ALWAYS, description = string.format(L.MESSAGE_ALWAYS_DESC, app.NameShort) },
 	}, nil, true)
 
-	checkbox("includeWeapons", L.SETTINGS_INCLUDEWEAPONS_TITLE, L.SETTINGS_INCLUDEWEAPONS_DESC, true)
+	checkbox("includeWeapons", L.INCLUDE_WEAPONS, L.INCLUDE_WEAPONS_DESC, true)
 end
