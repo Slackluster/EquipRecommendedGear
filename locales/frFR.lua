@@ -16,22 +16,22 @@ L.DEBUG_DISABLED =                       "Mode débogage désactivé"
 L.INVALID_COMMAND =                      "Commande non valide"
 
 -- Settings
-L.SETTINGS_VERSION =                     GAME_VERSION_LABEL .. ":" -- "Version"
-L.SETTINGS_SUPPORT_TEXTLONG1 =           "Le développement de cette extension demande beaucoup de temps et d’efforts."
-L.SETTINGS_SUPPORT_TEXTLONG2 =           "Veuillez envisager de soutenir financièrement le développeur."
-L.SETTINGS_SUPPORT_TEXT =                "Soutien"
-L.SETTINGS_SUPPORT_BUTTON =              "Buy Me a Coffee" -- Brand name, if there isn't a localised version, keep it the way it is
-L.SETTINGS_SUPPORT_DESC =                "Merci !"
-L.SETTINGS_HELP_TEXT =                   "Commentaires et aide"
-L.SETTINGS_HELP_BUTTON =                 "Discord" -- Brand name, if there isn't a localised version, keep it the way it is
-L.SETTINGS_HELP_DESC =                   "Rejoignez le serveur Discord."
-L.SETTINGS_URL_COPY =                    "Ctrl + C pour copier :"
-L.SETTINGS_URL_COPIED =                  "Lien copié dans le presse-papiers"
+L.VERSION =                              GAME_VERSION_LABEL .. ":" -- "Version"
+L.SUPPORT_TEXTLONG1 =                    "Le développement de cette extension demande beaucoup de temps et d’efforts."
+L.SUPPORT_TEXTLONG2 =                    "Veuillez envisager de soutenir financièrement le développeur."
+L.SUPPORT =                              "Soutien"
+L.BUY_ME_A_COFFEE =                      "Buy Me a Coffee" -- Brand name, if there isn't a localised version, keep it the way it is
+L.THANK_YOU =                            "Merci !"
+L.FEEDBACK_AND_HELP =                    "Commentaires et aide"
+L.DISCORD =                              "Discord" -- Brand name, if there isn't a localised version, keep it the way it is
+L.JOIN_DISCORD_SERVER =                  "Rejoignez le serveur Discord."
+L.CTRL_C_COPY =                          "Ctrl + C pour copier :"
+L.LINK_COPIED =                          "Lien copié dans le presse-papiers"
 
-L.SETTINGS_KEYSLASH_TITLE =              SETTINGS_KEYBINDINGS_LABEL .. " & Commandes « Slash »" -- "Keybindings"
+L.KEYBINDINGS_AND_SLASH_COMMANDS =       SETTINGS_KEYBINDINGS_LABEL .. " & Commandes « Slash »" -- "Keybindings"
 -- _G["BINDING_NAME_ERG_DOTHETHING"] =      app.NameShort .. ": Equip Recommended Gear" -- Not the addon name, but the action
--- L.SLASH_DO_THE_THING =                   "Equip recommended gear" -- Not the addon name, but the action
-L.SLASH_OPEN_SETTINGS =                  "Ouvrir les paramètres"
+-- L.DO_THE_THING =                         "Equip recommended gear" -- Not the addon name, but the action
+L.OPEN_SETTINGS =                        "Ouvrir les paramètres"
 
 L.GENERAL =                              GENERAL -- "General"
 -- L.RUN_AFTER_QUEST =                      "Run on Quest Completion"

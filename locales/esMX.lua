@@ -16,21 +16,21 @@ L.NEW_VERSION_AVAILABLE =                "Hay una versión más nueva de %s disp
 L.INVALID_COMMAND =                      "Comando no válido"
 
 -- Settings
-L.SETTINGS_VERSION =                     GAME_VERSION_LABEL .. ":" -- "Version"
-L.SETTINGS_SUPPORT_TEXTLONG1 =           "Desarrollar este addon requiere una cantidad significativa de tiempo y esfuerzo."
-L.SETTINGS_SUPPORT_TEXTLONG2 =           "Por favor, considera apoyar financieramente al desarrollador."
-L.SETTINGS_SUPPORT_TEXT =                "Apoyar"
-L.SETTINGS_SUPPORT_BUTTON =              "Buy Me a Coffee" -- Brand name, if there isn't a localised version, keep it the way it is
-L.SETTINGS_SUPPORT_DESC =                "¡Gracias!"
-L.SETTINGS_HELP_TEXT =                   "Comentarios y Ayuda"
-L.SETTINGS_HELP_BUTTON =                 "Discord" -- Brand name, if there isn't a localised version, keep it the way it is
-L.SETTINGS_HELP_DESC =                   "Únete al servidor de Discord."
-L.SETTINGS_URL_COPY =                    "Ctrl+C para copiar:"
-L.SETTINGS_URL_COPIED =                  "Enlace copiado al portapapeles"
+L.VERSION =                              GAME_VERSION_LABEL .. ":" -- "Version"
+L.SUPPORT_TEXTLONG1 =                    "Desarrollar este addon requiere una cantidad significativa de tiempo y esfuerzo."
+L.SUPPORT_TEXTLONG2 =                    "Por favor, considera apoyar financieramente al desarrollador."
+L.SUPPORT =                              "Apoyar"
+L.BUY_ME_A_COFFEE =                      "Buy Me a Coffee" -- Brand name, if there isn't a localised version, keep it the way it is
+L.THANK_YOU =                            "¡Gracias!"
+L.FEEDBACK_AND_HELP =                    "Comentarios y Ayuda"
+L.DISCORD =                              "Discord" -- Brand name, if there isn't a localised version, keep it the way it is
+L.JOIN_DISCORD_SERVER =                  "Únete al servidor de Discord."
+L.CTRL_C_COPY =                          "Ctrl+C para copiar:"
+L.LINK_COPIED =                          "Enlace copiado al portapapeles"
 
-L.SETTINGS_KEYSLASH_TITLE =              SETTINGS_KEYBINDINGS_LABEL .. " y Comandos" -- "Keybindings"
+L.KEYBINDINGS_AND_SLASH_COMMANDS =       SETTINGS_KEYBINDINGS_LABEL .. " y Comandos" -- "Keybindings"
 -- _G["BINDING_NAME_ERG_DOTHETHING"] =      app.NameShort .. ": Equip Recommended Gear" -- Not the addon name, but the action
-L.SLASH_OPEN_SETTINGS =                  "Abrir opciones"
+L.OPEN_SETTINGS =                        "Abrir opciones"
 
 L.GENERAL =                              GENERAL -- "General"
 -- L.RUN_AFTER_QUEST =                      "Run on Quest Completion"

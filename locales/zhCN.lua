@@ -16,22 +16,22 @@ L.DEBUG_DISABLED =                       "调试模式已禁用"
 L.INVALID_COMMAND =                      "无效指令"
 
 -- Settings
-L.SETTINGS_VERSION =                     GAME_VERSION_LABEL .. ":" -- "Version"
-L.SETTINGS_SUPPORT_TEXTLONG1 =           "开发这个插件需要大量的时间和精力。"
-L.SETTINGS_SUPPORT_TEXTLONG2 =           "请考虑在经济上支持开发者。"
-L.SETTINGS_SUPPORT_TEXT =                "支持"
-L.SETTINGS_SUPPORT_BUTTON =              "Buy Me a Coffee" -- Brand name, if there isn't a localised version, keep it the way it is
-L.SETTINGS_SUPPORT_DESC =                "谢谢！"
-L.SETTINGS_HELP_TEXT =                   "反馈与帮助"
-L.SETTINGS_HELP_BUTTON =                 "Discord" -- Brand name, if there isn't a localised version, keep it the way it is
-L.SETTINGS_HELP_DESC =                   "加入 Discord 服务器。"
-L.SETTINGS_URL_COPY =                    "按 Ctrl+C 复制："
-L.SETTINGS_URL_COPIED =                  "链接已复制到剪贴板"
+L.VERSION =                              GAME_VERSION_LABEL .. "：" -- "Version"
+L.SUPPORT_TEXTLONG1 =                    "开发这个插件需要大量的时间和精力。"
+L.SUPPORT_TEXTLONG2 =                    "请考虑在经济上支持开发者。"
+L.SUPPORT =                              "支持"
+L.BUY_ME_A_COFFEE =                      "Buy Me a Coffee" -- Brand name, if there isn't a localised version, keep it the way it is
+L.THANK_YOU =                            "谢谢！"
+L.FEEDBACK_AND_HELP =                    "反馈与帮助"
+L.DISCORD =                              "Discord" -- Brand name, if there isn't a localised version, keep it the way it is
+L.JOIN_DISCORD_SERVER =                  "加入 Discord 服务器。"
+L.CTRL_C_COPY =                          "按 Ctrl+C 复制："
+L.LINK_COPIED =                          "链接已复制到剪贴板"
 
-L.SETTINGS_KEYSLASH_TITLE =              SETTINGS_KEYBINDINGS_LABEL .. " & 斜杠命令" -- "Keybindings"
+L.KEYBINDINGS_AND_SLASH_COMMANDS =       SETTINGS_KEYBINDINGS_LABEL .. " & 斜杠命令" -- "Keybindings"
 -- _G["BINDING_NAME_ERG_DOTHETHING"] =      app.NameShort .. ": Equip Recommended Gear" -- Not the addon name, but the action
--- L.SLASH_DO_THE_THING =                   "Equip recommended gear" -- Not the addon name, but the action
-L.SLASH_OPEN_SETTINGS =                  "打开设置"
+-- L.DO_THE_THING =                         "Equip recommended gear" -- Not the addon name, but the action
+L.OPEN_SETTINGS =                        "打开设置"
 
 L.GENERAL =                              GENERAL -- "General"
 -- L.RUN_AFTER_QUEST =                      "Run on Quest Completion"

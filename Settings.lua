@@ -44,7 +44,7 @@ function app:CreateSettings()
 	text:SetPoint("CENTER", app.LinkCopiedFrame, "CENTER")
 	text:SetPoint("TOP", app.LinkCopiedFrame, "TOP")
 	text:SetJustifyH("CENTER")
-	text:SetText(app.IconReady .. " " .. L.SETTINGS_URL_COPIED)
+	text:SetText(app.IconReady .. " " .. L.LINK_COPIED)
 
 	app.LinkCopiedFrame.animation = app.LinkCopiedFrame:CreateAnimationGroup()
 	local fadeOut = app.LinkCopiedFrame.animation:CreateAnimation("Alpha")
@@ -59,7 +59,7 @@ function app:CreateSettings()
 	end)
 
 	StaticPopupDialogs["EQUIPRECOMMENDEDGEAR_URL"] = {
-		text = L.SETTINGS_URL_COPY,
+		text = L.CTRL_C_COPY,
 		button1 = CLOSE,
 		whileDead = true,
 		hasEditBox = true,
@@ -275,12 +275,12 @@ function app:CreateSettings()
 	Settings.RegisterAddOnCategory(category)
 	app.SettingsCategory = category
 
-	text(L.SETTINGS_VERSION .. " |cffFFFFFF" .. app.Version, nil, nil, 14)
-	text(L.SETTINGS_SUPPORT_TEXTLONG1 .. "\n" .. L.SETTINGS_SUPPORT_TEXTLONG2)
-	button(L.SETTINGS_SUPPORT_TEXT, L.SETTINGS_SUPPORT_BUTTON, L.SETTINGS_SUPPORT_DESC, function() StaticPopup_Show("EQUIPRECOMMENDEDGEAR_URL", nil, nil, "https://buymeacoffee.com/Slackluster") end)
-	button(L.SETTINGS_HELP_TEXT, L.SETTINGS_HELP_BUTTON, L.SETTINGS_HELP_DESC, function() StaticPopup_Show("EQUIPRECOMMENDEDGEAR_URL", nil, nil, "https://discord.gg/hGvF59hstx") end)
+	text(L.VERSION .. " |cffFFFFFF" .. app.Version, nil, nil, 14)
+	text(L.SUPPORT_TEXTLONG1 .. "\n" .. L.SUPPORT_TEXTLONG2)
+	button(L.SUPPORT, L.BUY_ME_A_COFFEE, L.THANK_YOU, function() StaticPopup_Show("EQUIPRECOMMENDEDGEAR_URL", nil, nil, "https://buymeacoffee.com/Slackluster") end)
+	button(L.FEEDBACK_AND_HELP, L.DISCORD, L.JOIN_DISCORD_SERVER, function() StaticPopup_Show("EQUIPRECOMMENDEDGEAR_URL", nil, nil, "https://discord.gg/hGvF59hstx") end)
 
-	local _, isExpanded = expandableHeader(L.SETTINGS_KEYSLASH_TITLE)
+	local _, isExpanded = expandableHeader(L.KEYBINDINGS_AND_SLASH_COMMANDS)
 
 		keybind("ERG_DOTHETHING", isExpanded)
 
@@ -288,8 +288,8 @@ function app:CreateSettings()
 			"/erg",
 			"/erg settings" }
 		local middleText = {
-			L.SLASH_DO_THE_THING,
-			L.SLASH_OPEN_SETTINGS }
+			L.DO_THE_THING,
+			L.OPEN_SETTINGS }
 		leftText = table.concat(leftText, "\n\n")
 		middleText = table.concat(middleText, "\n\n")
 		text(leftText, middleText, nil, nil, isExpanded)
