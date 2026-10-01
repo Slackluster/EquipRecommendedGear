@@ -30,7 +30,7 @@ L.LINK_COPIED =                          "Ссылка скопирована в
 
 L.KEYBINDINGS_AND_SLASH_COMMANDS =       SETTINGS_KEYBINDINGS_LABEL .. " & Слэш-команды" -- "Keybindings"
 _G["BINDING_NAME_ERG_DOTHETHING"] =      app.NameShort .. ": Наденьте рекомендованная экипировка" -- Not the addon name, but the action
--- L.DO_THE_THING =                         "Equip recommended gear" -- Not the addon name, but the action
+L.DO_THE_THING =                         "Надеть рекомендуемую экипировку" -- Not the addon name, but the action
 L.OPEN_SETTINGS =                        "Откройте настройки"
 
 L.GENERAL =                              GENERAL -- "General"
