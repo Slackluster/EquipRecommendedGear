@@ -24,7 +24,6 @@
 
 libs\ChatThrottleLib\ChatThrottleLib.xml
 Core.lua
-_[Game].lua
 Database.lua
 Settings.lua
 FrameTemplates.xml
