@@ -235,3 +235,11 @@ function api:IsItemUpgrade(itemLink)
 
 	return false
 end
+
+app.Event:Register("ACTIVE_PLAYER_SPECIALIZATION_CHANGED", function()
+	app.IsItemEquippable = {}
+end)
+
+app.Event:Register("PLAYER_LEVEL_UP", function(level, healthDelta, powerDelta, numNewTalents, numNewPvpTalentSlots, strengthDelta, agilityDelta, staminaDelta, intellectDelta)
+	app.IsItemEquippable = {}
+end)

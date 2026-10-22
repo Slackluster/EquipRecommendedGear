@@ -6,16 +6,20 @@ EventUtil.ContinueOnAddOnLoaded("Baganator", function()
 		return api:IsItemUpgrade(itemLink)
 	end)
 
+	app.Event:Register("ACTIVE_PLAYER_SPECIALIZATION_CHANGED", function()
+		if Baganator.API.IsUpgradePluginActive("equip_recommended_gear") then
+			Baganator.API.RequestItemButtonsRefresh()
+		end
+	end)
+
 	app.Event:Register("PLAYER_LEVEL_UP", function(level, healthDelta, powerDelta, numNewTalents, numNewPvpTalentSlots, strengthDelta, agilityDelta, staminaDelta, intellectDelta)
 		if Baganator.API.IsUpgradePluginActive("equip_recommended_gear") then
-			app.IsItemEquippable = {}
 			Baganator.API.RequestItemButtonsRefresh()
 		end
 	end)
 
 	app.Event:Register("PLAYER_EQUIPMENT_CHANGED", function(equipmentSlot, hasCurrent)
 		if Baganator.API.IsUpgradePluginActive("equip_recommended_gear") then
-			app.IsItemEquippable = {}
 			Baganator.API.RequestItemButtonsRefresh()
 		end
 	end)
