@@ -127,8 +127,10 @@ function api:IsItemUpgrade(itemLink)
 
 	local dualwield = false
 	for _, spec in pairs(app.DualWield) do
-		if PlayerUtil.GetCurrentSpecID() == spec then dualwield = true end
-		break
+		if PlayerUtil.GetCurrentSpecID() == spec then
+			dualwield = true
+			break
+		end
 	end
 	if app.Slot[itemEquipLoc] == 18 and not dualwield then
 		itemEquipLoc = "INVTYPE_WEAPONMAINHAND"
