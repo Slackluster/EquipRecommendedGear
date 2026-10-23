@@ -306,13 +306,13 @@ function app:CreateSettings()
 		{ value = 0, name = L.MESSAGE_NEVER, description = string.format(L.MESSAGE_NEVER_DESC, app.NameShort) },
 		{ value = 1, name = L.MESSAGE_UPGRADE, description = string.format(L.MESSAGE_UPGRADE_DESC, app.NameShort) },
 		{ value = 2, name = L.MESSAGE_ALWAYS, description = string.format(L.MESSAGE_ALWAYS_DESC, app.NameShort) },
-	}, nil, true)
+	})
 
 	checkboxDropdown("runAfterSpecSwitch", L.RUN_AFTER_SPECSWITCH, string.format(L.RUN_AFTER_SPECSWITCH_DESC, app.NameShort), true, "chatMessage3", 1, {
 		{ value = 0, name = L.MESSAGE_NEVER, description = string.format(L.MESSAGE_NEVER_DESC, app.NameShort) },
 		{ value = 1, name = L.MESSAGE_UPGRADE, description = string.format(L.MESSAGE_UPGRADE_DESC, app.NameShort) },
 		{ value = 2, name = L.MESSAGE_ALWAYS, description = string.format(L.MESSAGE_ALWAYS_DESC, app.NameShort) },
-	}, nil, true)
+	})
 
 	checkbox("includeWeapons", L.INCLUDE_WEAPONS, L.INCLUDE_WEAPONS_DESC, true)
 end
