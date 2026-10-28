@@ -156,7 +156,7 @@ function app:CreateSettings()
 	hooksecurefunc(SettingsCheckboxDropdownControlMixin, "Init", showNewTag)
 
 	hooksecurefunc(SettingsPanel, "DisplayCategory", function(self, category)
-		if category == app.SettingsCategory then
+		if category == app.SettingsCategory and app.NewFeatures then
 			for _, feature in ipairs(app.NewFeatures) do
 				app.Settings.seen[feature] = true
 			end
