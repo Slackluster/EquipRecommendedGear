@@ -1,4 +1,4 @@
-## Interface: 16001, 120105
+## Interface: 120105
 ## Title: |cff3FC7EBEquip Recommended Gear|r
 ## Author: Slackluster
 ## Notes: One button, maximum item level
