@@ -37,22 +37,22 @@ end)
 -------------
 
 app.Event:Register("ADDON_LOADED", function(addOnName, containsBindings)
-	if addOnName == appName then
-		-- if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE then
-		-- 	app.Retail = true
-		-- elseif WOW_PROJECT_ID == WOW_PROJECT_CAMELOT then
-		-- 	app.Forever = true
-		-- end
+	if addOnName ~= appName then return end
 
-		EquipRecommendedGear_Settings = EquipRecommendedGear_Settings or {}
+	-- if WOW_PROJECT_ID == WOW_PROJECT_MAINLINE then
+	-- 	app.Retail = true
+	-- elseif WOW_PROJECT_ID == WOW_PROJECT_CAMELOT then
+	-- 	app.Forever = true
+	-- end
 
-		app.Settings = EquipRecommendedGear_Settings
-		app.Version = C_AddOns.GetAddOnMetadata(appName, "Version")
-		app.Flag = {}
+	EquipRecommendedGear_Settings = EquipRecommendedGear_Settings or {}
 
-		C_ChatInfo.RegisterAddonMessagePrefix("EquipRecGear")
-		app:CreateSlashCommands()
-	end
+	app.Settings = EquipRecommendedGear_Settings
+	app.Version = C_AddOns.GetAddOnMetadata(appName, "Version")
+	app.Flag = {}
+
+	C_ChatInfo.RegisterAddonMessagePrefix("EquipRecGear")
+	app:CreateSlashCommands()
 end)
 
 -------------------

@@ -11,12 +11,12 @@ local L = app.locales
 -------------
 
 app.Event:Register("ADDON_LOADED", function(addOnName, containsBindings)
-	if addOnName == appName then
-		app.Sex = C_PlayerInfo.GetSex(PlayerLocation:CreateFromUnit("player"))
-		app.ClassID = PlayerUtil.GetClassID()
+	if addOnName ~= appName then return end
 
-		app:CreateAssets()
-	end
+	app.Sex = C_PlayerInfo.GetSex(PlayerLocation:CreateFromUnit("player"))
+	app.ClassID = PlayerUtil.GetClassID()
+
+	app:CreateAssets()
 end)
 
 ----------------------------
@@ -488,31 +488,31 @@ end
 ------------
 
 app.Event:Register("QUEST_TURNED_IN", function(questID, xpReward, moneyReward)
-	if app.Settings.runAfterQuest and not InCombatLockdown() then
-		C_Timer.After(1, function()
-			api:DoTheThing(app.Settings.chatMessage)
-		end)
-	end
+	if not app.Settings.runAfterQuest or InCombatLockdown() then return end
+
+	C_Timer.After(1, function()
+		api:DoTheThing(app.Settings.chatMessage)
+	end)
 end)
 
 app.Event:Register("PLAYER_LEVEL_UP", function(level, healthDelta, powerDelta, numNewTalents, numNewPvpTalentSlots, strengthDelta, agilityDelta, staminaDelta, intellectDelta)
-	if app.Settings.runAfterLevelUp and not InCombatLockdown() then
-		C_Timer.After(1, function()
-			api:DoTheThing(app.Settings.chatMessage2)
-		end)
-	end
+	if not app.Settings.runAfterLevelUp or InCombatLockdown() then return end
+
+	C_Timer.After(1, function()
+		api:DoTheThing(app.Settings.chatMessage2)
+	end)
 end)
 
 app.Event:Register("ACTIVE_PLAYER_SPECIALIZATION_CHANGED", function()
-	if app.Settings.runAfterSpecSwitch and not InCombatLockdown() then
-		C_Timer.After(2, function()
-			if not app.Flag.ChangingOnSpec then
-				app.Flag.ChangingOnSpec = true
-				api:DoTheThing(app.Settings.chatMessage3)
-				C_Timer.After(1, function()
-					app.Flag.ChangingOnSpec = false
-				end)
-			end
-		end)
-	end
+	if not app.Settings.runAfterSpecSwitch or InCombatLockdown() then return end
+
+	C_Timer.After(2, function()
+		if not app.Flag.ChangingOnSpec then
+			app.Flag.ChangingOnSpec = true
+			api:DoTheThing(app.Settings.chatMessage3)
+			C_Timer.After(1, function()
+				app.Flag.ChangingOnSpec = false
+			end)
+		end
+	end)
 end)

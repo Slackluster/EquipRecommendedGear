@@ -10,9 +10,9 @@ local api = app.api
 -------------
 
 app.Event:Register("ADDON_LOADED", function(addOnName, containsBindings)
-	if addOnName == appName then
-		app.IsItemEquippable = {}
-	end
+	if addOnName ~= appName then return end
+
+	app.IsItemEquippable = {}
 end)
 
 ----------------------
