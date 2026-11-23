@@ -11,8 +11,8 @@ local L = app.locales
 -- Core
 L.NEW_VERSION_AVAILABLE =                "Hay una versión más nueva de %s disponible:" -- %s becomes the addon name
 
--- L.DEBUG_ENABLED =                        "Debug mode enabled"
--- L.DEBUG_DISABLED =                       "Debug mode disabled"
+L.DEBUG_ENABLED =                        "Modo de depuración activado"
+L.DEBUG_DISABLED =                       "Modo de depuración desactivado"
 L.INVALID_COMMAND =                      "Comando no válido"
 
 -- Settings
@@ -29,30 +29,30 @@ L.CTRL_C_COPY =                          "Ctrl+C para copiar:"
 L.LINK_COPIED =                          "Enlace copiado al portapapeles"
 
 L.KEYBINDINGS_AND_SLASH_COMMANDS =       SETTINGS_KEYBINDINGS_LABEL .. " y Comandos" -- "Keybindings"
--- _G["BINDING_NAME_ERG_DOTHETHING"] =      app.NameShort .. ": Equip Recommended Gear" -- Not the addon name, but the action
--- L.DO_THE_THING =                         "Equip recommended gear" -- Not the addon name, but the action
+_G["BINDING_NAME_ERG_DOTHETHING"] =      app.NameShort .. ": Equipar equipo recomendado" -- Not the addon name, but the action
+L.DO_THE_THING =                         "Equipar equipo recomendado" -- Not the addon name, but the action
 L.OPEN_SETTINGS =                        "Abrir opciones"
 
 L.GENERAL =                              GENERAL -- "General"
--- L.RUN_AFTER_QUEST =                      "Run on Quest Completion"
--- L.RUN_AFTER_QUEST_DESC =                 "Run %s whenever you complete a quest." -- %s becomes the addon name
--- L.RUN_AFTER_LEVELUP =                    "Run on Level Up"
--- L.RUN_AFTER_LEVELUP_DESC =               "Run %s whenever you level up." -- %s becomes the addon name
--- L.RUN_AFTER_SPECSWITCH =                 "Run on Spec Switch"
--- L.RUN_AFTER_SPECSWITCH_DESC =            "Run %s whenever you switch specs." -- %s becomes the addon name
--- L.MESSAGE_NEVER =                        "Never Send Message"
--- L.MESSAGE_NEVER_DESC =                   "Don't send a message in chat, even if %s has equipped an item level upgrade." -- %s becomes the addon name
--- L.MESSAGE_UPGRADE =                      "Only With Upgrade"
--- L.MESSAGE_UPGRADE_DESC =                 "Only send a message in chat if %s has equipped an item level upgrade." -- %s becomes the addon name
--- L.MESSAGE_ALWAYS =                       "Always Send Message"
--- L.MESSAGE_ALWAYS_DESC =                  "Always send a chat message, even if %s hasn't equipped an item level upgrade." -- %s becomes the addon name
--- L.INCLUDE_WEAPONS =                      "Include Weapons"
--- L.INCLUDE_WEAPONS_DESC =                 "Include weapons when doing the thing."
+L.RUN_AFTER_QUEST =                      "Ejecutar al completar una misión"
+L.RUN_AFTER_QUEST_DESC =                 "Ejecutar %s al completar una misión." -- %s becomes the addon name
+L.RUN_AFTER_LEVELUP =                    "Ejecutar al subir de nivel"
+L.RUN_AFTER_LEVELUP_DESC =               "Ejecutar %s al subir de nivel." -- %s becomes the addon name
+L.RUN_AFTER_SPECSWITCH =                 "Ejecutar al cambiar de especialización"
+L.RUN_AFTER_SPECSWITCH_DESC =            "Ejecutar %s al cambiar de especialización." -- %s becomes the addon name
+L.MESSAGE_NEVER =                        "No enviar nunca el mensaje"
+L.MESSAGE_NEVER_DESC =                   "No envía mensajes de chat, aunque %s haya equipado un objeto de mayor nivel." -- %s becomes the addon name
+L.MESSAGE_UPGRADE =                      "Solo con mejora"
+L.MESSAGE_UPGRADE_DESC =                 "Enviar un mensaje de chat solo si %s ha equipado un objeto de mayor nivel." -- %s becomes the addon name
+L.MESSAGE_ALWAYS =                       "Enviar siempre el mensaje"
+L.MESSAGE_ALWAYS_DESC =                  "Envía siempre un mensaje de chat, aunque %s no haya equipado un objeto de mayor nivel." -- %s becomes the addon name
+L.INCLUDE_WEAPONS =                      "Incluir armas"
+L.INCLUDE_WEAPONS_DESC =                 "Incluir armas al realizar la acción."
 
 -- Equip Recommended Gear
--- L.ERROR_COMBAT =                         "Cannot recommend gear while in combat"
--- L.ERROR_INVENTORY =                      "Could not read items in inventory"
--- L.ERROR_EQUIPPED =                       "Could not read equipped items"
--- L.ERROR_EQUIP =                          "Could not equip recommended gear"
--- L.EQUIP_NO_UPGRADE =                     "You are currently equipped with the recommended gear for %s" -- %s becomes "Spec Class"
--- L.EQUIP_UPGRADE =                        "Equipped gear recommended for %s" -- %s becomes "Spec Class"
+L.ERROR_COMBAT =                         "No se puede recomendar equipo durante el combate"
+L.ERROR_INVENTORY =                      "No se han podido leer los objetos del inventario"
+L.ERROR_EQUIPPED =                       "No se han podido leer los objetos equipados"
+L.ERROR_EQUIP =                          "No se ha podido equipar el equipo recomendado"
+L.EQUIP_NO_UPGRADE =                     "Ya tienes equipado el equipo recomendado para %s" -- %s becomes "Spec Class"
+L.EQUIP_UPGRADE =                        "Equipo recomendado equipado para %s" -- %s becomes "Spec Class"
